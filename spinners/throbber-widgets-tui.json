@@ -1,0 +1,127 @@
+{
+  "_meta": {
+    "source": "arkbig/throbber-widgets-tui",
+    "url": "https://github.com/arkbig/throbber-widgets-tui",
+    "raw_url": "https://github.com/arkbig/throbber-widgets-tui/blob/main/src/symbols.rs",
+    "license": "MIT",
+    "license_url": "https://github.com/arkbig/throbber-widgets-tui/blob/main/LICENSE",
+    "description": "Rust TUI widget for ratatui that displays throbber/spinner animations. Each set has Full (completion), Empty (idle), and Symbols (animation frames).",
+    "spinner_count": 21,
+    "retrieved": "2026-02-12"
+  },
+  "ASCII": {
+    "full": "*",
+    "empty": " ",
+    "frames": ["|", "/", "-", "\\"]
+  },
+  "BOX_DRAWING": {
+    "full": "┼",
+    "empty": "\u3000",
+    "frames": ["│", "╱", "─", "╲"]
+  },
+  "ARROW": {
+    "full": "↔",
+    "empty": "\u3000",
+    "frames": ["↑", "↗", "→", "↘", "↓", "↙", "←", "↖"]
+  },
+  "DOUBLE_ARROW": {
+    "full": "⇔",
+    "empty": "\u3000",
+    "frames": ["⇑", "⇗", "⇒", "⇘", "⇓", "⇙", "⇐", "⇖"]
+  },
+  "VERTICAL_BLOCK": {
+    "full": "█",
+    "empty": "\u3000",
+    "frames": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
+  },
+  "HORIZONTAL_BLOCK": {
+    "full": "█",
+    "empty": "\u3000",
+    "frames": ["▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"]
+  },
+  "QUADRANT_BLOCK": {
+    "full": "█",
+    "empty": "\u3000",
+    "frames": ["▝", "▗", "▖", "▘"]
+  },
+  "QUADRANT_BLOCK_CRACK": {
+    "full": "█",
+    "empty": "\u3000",
+    "frames": ["▙", "▛", "▜", "▟"]
+  },
+  "WHITE_SQUARE": {
+    "full": "⊞",
+    "empty": "\u3000",
+    "frames": ["◳", "◲", "◱", "◰"]
+  },
+  "WHITE_CIRCLE": {
+    "full": "⊕",
+    "empty": "\u3000",
+    "frames": ["◷", "◶", "◵", "◴"]
+  },
+  "BLACK_CIRCLE": {
+    "full": "●",
+    "empty": "\u3000",
+    "frames": ["◑", "◒", "◐", "◓"]
+  },
+  "CLOCK": {
+    "full": "🕛",
+    "empty": "\u3000",
+    "frames": ["🕛", "🕧", "🕐", "🕜", "🕑", "🕝", "🕒", "🕞", "🕓", "🕟", "🕔", "🕠", "🕕", "🕡", "🕖", "🕢", "🕗", "🕣", "🕘", "🕤", "🕙", "🕥", "🕚", "🕦"]
+  },
+  "BRAILLE_ONE": {
+    "full": "⠿",
+    "empty": "\u3000",
+    "frames": ["⠈", "⠐", "⠠", "⠄", "⠂", "⠁"]
+  },
+  "BRAILLE_DOUBLE": {
+    "full": "⠿",
+    "empty": "\u3000",
+    "frames": ["⠘", "⠰", "⠤", "⠆", "⠃", "⠉"]
+  },
+  "BRAILLE_SIX": {
+    "full": "⠿",
+    "empty": "\u3000",
+    "frames": ["⠷", "⠯", "⠟", "⠻", "⠽", "⠾"]
+  },
+  "BRAILLE_SIX_DOUBLE": {
+    "full": "⠿",
+    "empty": "\u3000",
+    "frames": ["⠧", "⠏", "⠛", "⠹", "⠼", "⠶"]
+  },
+  "BRAILLE_EIGHT": {
+    "full": "⣿",
+    "empty": "\u3000",
+    "frames": ["⣷", "⣯", "⣟", "⡿", "⢿", "⣻", "⣽", "⣾"]
+  },
+  "BRAILLE_EIGHT_DOUBLE": {
+    "full": "⣿",
+    "empty": "\u3000",
+    "frames": ["⣧", "⣏", "⡟", "⠿", "⢻", "⣹", "⣼", "⣶"]
+  },
+  "OGHAM_A": {
+    "full": "ᚔ",
+    "empty": "\u3000",
+    "frames": [" ", "ᚐ", "ᚑ", "ᚒ", "ᚓ", "ᚔ"]
+  },
+  "OGHAM_B": {
+    "full": "ᚅ",
+    "empty": "\u3000",
+    "frames": [" ", "ᚁ", "ᚂ", "ᚃ", "ᚄ", "ᚅ"]
+  },
+  "OGHAM_C": {
+    "full": "ᚊ",
+    "empty": "\u3000",
+    "frames": [" ", "ᚆ", "ᚇ", "ᚈ", "ᚉ", "ᚊ"]
+  },
+  "PARENTHESIS": {
+    "full": "∫",
+    "empty": "\u3000",
+    "frames": ["⎛", "⎜", "⎝", "⎞", "⎟", "⎠"]
+  },
+  "CANADIAN": {
+    "full": "ᦟ",
+    "empty": "\u3000",
+    "frames": ["ᔐ", "ᯇ", "ᔑ", "ᯇ"]
+  }
+}
