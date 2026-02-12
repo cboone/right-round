@@ -1,0 +1,21 @@
+{
+  "_meta": {
+    "source": "Will Carhart - How to Write Better Bash Spinners",
+    "url": "https://willcarh.art/blog/how-to-write-better-bash-spinners",
+    "license": "Blog post, no explicit code license",
+    "description": "Spinner character sets documented in a tutorial blog post about writing better Bash spinners. Includes the classic set and suggestions for fancier alternatives.",
+    "retrieved": "2026-02-12"
+  },
+  "simple": {
+    "note": "The classic simplest spinner",
+    "frames": ["/", "-", "\\", "|"]
+  },
+  "box_drawing": {
+    "note": "Fancier alternative using box-drawing characters",
+    "frames": ["┤", "┘", "┴", "└", "├", "┌", "┬", "┐"]
+  },
+  "bouncing_bullet": {
+    "note": "Animated bullet bouncing side to side",
+    "frames": ["  \u2022     ", "   \u2022    ", "    \u2022   ", "     \u2022  ", "      \u2022 ", "     \u2022  ", "    \u2022   ", "   \u2022    ", "  \u2022     ", " \u2022      "]
+  }
+}
