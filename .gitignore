@@ -16,4 +16,5 @@ coverage.out
 go.work.sum
 
 # Local machine settings
-**/settings.local.json
+.claude/settings.local.json
+.entire/settings.local.json
