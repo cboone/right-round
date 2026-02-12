@@ -4,7 +4,7 @@ A collection of text/CLI-based progress indicators gathered from across the open
 source ecosystem. Covers spinners (animated loading indicators), progress bars,
 sparklines, and related character sets used in terminal applications.
 
-Collected on 2026-02-12. No deduplication has been performed.
+Collected on 2026-02-12. No deduplication has been performed on the per-source files under `spinners/`; a deduplicated unified list is available in `progress-indicators.json`.
 
 ## Spinner Collections
 
