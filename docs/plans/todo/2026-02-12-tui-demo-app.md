@@ -14,7 +14,7 @@ right-round/                              (repo root)
 ├── go.sum                                (NEW)
 ├── Makefile                              (NEW)
 ├── README.md                             (existing - rewrite)
-├── .gitignore                            (NEW - Go patterns)
+├── .gitignore                            (existing - Go patterns)
 ├── .goreleaser.yml                       (NEW)
 ├── .github/
 │   └── workflows/
@@ -57,9 +57,9 @@ Using Bubble Tea v1 (stable) rather than v2 (still RC).
 
 **`types.go`** — Go structs mirroring the JSON schema:
 - `Catalog` — top-level: version, generated, description, stats, entry_schema, entries
-- `Entry` — id, name, type, group, frames, interval_ms, characters, phases, indeterminate, completion_states, notes, source, also_found_in
+- `Entry` — id, name, type, group, frames, interval_ms, characters, phases, indeterminate, completion_states (`map[string]string`), notes, source, also_found_in
 - `BarCharacters` — fill, empty, head, start, end (optional fields are pointers)
-- `Source` — collection, url, raw_url, references, original_key, license, license_url, copyright, retrieved
+- `Source` — collection, url, raw_url, references (`[]string`, optional URLs), original_key, license, license_url, copyright, retrieved
 - `AlsoFoundIn` — collection, url, original_key, license
 - `IntervalMS` as `*int` (nullable), `Notes` as `*string` (nullable), optional fields as pointers where the JSON omits keys
 - `EntryEnvelope` wrapper for each entry that stores both parsed `Entry` and original `json.RawMessage` to guarantee lossless clipboard export
@@ -72,7 +72,7 @@ Using Bubble Tea v1 (stable) rather than v2 (still RC).
 - Validates and normalizes data during load:
   - missing spinner `interval_ms` uses default 100ms at render time
   - spinner entries must have at least one frame
-  - progress bar entries must include `characters.fill` and may omit start/end/head
+  - progress bar entries must have either non-null `characters` with at least `fill`, or a non-empty `phases` array, or both (phase-only bars like `verigak-progress/PixelBar` have `characters: null`)
 
 **`embedded.go`** (repo root) — Must live at repo root because `go:embed` cannot traverse `..` paths. Contains only:
 ```go
@@ -128,7 +128,8 @@ Reason for custom list: bubbles `list.Model` is designed for flat filterable lis
 - Supports fractional catch-up when terminal redraw lags by more than one interval
 
 **`progressbar.go`** — Renders progress bars from character sets:
-- Uses optional pattern `start + fill*n + head + empty*m + end` where start/head/end are rendered only when present
+- Uses optional pattern `start + fill*n + head + empty*m + end` where start/head/end are rendered only when present; `head` only renders at the advancing boundary (not at 0% or 100%)
+- Phase-only bars (where `characters` is null) render entirely from the `phases` array
 - Handles entries with phases (sub-character resolution at fill boundary)
 - Handles entries with indeterminate patterns for dedicated preview mode
 - Preview width adapts to available space
@@ -156,7 +157,7 @@ Reason for custom list: bubbles `list.Model` is designed for flat filterable lis
 ### CLI Layer (`cmd/right-round/main.go`)
 
 Cobra root command with optional flags:
-- `--filter <group>`: start with a specific group
+- `--group <name>`: start with a specific group expanded/selected
 - `--type <spinner|progress_bar>`: lock UI to one type for the session (tab disabled)
 
 ### Unicode Width Handling
@@ -177,7 +178,7 @@ Use `lipgloss.Width()` (backed by `go-runewidth`) for all display width calculat
 
 ## Implementation Order
 
-1. `go.mod`, `.gitignore` — Initialize Go module
+1. `go.mod` — Initialize Go module (`.gitignore` already exists)
 2. `internal/data/types.go` — Struct definitions (foundation for everything)
 3. `embedded.go` — Embed the JSON file
 4. `internal/data/loader.go` — Parse and index data
@@ -206,6 +207,8 @@ Use `lipgloss.Width()` (backed by `go-runewidth`) for all display width calculat
    - Group ordering is count-desc then name-asc
    - Entry sorting within group is stable and deterministic
    - Loader rejects malformed spinner entries with empty frames
+   - Loader accepts phase-only progress bars (`characters: null` with non-empty `phases`)
+   - Loader rejects progress bars with neither `characters` nor `phases`
 3. `internal/tui/preview_test.go`
    - Accumulator carry-over correctness (`accum -= interval`, no drift)
    - Catch-up across delayed ticks advances multiple frames correctly
@@ -214,6 +217,8 @@ Use `lipgloss.Width()` (backed by `go-runewidth`) for all display width calculat
 4. `internal/tui/progressbar_test.go`
    - Rendering with only required fields (`fill`, `empty`)
    - Rendering with optional `start`, `head`, `end`
+   - `head` omitted at 0% and 100% fill
+   - Phase-only bars (`characters: null`) render from `phases` array alone
    - Phase rendering at boundary percentages
    - Indeterminate pattern rendering path
    - Unicode width handling with wide glyphs
@@ -229,7 +234,7 @@ Use `lipgloss.Width()` (backed by `go-runewidth`) for all display width calculat
    - Success and failure status messaging
 8. `cmd/right-round/main_test.go`
    - `--type` lock behavior and tab-disable state
-   - `--filter` initial group selection
+   - `--group` initial group selection
    - Invalid flag values return user-facing errors
 
 ### Integration tests
