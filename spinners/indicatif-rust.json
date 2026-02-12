@@ -1,0 +1,45 @@
+{
+  "_meta": {
+    "source": "console-rs/indicatif",
+    "url": "https://github.com/console-rs/indicatif",
+    "docs_url": "https://docs.rs/indicatif/latest/indicatif/",
+    "license": "MIT",
+    "license_url": "https://github.com/console-rs/indicatif/blob/main/LICENSE",
+    "description": "Rust command line progress reporting library. Uses a template system with progress_chars for bar rendering and tick_chars/tick_strings for spinner animation. No hardcoded predefined themes; users compose their own.",
+    "retrieved": "2026-02-12"
+  },
+  "progress_chars_examples": {
+    "description": "The progress_chars method takes a string of 3+ characters: filled, current position, remaining.",
+    "common_sets": [
+      { "chars": "##-", "description": "ASCII hash fill" },
+      { "chars": "=>-", "description": "Classic arrow style" },
+      { "chars": "█░-", "description": "Block fill with shade empty" },
+      { "chars": "█▉▊▋▌▍▎▏  ", "description": "Smooth fractional block fill (8 intermediate chars)" },
+      { "chars": "━╸━", "description": "Bold line fill" },
+      { "chars": "▰▱ ", "description": "Parallelogram fill" }
+    ],
+    "notes": "All passed grapheme clusters must be of equal width. More than 3 characters provides intermediate fill states for smoother rendering."
+  },
+  "tick_chars_examples": {
+    "description": "Spinner tick characters. The last character is the final/completed state.",
+    "common_sets": [
+      { "chars": "⠁⠂⠄⡀⢀⠠⠐⠈ ", "description": "Braille circling dot" },
+      { "chars": "⣾⣽⣻⢿⡿⣟⣯⣷ ", "description": "Braille circling hole" },
+      { "chars": "-\\|/ ", "description": "Classic ASCII spinner" },
+      { "chars": "◐◓◑◒ ", "description": "Circle halves" }
+    ],
+    "notes": "At least 2 characters required: one for spinning state, one for final state."
+  },
+  "template_keys": {
+    "bar": "Renders progress bar (default 20 chars wide)",
+    "wide_bar": "Progress bar filling remaining terminal width",
+    "spinner": "Current tick string animation frame",
+    "msg": "User-set message text",
+    "prefix": "Bar prefix text",
+    "pos": "Current position",
+    "len": "Total length",
+    "percent": "Percentage complete",
+    "elapsed": "Elapsed time",
+    "eta": "Estimated time remaining"
+  }
+}
