@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "source": "Rosetta Code - Spinning rod animation/Text",
+    "url": "https://rosettacode.org/wiki/Spinning_rod_animation/Text",
+    "license": "GNU FDL 1.2 (Rosetta Code content license)",
+    "description": "Spinner character sequences from the Rosetta Code wiki task page. Implementations span dozens of languages. Some entries include unique character sets beyond the classic spinning rod.",
+    "retrieved": "2026-02-12"
+  },
+  "classic_rod": {
+    "frames": ["|", "/", "-", "\\"]
+  },
+  "dots_growing": {
+    "frames": [".", "..", "..."]
+  },
+  "dots_pingpong": {
+    "frames": [".", "..", "...", ".."]
+  },
+  "stars": {
+    "frames": ["⁎", "⁑", "⁂"]
+  },
+  "stars_pingpong": {
+    "frames": ["⁎", "⁑", "⁂", "⁑"]
+  },
+  "clock_half_hours": {
+    "frames": ["🕛", "🕧", "🕐", "🕜", "🕑", "🕝", "🕒", "🕞", "🕓", "🕟", "🕔", "🕠", "🕕", "🕡", "🕖", "🕢", "🕗", "🕣", "🕘", "🕤", "🕙", "🕥", "🕚", "🕦"]
+  },
+  "arrows_diagonal": {
+    "note": "Uses arrows including diagonal directions",
+    "frames": ["⬍", "⬈", "➞", "⬊", "⬍", "⬋", "⬅", "⬉"]
+  },
+  "bird_flying": {
+    "note": "CJK punctuation brackets animated as a flapping bird",
+    "frames": ["︷", "︵", "︹", "︺", "︶", "︸"]
+  },
+  "bird_flying_pingpong": {
+    "frames": ["︷", "︵", "︹", "︺", "︶", "︸", "︶", "︺", "︹", "︵"]
+  },
+  "plants": {
+    "frames": ["☘", "❀", "❁"]
+  },
+  "plants_pingpong": {
+    "frames": ["☘", "❀", "❁", "❀"]
+  },
+  "moon_phases": {
+    "frames": ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"]
+  }
+}

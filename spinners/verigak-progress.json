@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "source": "verigak/progress",
+    "url": "https://github.com/verigak/progress",
+    "license": "ISC",
+    "license_url": "https://github.com/verigak/progress/blob/master/LICENSE",
+    "copyright": "Copyright (c) 2012 Georgios Verigakis",
+    "description": "Python progress bar and spinner library. Defines 7 bar types and 5 spinner types, each with distinct character sets. The IncrementalBar family provides sub-character resolution using phases.",
+    "retrieved": "2026-02-12"
+  },
+  "bars": {
+    "Bar": {
+      "fill": "#",
+      "empty_fill": " ",
+      "bar_prefix": " |",
+      "bar_suffix": "| "
+    },
+    "ChargingBar": {
+      "fill": "█",
+      "empty_fill": "∙",
+      "bar_prefix": " ",
+      "bar_suffix": " "
+    },
+    "FillingSquaresBar": {
+      "fill": "▣",
+      "empty_fill": "▢",
+      "bar_prefix": " ",
+      "bar_suffix": " "
+    },
+    "FillingCirclesBar": {
+      "fill": "◉",
+      "empty_fill": "◯",
+      "bar_prefix": " ",
+      "bar_suffix": " "
+    },
+    "IncrementalBar": {
+      "description": "Uses sub-character phases for smooth progression",
+      "phases": [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"],
+      "fill": "█",
+      "empty_fill": " ",
+      "bar_prefix": " |",
+      "bar_suffix": "| ",
+      "notes": "On Windows, falls back to 3 phases"
+    },
+    "PixelBar": {
+      "description": "Braille-based sub-character progress",
+      "phases": ["⡀", "⡄", "⡆", "⡇", "⣇", "⣧", "⣷", "⣿"],
+      "notes": "Inherits from IncrementalBar"
+    },
+    "ShadyBar": {
+      "description": "Shade-based sub-character progress",
+      "phases": [" ", "░", "▒", "▓", "█"],
+      "notes": "Inherits from IncrementalBar"
+    }
+  },
+  "spinners": {
+    "Spinner": {
+      "phases": ["-", "\\", "|", "/"]
+    },
+    "PieSpinner": {
+      "phases": ["◷", "◶", "◵", "◴"]
+    },
+    "MoonSpinner": {
+      "phases": ["◑", "◒", "◐", "◓"]
+    },
+    "LineSpinner": {
+      "phases": ["⎺", "⎻", "⎼", "⎽", "⎼", "⎻"]
+    },
+    "PixelSpinner": {
+      "phases": ["⣾", "⣷", "⣯", "⣟", "⡿", "⢿", "⣻", "⣽"]
+    }
+  }
+}

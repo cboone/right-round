@@ -1,0 +1,189 @@
+-------------------------------------------------------------------------------
+Source:     Anthony Thyssen's Spinner Collection
+URL:        https://antofthy.gitlab.io/info/ascii/Spinners.txt
+Author:     Anthony Thyssen <Anthony.Thyssen@gmail.com>
+License:    No explicit license stated; text reference/catalog
+Retrieved:  2026-02-12
+Updated:    23 Dec 2025 (by the author)
+
+Description:
+  A comprehensive catalog of spinner, heartbeat, throbber, progress,
+  waiting, idle, and loading indicator character sequences. Many of
+  the longer clock and cycle Braille sequences were originally figured
+  out by the author and are not found in other sources.
+
+References:
+  https://stackoverflow.com/questions/2685435/cooler-ascii-spinners
+  https://github.com/sindresorhus/cli-spinners/blob/master/spinners.json
+  https://antofthy.gitlab.io/info/data/utf8_demo.txt
+-------------------------------------------------------------------------------
+
+=== ASCII Spinner/Heartbeat Character Sequences ===
+
+Spinning Line:            -\|/
+Pulsing Circle:           .oOo
+Balloon:                  " .oO@*"   (space-prefixed)
+Flip line:                __\|/__
+Flip line (patrol):       __\|/____/|\__
+Pacman Muncher:           ->|>-
+Folding Over:             -<|>-
+Folding Over (patrol):    ->|<--<|>-
+Bat and Ball:             dqpb
+
+
+=== Unicode Spinner/Heartbeat Character Sequences ===
+
+Unicode Spinning Line:         ─╲│╱
+Flip Line:                     _-`'´-_
+Pacman Muncher:                -≻›⟩›≻-
+Pacman Muncher (right):        -≺‹⟨‹≺-
+Folding Over (left-right):     -≻›⟩|⟨‹≺
+Folding Over (right-left):     -≺‹⟨|⟩›≻
+Folding Over (patrol):         -≻›⟩|⟨‹≺-≺‹⟨|⟩›≻
+Quarter Circle Spinner:        ◟◜◝◞
+Extended Circle Spinner:       ◜◠◝◞◡◟
+Corner Circle Spinner:         ◴◷◶◵
+Half Circle Spinner:           ◐◓◑◒
+Half Circle Flip:              ◡⊙◠⊙
+Ellipses:                      " ․‥…"
+Circle Tail b:                 bᓂqᓄ
+Circle Tail d:                 dᓇpᓀ
+Bouncing Ball:                 .oO°Oo.
+Rain Circle:                   " ⋅∘○⨀"
+Pulsing Circle:                ◌○⊙●⊙○
+Pulsing Dot:                   ⋅∙●∙
+Pulsing Heart:                 ⋅•❤•⋅⋅⋅
+Pulsing Line:                  ❘❙❚❙
+Pulsing Line Heart:            ❘❙❚❤❚❙❘
+Pulsing Square:                ▪◼█◼▪
+Pulsing Square 2:              ▪■□▫
+Corners:                       ⌞⌜⌝⌟
+Large Corners:                 ⎿⎾⏋⏌
+Corner Box:                    ◰◳◲◱
+Triangle:                      ◣◤◥◢
+Triangle Pulse:                ▫◸◤◸▫◹◥◹▫◿◢◿▫◺◣◺
+Triangle Pulse 2:              ■◤◸◤■◥◹◥■◢◿◢■◣◺◣
+Moving Horizontal Bar:         ⎽⎼―⎻⎺    (patrol: ⎽⎼―⎻⎺⎻―⎼)
+Moving Vertical Bar:           ▏⎢⎪⎥▕    (patrol: ▏⎢⎪⎥▕⎥⎪⎢)
+Tone Bar:                      ˩˨˧˦˥     (patrol: ˩˨˧˦˥˦˧˨)
+Rising Vertical Bar:           ˌ╷❘ﺍ╵ˈ
+Growth & Decay:                ․|†¥∨⌄
+Pulsing Star:                  ⋅˖+⟡✧⟡+˖
+Pulsing Plus:                  ⋅˖+┼╋┼+˖
+Bouncing Bubble:               '°º¤ø,¸¸,ø¤º°'
+Mathematical Equals:           −=≡
+Mathematical Compares:         ≑≒≑≓
+I-Ching:                       ☱☲☴
+Arrow:                         ←↖↑↗→↘↓↙
+Dingbat Arrow:                 ➵➴➵➶
+Dingbat Bold Arrows:           ➸➷➸➹
+
+
+=== Two-character pulsing ===
+
+Squish:                  ╫╪
+Toggle Line:             ⊶⊷
+Toggle Sm Box:           ▫▪
+Toggle Lg Box:           □■
+Toggle Shogi:            ☖☗
+
+
+=== Box Graphic Glyphs ===
+
+Noise Fading:                █▓▒░
+Quarter Block:               ▘▝▗▖
+Half Block Spinner:          ▄▌▀▐
+Quarter Block Worm:          ▘▀▝▐▗▄▖▌
+Diagonally Moving Block:     " ▖◼▝ ▗◼▘"
+Box Bar Horizontal:          " ▏▎▍▌▋▊▉█"   (patrol: " ▏▎▍▌▋▊▉█▉▊▋▌▍▎▏")
+Box Bar Vertical:            " ▁▂▃▄▅▆▇█"   (patrol: " ▁▂▃▄▅▆▇█▇▆▅▄▃▂▁")
+
+
+=== Half Line Glyphs ===
+
+Half Line Spinner:            ╷╴╵╶
+Half Line Spinner Bold:       ╻╸╹╺
+Half Line Spinner Pulsed:     ╷╴╹╶
+Pulsing Half Line Spinner:    ╷╴╵╶╻╸╹╺
+Moving Line:                  ╴━╶
+Rotating Moving Line:         ╴━╶╷┃╵╶━╴╵┃╷
+Wind-shield Wiper Patrol:     ╷╴╵╶╷╷╷╶╵╴╷╷
+Pipe Spinner:                 ┤┘┴└├┌┬┐
+Pipe Spinner Bold:            ┫┛┻┗┣┏┳┓
+Pipe Spinner Mixed:           ┤┙┚┴┖┕├┍┎┬┒┑
+Two Handed Clock (16):        ╹┖╿┚┕╺┍╼╽┎╻┒┙╾┑╸
+Two Handed Cycle (20):        ╹┖╿┚╹╺┍╼┕╺╻┒╽┎╻╸┙╾┑╸
+
+
+=== Braille Glyphs ===
+
+Braille Circling Dot:            ⡀⠄⠂⠁⠈⠐⠠⢀
+Braille Circling Dot Db:         ⣀⡄⠆⠃⠉⠘⠰⢠
+Braille Circling Hole:           ⢿⣻⣽⣾⣷⣯⣟⡿
+Braille Circling Hole Db:        ⣶⣧⣏⡟⠿⢻⣹⣼
+Braille Twin Circling Dots:      ⡈⠔⠢⢁
+Braille Leapfrog:                ⣀⢄⢂⢁⡈⡐⡠
+Braille Bouncing Dot:            ⡀⠄⠂⠁⠁⠂⠄     (right-side: ⢀⠠⠐⠈⠈⠐⠠)
+Braille Bounce Side-Side:        ⡀⠄⠂⠁⠈⠐⠠⢀⠠⠐⠈⠁⠂⠄
+Braille Bouncing Ball:           ⣤⠶⠛⠛⠶
+Braille Climber:                 ⣀⡠⠤⠢⠒⠊⠉⠑⠒⠔⠤⢄
+Braille Conveyer Belt:           ⢸⣸⢼⢺⢹⡏⡗⡧⣇⡇
+Braille Up-Down Belt:            ⢸⣸⢼⢺⢹⢺⢼⣸⢸⡇⣇⡧⡗⡏⡗⡧⣇⡇
+
+--- Braille 6 dot ---
+Braille 6 Circle Worm:           ⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏
+Braille 6 Bounce Worm:           ⠄⠆⠇⠋⠙⠸⠰⠠⠰⠸⠙⠋⠇⠆
+Braille Zigzag Worm:             ⠋⠙⠚⠞⠖⠦⠴⠲⠳⠓
+Braille Zigzag Stop:             ⠋⠙⠚⠒⠂⠂⠒⠲⠴⠦⠖⠒⠐⠐⠒⠓
+Braille 6 Step Left (24):        ⠁⠉⠙⠚⠒⠂⠂⠒⠲⠴⠤⠄⠄⠤⠴⠲⠒⠂⠂⠒⠚⠙⠉⠁
+Braille 6 Step Right (24):       ⠈⠉⠋⠓⠒⠐⠐⠒⠖⠦⠤⠠⠠⠤⠦⠖⠒⠐⠐⠒⠓⠋⠉⠈
+Braille 6 Step Both (30):        ⠁⠁⠉⠙⠚⠒⠂⠂⠒⠲⠴⠤⠄⠄⠤⠠⠠⠤⠦⠖⠒⠐⠐⠒⠓⠋⠉⠈⠈⠉
+
+--- Braille 8 dot ---
+Braille Circle Worm:             ⠋⠙⠹⠸⢰⣰⣠⣄⣆⡆⠇⠏
+Braille Bounce Worm:             ⡀⡄⡆⠇⠋⠙⠸⢰⢠⢀⢠⢰⠸⠙⠋⠇⡆⡄
+Braille Worm Uturn:              ⠋⠙⠹⠸⢰⣰⣠⣄⣆⡆⡖⠖⠚⠙⠋⠏⠇⡆⣆⣄⣠⣰⢰⢲⠲
+Braille Step Left (36):          ⠁⠉⠙⠚⠒⠂⠂⠒⠲⠴⠤⠄⠄⠤⢤⣠⣀⢀⢀⣀⣠⢤⠤⠄⠄⠤⠴⠲⠒⠂⠂⠒⠚⠙⠉⠁
+Braille Step Right (36):         ⠈⠉⠋⠓⠒⠐⠐⠒⠖⠦⠤⠠⠠⠤⡤⣄⣀⢀⢀⣀⣄⡤⠤⠠⠠⠤⠦⠖⠒⠐⠐⠒⠓⠋⠉⠈
+Braille Step Both (40):          ⠁⠁⠉⠙⠚⠒⠂⠂⠒⠲⠴⠤⠄⠄⠤⢤⣠⡀⡀⣀⢀⢀⣄⡤⠤⠠⠠⠤⠦⠖⠒⠐⠐⠒⠓⠋⠉⠈⠈⠉
+
+--- Long Braille clocks/cycles ---
+Dot Clock Top (64):
+  ⠈⠘⠨⢈⡈⠌⠊⠉⠘⠐⠰⢐⡐⠔⠒⠑⠨⠰⠠⢠⡠⠤⠢⠡⢈⢐⢠⢀⣀⢄⢂⢁⡈⡐⡠⣀⡀⡄⡂⡁⠌⠔⠤⢄⡄⠠⠆⠅⠊⠒⠢⢂⡂⠆⠂⠃⠉⠑⠡⢁⡁⠅⠃⠁
+
+Dot Clock Left (64):
+  ⠂⠃⠊⠒⠢⢂⡂⠆⠃⠁⠉⠑⠡⢁⡁⠅⠊⠉⠈⠘⠨⢈⡈⠌⠒⠑⠘⠐⠰⢐⡐⠔⠢⠡⠨⠰⠠⢠⡠⠤⢂⢁⢈⢐⢠⢀⣀⢄⡂⡁⡈⡐⡠⣀⡀⡄⠆⠅⠌⠔⠤⢄⡄⠄
+
+Dot Cycle (72):
+  ⠂⠃⠊⠒⠢⢂⡂⠆⠂⠁⠉⠑⠡⢁⡁⠅⠃⠁⠈⠘⠨⢈⡈⠌⠊⠉⠈⠐⠰⢐⡐⠔⠒⠑⠘⠐⠠⢠⡠⠤⠢⠡⠨⠰⠠⢀⣀⢄⢂⢁⢈⢐⢠⢀⡀⡄⡂⡁⡈⡐⡠⣀⡀⠄⠆⠅⠌⠔⠤⢄⡄⠄
+
+Falling Sand (35):               ⠁⠂⠄⡀⡈⡐⡠⣀⣁⣂⣄⣌⣔⣤⣥⣦⣮⣶⣷⣿⡿⠿⢟⠟⡛⠛⠫⢋⠋⠍⡉⠉⠑⠡⢁
+Falling Sand to Blank (40):      ⠁⠂⠄⡀⡈⡐⡠⣀⣁⣂⣄⣌⣔⣤⣥⣦⣮⣶⣷⣿⡿⠿⢟⠟⡛⠛⠫⢋⠋⠍⡉⠉⠑⠡⢁⠁⠂⠄⡀⠀
+Falling Sand and Drop (24):      ⠁⠂⠄⡀⡈⡐⡠⣀⣁⣂⣄⣌⣔⣤⣥⣦⣮⣶⣷⣿⣶⣤⣀
+Stacking and Drop (40):          ⡀⠄⠂⠁⠈⠐⠠⢀⣀⢄⢂⢁⢈⢐⢠⣠⢤⢢⢡⢨⢰⣰⢴⢲⢱⢸⣸⢼⢺⢹⣹⢽⢻⣻⢿⣿⣶⣤⣀
+
+Binary (194):
+  " ⡀⡁⡂⡃⡄⡅⡆⡇⡈⡉⡊⡋⡌⡍⡎⡏⡐⡑⡒⡓⡔⡕⡖⡗⡘⡙⡚⡛⡜⡝⡞⡟⡠⡡⡢⡣⡤⡥⡦⡧⡨⡩⡪⡫⡬⡭⡮⡯⡰⡱⡲⡳⡴⡵⡶⡷⡸⡹⡺⡻⡼⡽⡾⡿⢀⢁⢂⢃⢄⢅⢆⢇⢈⢉⢊⢋⢌⢍⢎⢏⢐⢑⢒⢓⢔⢕⢖⢗⢘⢙⢚⢛⢜⢝⢞⢟⢠⢡⢢⢣⢤⢥⢦⢧⢨⢩⢪⢫⢬⢭⢮⢯⢰⢱⢲⢳⢴⢵⢶⢷⢸⢹⢺⢻⢼⢽⢾⢿⣀⣁⣂⣃⣄⣅⣆⣇⣈⣉⣊⣋⣌⣍⣎⣏⣐⣑⣒⣓⣔⣕⣖⣗⣘⣙⣚⣛⣜⣝⣞⣟⣠⣡⣢⣣⣤⣥⣦⣧⣨⣩⣪⣫⣬⣭⣮⣯⣰⣱⣲⣳⣴⣵⣶⣷⣸⣹⣺⣻⣼⣽⣾⣿"
+
+
+=== Emoji Spinners ===
+
+Circle Lines:     ㊀㊁㊂
+Hour Clock:       🕛🕐🕑🕒🕓🕔🕕🕖🕗🕘🕙🕚
+Earth:            🌍🌎🌏
+Moon Phases:      🌑🌒🌓🌔🌕🌖🌗🌘
+Runner:           🚶🏃
+Speaker:          🔈🔉🔊🔉
+Hand Dance:       🤘🤟🖖✋🤚👆
+Mind Blown:       😐😮😦😧🤯💥✨
+
+
+=== Progress Bar Characters ===
+
+Single Char:       - = # ▒
+ASCII Seq:         -=#
+Hash Chars:        ░▒▓█
+Half Chars:        ▌█
+Quarter chars:     ▖▌▛█
+Incremental:       ▏▎▍▌▋▊▉█    (the ideal 8-character increment bargraph)
+Braille chars:     ⡀⡄⡆⡇⣇⣧⣷⣿    (braille in 8 increments)

@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "source": "jfelchner/ruby-progressbar",
+    "url": "https://github.com/jfelchner/ruby-progressbar",
+    "license": "MIT",
+    "license_url": "https://github.com/jfelchner/ruby-progressbar/blob/master/LICENSE.txt",
+    "description": "Text progress bar library for Ruby. Customizable via progress_mark and remainder_mark. Famous for the PAC-MAN example using Canadian Aboriginal Syllabics.",
+    "retrieved": "2026-02-12"
+  },
+  "defaults": {
+    "progress_mark": "=",
+    "remainder_mark": " ",
+    "format": "%a %b>%i %p%% %t",
+    "notes": "Default bar looks like: Processing |############# | 42/100"
+  },
+  "pacman_example": {
+    "description": "PAC-MAN progress bar from the ruby-progressbar wiki",
+    "format": "%a %b\u15E7%i %p%% %t",
+    "progress_mark": " ",
+    "remainder_mark": "\uFF65",
+    "remainder_mark_name": "Halfwidth Katakana Middle Dot",
+    "pacman_char": "\u15E7",
+    "pacman_char_name": "Canadian Syllabics Carrier KHEE",
+    "example_output": "Time: --:--:-- \u15E7\uFF65\uFF65\uFF65\uFF65\uFF65\uFF65\uFF65\uFF65\uFF65\uFF65\uFF65\uFF65\uFF65\uFF65 10% Progress"
+  }
+}

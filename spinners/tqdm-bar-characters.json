@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "source": "tqdm/tqdm",
+    "url": "https://github.com/tqdm/tqdm",
+    "license": "MIT AND MPL-2.0",
+    "license_url": "https://github.com/tqdm/tqdm/blob/master/LICENCE",
+    "description": "Python progress bar library (44M+ weekly pip installs). Defines two built-in bar character sets: ASCII and UTF (Unicode smooth blocks). Custom character strings can be passed via the ascii parameter.",
+    "retrieved": "2026-02-12"
+  },
+  "Bar.ASCII": {
+    "characters": " 123456789#",
+    "description": "ASCII fallback. The space is the empty character, digits 1-9 represent partial fill (10%-90%), and # is the full fill.",
+    "notes": "Used when ascii=True or when the terminal does not support Unicode"
+  },
+  "Bar.UTF": {
+    "characters": ["", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"],
+    "description": "Unicode smooth blocks. Empty string for empty, then left-fractional blocks from 1/8 to full block.",
+    "notes": "Used by default when terminal supports Unicode. Inspired by pip's progress bar."
+  },
+  "custom_example": {
+    "description": "Users can pass any string as the ascii parameter to use as custom bar fill characters",
+    "example_call": "tqdm(ascii='.oO')",
+    "notes": "Characters are distributed proportionally across the fill"
+  }
+}

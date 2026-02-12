@@ -1,0 +1,174 @@
+{
+  "_meta": {
+    "source": "Unicode Standard - Block Elements, Geometric Shapes, and Braille Patterns",
+    "references": [
+      "https://changaco.oy.lc/unicode-progress-bars/",
+      "https://www.ascii.bar/",
+      "https://mike42.me/blog/2018-06-make-better-cli-progress-bars-with-unicode-block-characters",
+      "https://www.naut.ca/blog/2024/12/26/making-a-unicode-progress-bar/",
+      "https://gist.github.com/rougier/c0d31f5cbdaac27b876c",
+      "https://dernocua.github.io/notes/unicode-graphics.html",
+      "https://github.com/Cygra/interesting-unicode-symbols/issues/1",
+      "https://antofthy.gitlab.io/info/ascii/Spinners.txt",
+      "https://rosettacode.org/wiki/Sparkline_in_unicode"
+    ],
+    "license": "Unicode character data is public domain; this catalog compiled from multiple sources",
+    "description": "A comprehensive catalog of Unicode characters used for text-based progress bars, bar graphs, sparklines, and fill indicators across terminal applications. Organized by Unicode block and use pattern.",
+    "retrieved": "2026-02-12"
+  },
+
+  "horizontal_fractional_blocks": {
+    "description": "Left-aligned fractional blocks (U+258F to U+2588). The ideal set for smooth horizontal progress bars: 8 sub-steps per character cell, left to right.",
+    "characters": {
+      "1/8": { "char": "▏", "codepoint": "U+258F" },
+      "1/4": { "char": "▎", "codepoint": "U+258E" },
+      "3/8": { "char": "▍", "codepoint": "U+258D" },
+      "1/2": { "char": "▌", "codepoint": "U+258C" },
+      "5/8": { "char": "▋", "codepoint": "U+258B" },
+      "3/4": { "char": "▊", "codepoint": "U+258A" },
+      "7/8": { "char": "▉", "codepoint": "U+2589" },
+      "full": { "char": "█", "codepoint": "U+2588" }
+    },
+    "sequence": ["", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"],
+    "notes": "Most widely used for smooth progress bars. Supported by most modern terminals. On Windows, only DejaVu Sans Mono and SimSun properly display all fractional blocks."
+  },
+
+  "vertical_fractional_blocks": {
+    "description": "Bottom-aligned fractional blocks (U+2581 to U+2588). Used for sparklines and vertical bar charts.",
+    "characters": {
+      "1/8": { "char": "▁", "codepoint": "U+2581" },
+      "1/4": { "char": "▂", "codepoint": "U+2582" },
+      "3/8": { "char": "▃", "codepoint": "U+2583" },
+      "1/2": { "char": "▄", "codepoint": "U+2584" },
+      "5/8": { "char": "▅", "codepoint": "U+2585" },
+      "3/4": { "char": "▆", "codepoint": "U+2586" },
+      "7/8": { "char": "▇", "codepoint": "U+2587" },
+      "full": { "char": "█", "codepoint": "U+2588" }
+    },
+    "sequence": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+    "notes": "Standard for Unicode sparklines (Rosetta Code). In some fixed-width fonts these render wider than regular characters."
+  },
+
+  "shade_blocks": {
+    "description": "Shade characters for coarser progress indication.",
+    "characters": {
+      "light": { "char": "░", "codepoint": "U+2591" },
+      "medium": { "char": "▒", "codepoint": "U+2592" },
+      "dark": { "char": "▓", "codepoint": "U+2593" },
+      "full": { "char": "█", "codepoint": "U+2588" }
+    },
+    "common_pairs": {
+      "fill_empty": ["█", "░"],
+      "gradient": ["░", "▒", "▓", "█"]
+    }
+  },
+
+  "quadrant_blocks": {
+    "description": "Quarter-cell blocks for 2x2 sub-character resolution.",
+    "characters": {
+      "upper_left": { "char": "▘", "codepoint": "U+2598" },
+      "upper_right": { "char": "▝", "codepoint": "U+259D" },
+      "lower_left": { "char": "▖", "codepoint": "U+2596" },
+      "lower_right": { "char": "▗", "codepoint": "U+2597" },
+      "upper_half": { "char": "▀", "codepoint": "U+2580" },
+      "lower_half": { "char": "▄", "codepoint": "U+2584" },
+      "left_half": { "char": "▌", "codepoint": "U+258C" },
+      "right_half": { "char": "▐", "codepoint": "U+2590" },
+      "three_quarters_ul": { "char": "▛", "codepoint": "U+259B" },
+      "three_quarters_ur": { "char": "▜", "codepoint": "U+259C" },
+      "three_quarters_ll": { "char": "▙", "codepoint": "U+2599" },
+      "three_quarters_lr": { "char": "▟", "codepoint": "U+259F" }
+    }
+  },
+
+  "braille_progress": {
+    "description": "Braille patterns used for progress indication, 8 increments per cell.",
+    "horizontal_fill": {
+      "sequence": ["⡀", "⡄", "⡆", "⡇", "⣇", "⣧", "⣷", "⣿"],
+      "notes": "Fills bottom-to-top, left-to-right across the 8-dot Braille cell"
+    },
+    "vertical_fill": {
+      "sequence": ["⢀", "⣀", "⣄", "⣤", "⣴", "⣶", "⣾", "⣿"],
+      "notes": "Alternative sequence filling top-to-bottom"
+    },
+    "alternative_fill": {
+      "sequence": ["⣀", "⣄", "⣤", "⣦", "⣶", "⣷", "⣿"],
+      "source": "changaco.oy.lc"
+    },
+    "alternative_fill_2": {
+      "sequence": ["⣀", "⣄", "⣆", "⣇", "⣧", "⣷", "⣿"],
+      "source": "changaco.oy.lc"
+    }
+  },
+
+  "geometric_progress_pairs": {
+    "description": "Matched filled/empty pairs from Geometric Shapes for toggle-style progress.",
+    "pairs": [
+      { "filled": "●", "empty": "○", "name": "circles" },
+      { "filled": "◉", "empty": "◯", "name": "fisheye_circles" },
+      { "filled": "◐", "empty": "○", "name": "half_circles" },
+      { "filled": "◕", "empty": "◔", "name": "quarter_fill_circles" },
+      { "filled": "⬤", "empty": "○", "name": "large_circles" },
+      { "filled": "⚫", "empty": "⚪", "name": "medium_circles" },
+      { "filled": "■", "empty": "□", "name": "squares" },
+      { "filled": "▪", "empty": "▫", "name": "small_squares" },
+      { "filled": "▮", "empty": "▯", "name": "rectangles" },
+      { "filled": "▣", "empty": "▢", "name": "rounded_squares" },
+      { "filled": "▰", "empty": "▱", "name": "parallelograms" },
+      { "filled": "⬛", "empty": "⬜", "name": "large_squares" },
+      { "filled": "▶", "empty": "▷", "name": "triangles" },
+      { "filled": "★", "empty": "☆", "name": "stars" },
+      { "filled": "♥", "empty": "♡", "name": "hearts" },
+      { "filled": "♦", "empty": "♢", "name": "diamonds" },
+      { "filled": "⦿", "empty": "⦾", "name": "bullseyes" },
+      { "filled": "◼", "empty": "◻", "name": "medium_squares" }
+    ]
+  },
+
+  "circle_fill_progression": {
+    "description": "Circle characters that show progressive filling, for pie-chart style progress.",
+    "sequences": [
+      { "name": "quarter_fill", "sequence": ["○", "◔", "◐", "◕", "⬤"], "source": "changaco.oy.lc" },
+      { "name": "square_fill_1", "sequence": ["□", "◱", "◧", "▣", "■"], "source": "changaco.oy.lc" },
+      { "name": "square_fill_2", "sequence": ["□", "◱", "▨", "▩", "■"], "source": "changaco.oy.lc" },
+      { "name": "square_fill_3", "sequence": ["□", "◱", "▥", "▦", "■"], "source": "changaco.oy.lc" }
+    ]
+  },
+
+  "halfwidth_forms": {
+    "description": "Halfwidth CJK characters for compact progress bars in variable-width contexts.",
+    "filled": { "char": "￭", "codepoint": "U+FFED", "name": "Halfwidth Black Square" },
+    "empty": { "char": "･", "codepoint": "U+FF65", "name": "Halfwidth Katakana Middle Dot" },
+    "notes": "Works consistently in both fixed-width and variable-width fonts. Source: naut.ca blog post."
+  },
+
+  "ascii_progress_characters": {
+    "description": "Common ASCII character pairs used for basic progress bars.",
+    "styles": [
+      { "name": "equals", "fill": "=", "head": ">", "empty": "-", "start": "[", "end": "]" },
+      { "name": "hash", "fill": "#", "empty": " ", "start": "[", "end": "]" },
+      { "name": "hash_dot", "fill": "#", "empty": ".", "start": "[", "end": "]" },
+      { "name": "pipe", "fill": "|", "empty": " ", "start": "[", "end": "]" },
+      { "name": "arrow", "fill": "=", "head": "=>", "empty": " ", "start": "[", "end": "]" },
+      { "name": "tilde", "fill": "~", "empty": "_", "start": "[", "end": "]" },
+      { "name": "star", "fill": "*", "empty": ".", "start": "[", "end": "]" }
+    ]
+  },
+
+  "bracket_styles": {
+    "description": "Various bracket/delimiter characters for wrapping progress bars.",
+    "pairs": [
+      { "start": "[", "end": "]", "name": "square_brackets" },
+      { "start": "|", "end": "|", "name": "pipes" },
+      { "start": "⌈", "end": "⌉", "name": "ceiling_brackets" },
+      { "start": "⌊", "end": "⌋", "name": "floor_brackets" },
+      { "start": "❬", "end": "❭", "name": "angle_brackets" },
+      { "start": "❨", "end": "❩", "name": "parenthesis_ornament" },
+      { "start": "❰", "end": "❱", "name": "heavy_angle_brackets" },
+      { "start": "｢", "end": "｣", "name": "halfwidth_corner_brackets" },
+      { "start": "▐", "end": "▌", "name": "half_blocks" },
+      { "start": "│", "end": "│", "name": "box_drawing_vertical" },
+      { "start": "▕", "end": "▏", "name": "thin_blocks" }
+    ]
+  }
+}
