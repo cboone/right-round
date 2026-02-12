@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "source": "schollz/progressbar",
+    "url": "https://github.com/schollz/progressbar",
+    "license": "MIT",
+    "license_url": "https://github.com/schollz/progressbar/blob/main/LICENSE",
+    "description": "Go thread-safe progress bar with 3 predefined themes. The Theme struct defines Saucer (fill), SaucerHead (tip), SaucerPadding (empty), BarStart/BarEnd (delimiters), plus filled variants.",
+    "theme_count": 3,
+    "retrieved": "2026-02-12"
+  },
+  "ThemeDefault": {
+    "Saucer": "█",
+    "SaucerHead": "",
+    "SaucerPadding": " ",
+    "BarStart": "|",
+    "BarEnd": "|",
+    "example": "|████      |"
+  },
+  "ThemeASCII": {
+    "Saucer": "=",
+    "SaucerHead": ">",
+    "SaucerPadding": ".",
+    "BarStart": "[",
+    "BarEnd": "]",
+    "example": "[===>......]"
+  },
+  "ThemeUnicode": {
+    "Saucer": "\uEE04",
+    "SaucerHead": "\uEE04",
+    "SaucerPadding": "\uEE01",
+    "BarStart": "\uEE00",
+    "BarStartFilled": "\uEE03",
+    "BarEnd": "\uEE02",
+    "BarEndFilled": "\uEE05",
+    "notes": "Requires Nerd Fonts or Fira Code for proper rendering"
+  },
+  "example_themes": {
+    "pacman": {
+      "description": "PAC-MAN style bar from the examples",
+      "AltSaucerHead": "<",
+      "SaucerHead": "-",
+      "SaucerPadding": "•",
+      "BarStart": "|",
+      "BarEnd": "|"
+    }
+  }
+}
