@@ -16,7 +16,7 @@ check_threshold() {
 
     local pct
     pct=$(go tool cover -func="$COVERAGE_FILE" \
-        | grep "$pattern" \
+        | { grep "$pattern" || true; } \
         | awk '{print $NF}' \
         | sed 's/%//' \
         | awk '{sum += $1; count++} END {if (count > 0) printf "%.1f", sum/count; else print "0.0"}')

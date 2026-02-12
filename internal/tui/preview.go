@@ -63,7 +63,7 @@ func (a *animEngine) advance(elapsed time.Duration, visibleIDs []string, entries
 				continue
 			}
 			for state.accumulator >= indeterminateInterval {
-				state.frameIndex++
+				state.frameIndex = (state.frameIndex + 1) % 10000
 				state.accumulator -= indeterminateInterval
 			}
 		}

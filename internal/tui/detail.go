@@ -2,6 +2,7 @@ package tui
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/cboone/right-round/internal/data"
@@ -111,8 +112,13 @@ func (m *detailModel) updateContent() {
 
 	if len(e.CompletionStates) > 0 {
 		b.WriteString("\n" + detailLabelStyle.Render("Completion states:") + "\n")
-		for k, v := range e.CompletionStates {
-			b.WriteString(fmt.Sprintf("  %s: %q\n", k, v))
+		csKeys := make([]string, 0, len(e.CompletionStates))
+		for k := range e.CompletionStates {
+			csKeys = append(csKeys, k)
+		}
+		sort.Strings(csKeys)
+		for _, k := range csKeys {
+			b.WriteString(fmt.Sprintf("  %s: %q\n", k, e.CompletionStates[k]))
 		}
 	}
 

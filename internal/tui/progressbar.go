@@ -7,6 +7,22 @@ import (
 	"github.com/cboone/right-round/internal/data"
 )
 
+// repeatToCells repeats s enough times to fill the given number of terminal cells,
+// padding any remainder with spaces. This correctly handles multi-cell glyphs (e.g. emoji).
+func repeatToCells(s string, cells int) string {
+	charWidth := lipgloss.Width(s)
+	if charWidth < 1 {
+		charWidth = 1
+	}
+	reps := cells / charWidth
+	actual := reps * charWidth
+	result := strings.Repeat(s, reps)
+	if actual < cells {
+		result += strings.Repeat(" ", cells-actual)
+	}
+	return result
+}
+
 // renderProgressBar renders a progress bar at the given fill percentage (0.0 to 1.0)
 // within the specified width (in terminal cells).
 func renderProgressBar(chars *data.BarCharacters, phases []string, pct float64, width int) string {
@@ -51,21 +67,28 @@ func renderProgressBar(chars *data.BarCharacters, phases []string, pct float64, 
 	// Fill portion
 	if len(phases) > 0 && fillCells < innerWidth && !hasHead {
 		// Use phases for sub-character resolution at the boundary
-		b.WriteString(strings.Repeat(chars.Fill, fillCells))
-		phaseIdx := int(pct*float64(innerWidth)*float64(len(phases))) % len(phases)
-		if phaseIdx > 0 && emptyCells > 0 {
+		b.WriteString(repeatToCells(chars.Fill, fillCells))
+		totalFill := pct * float64(innerWidth)
+		frac := totalFill - float64(fillCells)
+		if frac < 0 {
+			frac = 0
+		} else if frac > 1 {
+			frac = 1
+		}
+		phaseIdx := int(frac * float64(len(phases)))
+		if phaseIdx > 0 && phaseIdx < len(phases) && emptyCells > 0 {
 			b.WriteString(phases[phaseIdx])
 			emptyCells--
 		}
 	} else {
-		b.WriteString(strings.Repeat(chars.Fill, fillCells))
+		b.WriteString(repeatToCells(chars.Fill, fillCells))
 	}
 
 	if hasHead {
 		b.WriteString(*chars.Head)
 	}
 
-	b.WriteString(strings.Repeat(chars.Empty, emptyCells))
+	b.WriteString(repeatToCells(chars.Empty, emptyCells))
 	b.WriteString(endStr)
 
 	return b.String()
@@ -112,7 +135,6 @@ func renderIndeterminate(pattern string, width int, offset int) string {
 	}
 
 	patLen := lipgloss.Width(pattern)
-	totalLen := width + patLen
 	var b strings.Builder
 
 	pos := offset % (width + patLen)
@@ -133,7 +155,6 @@ func renderIndeterminate(pattern string, width int, offset int) string {
 		}
 	}
 
-	_ = totalLen
 	return b.String()
 }
 

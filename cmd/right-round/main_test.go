@@ -10,10 +10,8 @@ func TestRootCmd_InvalidTypeFlag(t *testing.T) {
 	cmd := rootCmd()
 	cmd.SetArgs([]string{"--type", "invalid"})
 
-	// We can't actually run the TUI in tests, but we can verify the command
-	// is constructed correctly
-	assert.NotNil(t, cmd)
-	assert.Equal(t, "right-round", cmd.Use)
+	err := cmd.Execute()
+	assert.Error(t, err)
 }
 
 func TestRootCmd_Version(t *testing.T) {

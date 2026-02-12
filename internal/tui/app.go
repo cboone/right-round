@@ -123,7 +123,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// Collect visible entry IDs
 		visibleIDs := m.list.visibleEntryIDs()
 		if selected := m.list.selectedEntry(); selected != nil {
-			visibleIDs = append(visibleIDs, selected.Entry.ID)
+			alreadyVisible := false
+			for _, id := range visibleIDs {
+				if id == selected.Entry.ID {
+					alreadyVisible = true
+					break
+				}
+			}
+			if !alreadyVisible {
+				visibleIDs = append(visibleIDs, selected.Entry.ID)
+			}
 		}
 		m.anim.advance(elapsed, visibleIDs, m.entryIndex)
 
@@ -169,8 +178,8 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			}
 			return m, nil
 		default:
-			if len(msg.String()) == 1 {
-				m.filterInput += msg.String()
+			if msg.Type == tea.KeyRunes && len(msg.Runes) == 1 {
+				m.filterInput += string(msg.Runes[0])
 				m.list.setFilter(m.filterInput)
 			}
 			return m, nil

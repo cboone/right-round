@@ -7,6 +7,7 @@ LDFLAGS := -ldflags "-X main.version=$(VERSION)"
 .PHONY: build install clean lint test run tidy
 
 build:
+	mkdir -p $(OUTDIR)
 	go build $(LDFLAGS) -o $(OUTDIR)/$(BINARY) ./cmd/right-round
 
 install:
