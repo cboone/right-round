@@ -1,0 +1,122 @@
+{
+  "_meta": {
+    "source": "right-round original designs",
+    "url": "",
+    "license": "MIT",
+    "license_url": "https://opensource.org/licenses/MIT",
+    "copyright": "Copyright (c) 2026 Christopher Boone",
+    "description": "Original spinner concepts created for this repository. Includes at least one spinner for every spinner group used in progress-indicators.json.",
+    "spinner_count": 13,
+    "retrieved": "2026-02-12"
+  },
+  "brailleRadarSweep": {
+    "group": "braille",
+    "interval": 90,
+    "frames": [
+      "⢀⠀",
+      "⠠⠀",
+      "⠐⠀",
+      "⠈⠀",
+      "⠀⠈",
+      "⠀⠐",
+      "⠀⠠",
+      "⠀⢀",
+      "⠀⡀",
+      "⠀⠄",
+      "⠀⠂",
+      "⠀⠁",
+      "⠁⠀",
+      "⠂⠀",
+      "⠄⠀",
+      "⡀⠀"
+    ],
+    "notes": "Two-cell sweep that gives a clockwise scan effect."
+  },
+  "lineTripod": {
+    "group": "line",
+    "interval": 90,
+    "frames": ["╹", "╺", "╻", "╸"],
+    "notes": "Compact single-cell spinner using heavy line caps."
+  },
+  "dotSeesaw": {
+    "group": "dot",
+    "interval": 100,
+    "frames": ["●···", "·●··", "··●·", "···●", "··●·", "·●··"],
+    "notes": "One active dot rocking left and right across a 4-cell lane."
+  },
+  "blockEscalator": {
+    "group": "block",
+    "interval": 85,
+    "frames": ["▁▁", "▂▁", "▃▂", "▄▃", "▅▄", "▆▅", "▇▆", "█▇", "▇█", "▆▇", "▅▆", "▄▅", "▃▄", "▂▃", "▁▂"],
+    "notes": "Dual-cell staircase pulse with mirrored descent."
+  },
+  "geometricPinwheel": {
+    "group": "geometric",
+    "interval": 95,
+    "frames": ["◢◤", "◥◢", "◣◥", "◤◣"],
+    "notes": "Quarter triangles arranged as a rotating pinwheel."
+  },
+  "arrowCrosswind": {
+    "group": "arrow",
+    "interval": 100,
+    "frames": ["↑↗", "→↘", "↓↙", "←↖"],
+    "notes": "Directional pair rotates through cardinal and diagonal vectors."
+  },
+  "toggleLatch": {
+    "group": "toggle",
+    "interval": 220,
+    "frames": ["⊏⊐", "⊐⊏"],
+    "notes": "Simple two-state latch animation."
+  },
+  "bouncePulse": {
+    "group": "bounce",
+    "interval": 110,
+    "frames": ["˙", "•", "●", "•"],
+    "notes": "Single glyph pulse from light to solid and back."
+  },
+  "scrollTicker": {
+    "group": "scroll",
+    "interval": 80,
+    "frames": [
+      "▐▁▁▁▁▌",
+      "▐▃▁▁▁▌",
+      "▐▅▃▁▁▌",
+      "▐▇▅▃▁▌",
+      "▐█▇▅▃▌",
+      "▐▇█▇▅▌",
+      "▐▅▇█▇▌",
+      "▐▃▅▇█▌",
+      "▐▁▃▅▇▌",
+      "▐▁▁▃▅▌",
+      "▐▁▁▁▃▌",
+      "▐▁▁▁▁▌"
+    ],
+    "notes": "Scrolling wave that reads like a moving signal trace."
+  },
+  "emojiWeatherFront": {
+    "group": "emoji",
+    "interval": 140,
+    "frames": ["🌤 ", "⛅ ", "🌥 ", "☁️ ", "🌧 ", "⛈ ", "🌧 ", "☁️ ", "🌥 ", "⛅ "],
+    "notes": "Cycles through clear-to-storm-to-clear weather states."
+  },
+  "noveltyCircuitProbe": {
+    "group": "novelty",
+    "interval": 90,
+    "frames": ["[····]", "[◉···]", "[◉◉··]", "[◉◉◉·]", "[◉◉◉◉]", "[·◉◉◉]", "[··◉◉]", "[···◉]"],
+    "notes": "Theme spinner resembling an LED test strip sweep."
+  },
+  "textChecksum": {
+    "group": "text",
+    "interval": 120,
+    "frames": ["hash:00", "hash:1f", "hash:3e", "hash:5d", "hash:7c", "hash:9b", "hash:ba", "hash:d9"],
+    "succeed": "hash:ok",
+    "fail": "hash:xx",
+    "notes": "Hex-like text spinner suitable for data verification tasks."
+  },
+  "symbolTrigrams": {
+    "group": "symbol",
+    "interval": 100,
+    "frames": ["☰", "☱", "☲", "☳", "☴", "☵", "☶", "☷"],
+    "notes": "Eight trigrams sequence used as a symbolic cycle."
+  }
+}
