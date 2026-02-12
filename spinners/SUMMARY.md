@@ -107,14 +107,15 @@ Collected on 2026-02-12. No deduplication has been performed on the per-source f
 - **License:** Blog post (no explicit code license)
 - **Items:** 2 sets (including quadrant block spinner)
 
-### right-round-invented-spinners.json
+### right-round-invented.json
 
 - **Source:** In-repo original designs
 - **License:** MIT (repository license)
-- **Items:** 13 sets
-- **Notes:** Synthetic additions created to cover every spinner group used by
-  this collection taxonomy: braille, line, dot, block, geometric, arrow,
-  toggle, bounce, scroll, emoji, novelty, text, and symbol.
+- **Items:** 13 spinner sets, 6 progress bar styles
+- **Notes:** Original designs created to cover every spinner group (braille,
+  line, dot, block, geometric, arrow, toggle, bounce, scroll, emoji, novelty,
+  text, symbol) and every progress bar group (ascii, block, geometric,
+  decorative, phased, emoji) used by this collection taxonomy.
 
 ## Progress Bar Character Collections
 
@@ -225,14 +226,6 @@ Collected on 2026-02-12. No deduplication has been performed on the per-source f
   Instagram). Covers block, shade, circle, square, parallelogram, emoji
   colored squares, and decorative star/heart/diamond styles.
 
-### right-round-invented-progress-bars.json
-
-- **Source:** In-repo original designs
-- **License:** MIT (repository license)
-- **Items:** 6 bar styles
-- **Notes:** Synthetic additions that map one-to-one to the six progress bar
-  groups: ascii, block, geometric, decorative, phased, and emoji.
-
 ### osc-9-4-terminal-progress.json
 
 - **Source:** [ConEmu](https://conemu.github.io/en/AnsiEscapeCodes.html),
@@ -308,5 +301,5 @@ This collection uses characters from these Unicode blocks:
 
 ## File Count
 
-- **27 collection files** (14 spinner, 12 progress bar, 1 protocol spec)
+- **26 collection files** (13 spinner, 11 progress bar, 1 mixed, 1 protocol spec)
 - **1 summary document** (this file)

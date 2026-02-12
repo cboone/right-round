@@ -3,9 +3,9 @@
   "generated": "2026-02-12",
   "description": "Consolidated collection of terminal progress indicators: spinners, progress bar character sets, and related animation data. Collected from open-source libraries, reference documents, gists, and blog posts across multiple programming language ecosystems.",
   "stats": {
-    "total_entries": 492,
+    "total_entries": 498,
     "spinners": 379,
-    "progress_bars": 113,
+    "progress_bars": 119,
     "deduplicated_entries": 86,
     "duplicates_removed": 180,
     "original_total_before_dedup": 672,
@@ -27,12 +27,12 @@
       "text": 11
     },
     "progress_bar_groups": {
-      "geometric": 30,
-      "phased": 23,
-      "ascii": 22,
-      "decorative": 20,
-      "block": 11,
-      "emoji": 7
+      "geometric": 31,
+      "phased": 24,
+      "ascii": 23,
+      "decorative": 21,
+      "block": 12,
+      "emoji": 8
     }
   },
   "entry_schema": {
@@ -14736,7 +14736,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/braille-radar-sweep",
+      "id": "right-round-invented/braille-radar-sweep",
       "name": "braille radar sweep",
       "type": "spinner",
       "group": "braille",
@@ -14771,7 +14771,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/line-tripod",
+      "id": "right-round-invented/line-tripod",
       "name": "line tripod",
       "type": "spinner",
       "group": "line",
@@ -14794,7 +14794,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/dot-seesaw",
+      "id": "right-round-invented/dot-seesaw",
       "name": "dot seesaw",
       "type": "spinner",
       "group": "dot",
@@ -14819,7 +14819,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/block-escalator",
+      "id": "right-round-invented/block-escalator",
       "name": "block escalator",
       "type": "spinner",
       "group": "block",
@@ -14853,7 +14853,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/geometric-pinwheel",
+      "id": "right-round-invented/geometric-pinwheel",
       "name": "geometric pinwheel",
       "type": "spinner",
       "group": "geometric",
@@ -14876,7 +14876,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/arrow-crosswind",
+      "id": "right-round-invented/arrow-crosswind",
       "name": "arrow crosswind",
       "type": "spinner",
       "group": "arrow",
@@ -14899,7 +14899,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/toggle-latch",
+      "id": "right-round-invented/toggle-latch",
       "name": "toggle latch",
       "type": "spinner",
       "group": "toggle",
@@ -14920,7 +14920,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/bounce-pulse",
+      "id": "right-round-invented/bounce-pulse",
       "name": "bounce pulse",
       "type": "spinner",
       "group": "bounce",
@@ -14943,7 +14943,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/scroll-ticker",
+      "id": "right-round-invented/scroll-ticker",
       "name": "scroll ticker",
       "type": "spinner",
       "group": "scroll",
@@ -14974,7 +14974,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/emoji-weather-front",
+      "id": "right-round-invented/emoji-weather-front",
       "name": "emoji weather front",
       "type": "spinner",
       "group": "emoji",
@@ -15003,7 +15003,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/novelty-circuit-probe",
+      "id": "right-round-invented/novelty-circuit-probe",
       "name": "novelty circuit probe",
       "type": "spinner",
       "group": "novelty",
@@ -15030,7 +15030,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/text-checksum",
+      "id": "right-round-invented/text-checksum",
       "name": "text checksum",
       "type": "spinner",
       "group": "text",
@@ -15061,7 +15061,7 @@
       }
     },
     {
-      "id": "right-round-invented-spinners/symbol-trigrams",
+      "id": "right-round-invented/symbol-trigrams",
       "name": "symbol trigrams",
       "type": "spinner",
       "group": "symbol",
@@ -15081,6 +15081,154 @@
         "collection": "right-round original designs",
         "url": "",
         "original_key": "symbolTrigrams",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/ascii-relay",
+      "name": "ascii relay",
+      "type": "progress_bar",
+      "group": "ascii",
+      "characters": {
+        "fill": "=",
+        "head": ">",
+        "empty": ".",
+        "start": "{",
+        "end": "}"
+      },
+      "indeterminate": "~>~",
+      "notes": "High-contrast ASCII style for terminals without Unicode support.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "asciiRelay",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/block-forge",
+      "name": "block forge",
+      "type": "progress_bar",
+      "group": "block",
+      "characters": {
+        "fill": "▓",
+        "head": "█",
+        "empty": "░",
+        "start": "▕",
+        "end": "▏"
+      },
+      "indeterminate": "░▓░",
+      "notes": "Dense block fill with explicit head character.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "blockForge",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/geometric-crystals",
+      "name": "geometric crystals",
+      "type": "progress_bar",
+      "group": "geometric",
+      "characters": {
+        "fill": "◆",
+        "head": "◈",
+        "empty": "◇",
+        "start": "⟨",
+        "end": "⟩"
+      },
+      "indeterminate": "◇◈◇",
+      "notes": "Diamond-based bar with a distinct leading edge.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "geometricCrystals",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/decorative-spark",
+      "name": "decorative spark",
+      "type": "progress_bar",
+      "group": "decorative",
+      "characters": {
+        "fill": "✦",
+        "head": "✶",
+        "empty": "·",
+        "start": "❲",
+        "end": "❳"
+      },
+      "indeterminate": "·✶·",
+      "notes": "Ornamental style intended for playful CLI output.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "decorativeSpark",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/phased-moon",
+      "name": "phased moon",
+      "type": "progress_bar",
+      "group": "phased",
+      "characters": {
+        "fill": "●",
+        "empty": "○",
+        "start": "(",
+        "end": ")"
+      },
+      "phases": [
+        " ",
+        "◔",
+        "◑",
+        "◕",
+        "●"
+      ],
+      "indeterminate": "◔◑◕",
+      "notes": "Five-phase smooth fill using moon-like circular glyphs.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "phasedMoon",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/emoji-traffic",
+      "name": "emoji traffic",
+      "type": "progress_bar",
+      "group": "emoji",
+      "characters": {
+        "fill": "🟢",
+        "head": "🟡",
+        "empty": "⚪"
+      },
+      "indeterminate": "⚪🟡⚪",
+      "notes": "Simple traffic-light semantics for status-rich progress displays.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "emojiTraffic",
         "license": "MIT",
         "license_url": "https://opensource.org/licenses/MIT",
         "copyright": "Copyright (c) 2026 Christopher Boone",

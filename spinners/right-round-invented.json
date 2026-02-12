@@ -5,8 +5,9 @@
     "license": "MIT",
     "license_url": "https://opensource.org/licenses/MIT",
     "copyright": "Copyright (c) 2026 Christopher Boone",
-    "description": "Original spinner concepts created for this repository. Includes at least one spinner for every spinner group used in progress-indicators.json.",
+    "description": "Original progress indicator designs created for this repository. Includes spinners covering every spinner group and progress bar styles covering every progress bar group used in progress-indicators.json.",
     "spinner_count": 13,
+    "style_count": 6,
     "retrieved": "2026-02-12"
   },
   "brailleRadarSweep": {
@@ -118,5 +119,65 @@
     "interval": 100,
     "frames": ["☰", "☱", "☲", "☳", "☴", "☵", "☶", "☷"],
     "notes": "Eight trigrams sequence used as a symbolic cycle."
+  },
+  "asciiRelay": {
+    "group": "ascii",
+    "complete": "=",
+    "current": ">",
+    "incomplete": ".",
+    "start": "{",
+    "end": "}",
+    "unknown": "~>~",
+    "notes": "High-contrast ASCII style for terminals without Unicode support."
+  },
+  "blockForge": {
+    "group": "block",
+    "complete": "▓",
+    "current": "█",
+    "incomplete": "░",
+    "start": "▕",
+    "end": "▏",
+    "unknown": "░▓░",
+    "notes": "Dense block fill with explicit head character."
+  },
+  "geometricCrystals": {
+    "group": "geometric",
+    "complete": "◆",
+    "current": "◈",
+    "incomplete": "◇",
+    "start": "⟨",
+    "end": "⟩",
+    "unknown": "◇◈◇",
+    "notes": "Diamond-based bar with a distinct leading edge."
+  },
+  "decorativeSpark": {
+    "group": "decorative",
+    "complete": "✦",
+    "current": "✶",
+    "incomplete": "·",
+    "start": "❲",
+    "end": "❳",
+    "unknown": "·✶·",
+    "notes": "Ornamental style intended for playful CLI output."
+  },
+  "phasedMoon": {
+    "group": "phased",
+    "phases": [" ", "◔", "◑", "◕", "●"],
+    "complete": "●",
+    "incomplete": "○",
+    "start": "(",
+    "end": ")",
+    "unknown": "◔◑◕",
+    "notes": "Five-phase smooth fill using moon-like circular glyphs."
+  },
+  "emojiTraffic": {
+    "group": "emoji",
+    "complete": "🟢",
+    "current": "🟡",
+    "incomplete": "⚪",
+    "start": "",
+    "end": "",
+    "unknown": "⚪🟡⚪",
+    "notes": "Simple traffic-light semantics for status-rich progress displays."
   }
 }
