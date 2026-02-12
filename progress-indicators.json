@@ -3,31 +3,31 @@
   "generated": "2026-02-12",
   "description": "Consolidated collection of terminal progress indicators: spinners, progress bar character sets, and related animation data. Collected from open-source libraries, reference documents, gists, and blog posts across multiple programming language ecosystems.",
   "stats": {
-    "total_entries": 482,
-    "spinners": 368,
-    "progress_bars": 114,
+    "total_entries": 492,
+    "spinners": 379,
+    "progress_bars": 113,
     "deduplicated_entries": 86,
     "duplicates_removed": 180,
-    "original_total_before_dedup": 613,
+    "original_total_before_dedup": 672,
     "exceptions": 6,
     "source_collections": 26,
     "spinner_groups": {
-      "braille": 57,
+      "braille": 58,
       "bounce": 43,
-      "emoji": 38,
-      "scroll": 37,
+      "scroll": 38,
+      "emoji": 39,
       "block": 32,
-      "line": 31,
-      "symbol": 29,
-      "geometric": 27,
-      "toggle": 26,
-      "arrow": 17,
-      "dot": 11,
-      "novelty": 10,
-      "text": 10
+      "line": 32,
+      "symbol": 30,
+      "geometric": 28,
+      "toggle": 27,
+      "arrow": 18,
+      "dot": 12,
+      "novelty": 11,
+      "text": 11
     },
     "progress_bar_groups": {
-      "geometric": 31,
+      "geometric": 30,
       "phased": 23,
       "ascii": 22,
       "decorative": 20,
@@ -14424,32 +14424,6 @@
       }
     },
     {
-      "id": "original/pulse-ring",
-      "name": "pulse ring",
-      "type": "spinner",
-      "group": "bounce",
-      "frames": [
-        "·",
-        "○",
-        "◎",
-        "◉",
-        "●",
-        "◉",
-        "◎",
-        "○"
-      ],
-      "interval_ms": 100,
-      "notes": "Expanding and contracting concentric circles: dot, ring, bullseye, fisheye, filled, then back",
-      "source": {
-        "collection": "original/invented",
-        "url": "",
-        "original_key": "pulse-ring",
-        "license": "CC0-1.0",
-        "copyright": "Original creation for right-round collection",
-        "retrieved": "2026-02-12"
-      }
-    },
-    {
       "id": "original/shade-breathe",
       "name": "shade breathe",
       "type": "spinner",
@@ -14470,28 +14444,6 @@
         "collection": "original/invented",
         "url": "",
         "original_key": "shade-breathe",
-        "license": "CC0-1.0",
-        "copyright": "Original creation for right-round collection",
-        "retrieved": "2026-02-12"
-      }
-    },
-    {
-      "id": "original/quadrant-orbit",
-      "name": "quadrant orbit",
-      "type": "spinner",
-      "group": "block",
-      "frames": [
-        "▘",
-        "▝",
-        "▗",
-        "▖"
-      ],
-      "interval_ms": 120,
-      "notes": "Single quadrant block orbiting clockwise: upper-left, upper-right, lower-right, lower-left",
-      "source": {
-        "collection": "original/invented",
-        "url": "",
-        "original_key": "quadrant-orbit",
         "license": "CC0-1.0",
         "copyright": "Original creation for right-round collection",
         "retrieved": "2026-02-12"
@@ -14573,25 +14525,6 @@
         "collection": "original/invented",
         "url": "",
         "original_key": "pipe-fill",
-        "license": "CC0-1.0",
-        "copyright": "Original creation for right-round collection",
-        "retrieved": "2026-02-12"
-      }
-    },
-    {
-      "id": "original/triangles-right",
-      "name": "triangles right",
-      "type": "progress_bar",
-      "group": "geometric",
-      "characters": {
-        "fill": "▶",
-        "empty": "▷"
-      },
-      "notes": "Filled and hollow right-pointing triangles",
-      "source": {
-        "collection": "original/invented",
-        "url": "",
-        "original_key": "triangles-right",
         "license": "CC0-1.0",
         "copyright": "Original creation for right-round collection",
         "retrieved": "2026-02-12"
@@ -14799,6 +14732,358 @@
         "original_key": "battery-charge",
         "license": "CC0-1.0",
         "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/braille-radar-sweep",
+      "name": "braille radar sweep",
+      "type": "spinner",
+      "group": "braille",
+      "frames": [
+        "⢀⠀",
+        "⠠⠀",
+        "⠐⠀",
+        "⠈⠀",
+        "⠀⠈",
+        "⠀⠐",
+        "⠀⠠",
+        "⠀⢀",
+        "⠀⡀",
+        "⠀⠄",
+        "⠀⠂",
+        "⠀⠁",
+        "⠁⠀",
+        "⠂⠀",
+        "⠄⠀",
+        "⡀⠀"
+      ],
+      "interval_ms": 90,
+      "notes": "Two-cell sweep that gives a clockwise scan effect.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "brailleRadarSweep",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/line-tripod",
+      "name": "line tripod",
+      "type": "spinner",
+      "group": "line",
+      "frames": [
+        "╹",
+        "╺",
+        "╻",
+        "╸"
+      ],
+      "interval_ms": 90,
+      "notes": "Compact single-cell spinner using heavy line caps.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "lineTripod",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/dot-seesaw",
+      "name": "dot seesaw",
+      "type": "spinner",
+      "group": "dot",
+      "frames": [
+        "●···",
+        "·●··",
+        "··●·",
+        "···●",
+        "··●·",
+        "·●··"
+      ],
+      "interval_ms": 100,
+      "notes": "One active dot rocking left and right across a 4-cell lane.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "dotSeesaw",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/block-escalator",
+      "name": "block escalator",
+      "type": "spinner",
+      "group": "block",
+      "frames": [
+        "▁▁",
+        "▂▁",
+        "▃▂",
+        "▄▃",
+        "▅▄",
+        "▆▅",
+        "▇▆",
+        "█▇",
+        "▇█",
+        "▆▇",
+        "▅▆",
+        "▄▅",
+        "▃▄",
+        "▂▃",
+        "▁▂"
+      ],
+      "interval_ms": 85,
+      "notes": "Dual-cell staircase pulse with mirrored descent.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "blockEscalator",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/geometric-pinwheel",
+      "name": "geometric pinwheel",
+      "type": "spinner",
+      "group": "geometric",
+      "frames": [
+        "◢◤",
+        "◥◢",
+        "◣◥",
+        "◤◣"
+      ],
+      "interval_ms": 95,
+      "notes": "Quarter triangles arranged as a rotating pinwheel.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "geometricPinwheel",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/arrow-crosswind",
+      "name": "arrow crosswind",
+      "type": "spinner",
+      "group": "arrow",
+      "frames": [
+        "↑↗",
+        "→↘",
+        "↓↙",
+        "←↖"
+      ],
+      "interval_ms": 100,
+      "notes": "Directional pair rotates through cardinal and diagonal vectors.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "arrowCrosswind",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/toggle-latch",
+      "name": "toggle latch",
+      "type": "spinner",
+      "group": "toggle",
+      "frames": [
+        "⊏⊐",
+        "⊐⊏"
+      ],
+      "interval_ms": 220,
+      "notes": "Simple two-state latch animation.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "toggleLatch",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/bounce-pulse",
+      "name": "bounce pulse",
+      "type": "spinner",
+      "group": "bounce",
+      "frames": [
+        "˙",
+        "•",
+        "●",
+        "•"
+      ],
+      "interval_ms": 110,
+      "notes": "Single glyph pulse from light to solid and back.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "bouncePulse",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/scroll-ticker",
+      "name": "scroll ticker",
+      "type": "spinner",
+      "group": "scroll",
+      "frames": [
+        "▐▁▁▁▁▌",
+        "▐▃▁▁▁▌",
+        "▐▅▃▁▁▌",
+        "▐▇▅▃▁▌",
+        "▐█▇▅▃▌",
+        "▐▇█▇▅▌",
+        "▐▅▇█▇▌",
+        "▐▃▅▇█▌",
+        "▐▁▃▅▇▌",
+        "▐▁▁▃▅▌",
+        "▐▁▁▁▃▌",
+        "▐▁▁▁▁▌"
+      ],
+      "interval_ms": 80,
+      "notes": "Scrolling wave that reads like a moving signal trace.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "scrollTicker",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/emoji-weather-front",
+      "name": "emoji weather front",
+      "type": "spinner",
+      "group": "emoji",
+      "frames": [
+        "🌤 ",
+        "⛅ ",
+        "🌥 ",
+        "☁️ ",
+        "🌧 ",
+        "⛈ ",
+        "🌧 ",
+        "☁️ ",
+        "🌥 ",
+        "⛅ "
+      ],
+      "interval_ms": 140,
+      "notes": "Cycles through clear-to-storm-to-clear weather states.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "emojiWeatherFront",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/novelty-circuit-probe",
+      "name": "novelty circuit probe",
+      "type": "spinner",
+      "group": "novelty",
+      "frames": [
+        "[····]",
+        "[◉···]",
+        "[◉◉··]",
+        "[◉◉◉·]",
+        "[◉◉◉◉]",
+        "[·◉◉◉]",
+        "[··◉◉]",
+        "[···◉]"
+      ],
+      "interval_ms": 90,
+      "notes": "Theme spinner resembling an LED test strip sweep.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "noveltyCircuitProbe",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/text-checksum",
+      "name": "text checksum",
+      "type": "spinner",
+      "group": "text",
+      "frames": [
+        "hash:00",
+        "hash:1f",
+        "hash:3e",
+        "hash:5d",
+        "hash:7c",
+        "hash:9b",
+        "hash:ba",
+        "hash:d9"
+      ],
+      "interval_ms": 120,
+      "notes": "Hex-like text spinner suitable for data verification tasks.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "textChecksum",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      },
+      "completion_states": {
+        "succeed": "hash:ok",
+        "fail": "hash:xx"
+      }
+    },
+    {
+      "id": "right-round-invented-spinners/symbol-trigrams",
+      "name": "symbol trigrams",
+      "type": "spinner",
+      "group": "symbol",
+      "frames": [
+        "☰",
+        "☱",
+        "☲",
+        "☳",
+        "☴",
+        "☵",
+        "☶",
+        "☷"
+      ],
+      "interval_ms": 100,
+      "notes": "Eight trigrams sequence used as a symbolic cycle.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "symbolTrigrams",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
         "retrieved": "2026-02-12"
       }
     }
