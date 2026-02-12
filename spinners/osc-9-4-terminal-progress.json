@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "source": "OSC 9;4 Terminal Progress Bar Protocol",
+    "references": [
+      "https://learn.microsoft.com/en-us/windows/terminal/tutorials/progress-bar-sequences",
+      "https://conemu.github.io/en/AnsiEscapeCodes.html",
+      "https://rockorager.dev/misc/osc-9-4-progress-bars/",
+      "https://iterm2.com/documentation-escape-codes.html"
+    ],
+    "license": "Protocol specification; no license applies",
+    "description": "Escape sequence protocol for native terminal progress bar rendering. Originally created by ConEmu, adopted by Windows Terminal, iTerm2, Ghostty, Konsole, and mintty. Not a character-based progress bar but a terminal-level progress indicator.",
+    "retrieved": "2026-02-12"
+  },
+  "format": "ESC ] 9 ; 4 ; <state> ; <progress> BEL",
+  "escape_sequence": "\u001b]9;4;{state};{progress}\u0007",
+  "states": {
+    "0": {
+      "name": "Remove/Hide",
+      "description": "Clear the progress bar",
+      "progress_required": false
+    },
+    "1": {
+      "name": "Normal",
+      "description": "Show progress (0-100%)",
+      "progress_required": true
+    },
+    "2": {
+      "name": "Error",
+      "description": "Show error state, optionally with progress value",
+      "progress_required": false
+    },
+    "3": {
+      "name": "Indeterminate",
+      "description": "Show indeterminate/pulsing progress",
+      "progress_required": false
+    },
+    "4": {
+      "name": "Warning",
+      "description": "Show warning state with progress value",
+      "progress_required": true
+    }
+  },
+  "terminal_support": [
+    { "name": "ConEmu", "notes": "Originator of the protocol. Shows in taskbar and tab title." },
+    { "name": "Windows Terminal", "notes": "Native support." },
+    { "name": "iTerm2", "notes": "Native support." },
+    { "name": "Ghostty", "notes": "Since v1.2.0. Renders native GUI bar at top of terminal." },
+    { "name": "Konsole", "notes": "KDE terminal emulator." },
+    { "name": "mintty", "notes": "Since v3.4.2 (Nov 2020). Also supports mnemonic params." }
+  ],
+  "shell_examples": {
+    "show_50_percent": "echo -e \"\\033]9;4;1;50\\a\"",
+    "indeterminate": "echo -e \"\\033]9;4;3\\a\"",
+    "error_at_75": "echo -e \"\\033]9;4;2;75\\a\"",
+    "warning_at_25": "echo -e \"\\033]9;4;4;25\\a\"",
+    "clear": "echo -e \"\\033]9;4;0\\a\""
+  }
+}
