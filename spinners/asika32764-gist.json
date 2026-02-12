@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "source": "asika32764 GitHub Gist",
+    "url": "https://gist.github.com/asika32764/19956edcc5e893b2cbe3768e91590cf1",
+    "license": "No license stated",
+    "description": "Ruby ASCII spinner implementation with multiple character set definitions. Contains some unique sets using Canadian Aboriginal Syllabics characters for circle-tail effects.",
+    "spinner_count": 17,
+    "retrieved": "2026-02-12"
+  },
+  "dot_cycle": {
+    "frames": ["⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷"]
+  },
+  "z_arrow": {
+    "frames": ["←", "↖", "↑", "↗", "→", "↘", "↓", "↙"]
+  },
+  "z_b": {
+    "note": "Uses Canadian Aboriginal Syllabics for circle-tail effect",
+    "frames": ["b", "ᓂ", "q", "ᓄ"]
+  },
+  "z_d": {
+    "note": "Uses Canadian Aboriginal Syllabics for circle-tail effect",
+    "frames": ["d", "ᓇ", "p", "ᓀ"]
+  },
+  "z_bar": {
+    "frames": ["|", "/", "\u2014", "\\"]
+  },
+  "z_x": {
+    "frames": ["x", "+"]
+  },
+  "z_1": {
+    "frames": ["◰", "◳", "◲", "◱"]
+  },
+  "z_2": {
+    "frames": ["◴", "◷", "◶", "◵"]
+  },
+  "z_3": {
+    "frames": ["◐", "◓", "◑", "◒"]
+  },
+  "y_d": {
+    "frames": ["d", "|", "b", "|"]
+  },
+  "y_q": {
+    "frames": ["q", "|", "p", "|"]
+  },
+  "x_b": {
+    "note": "Uses Canadian Aboriginal Syllabics",
+    "frames": ["ᓂ", "\u2014", "ᓄ", "\u2014"]
+  },
+  "x_d": {
+    "note": "Uses Canadian Aboriginal Syllabics",
+    "frames": ["ᓇ", "\u2014", "ᓀ", "\u2014"]
+  },
+  "grow_a": {
+    "frames": ["|", "b", "O", "b"]
+  },
+  "grow_b": {
+    "frames": ["_", "o", "O", "o"]
+  },
+  "grow_c": {
+    "note": "Default spinner in the gist",
+    "frames": [".", "o", "O", "@", "*", " "]
+  },
+  "grow_d": {
+    "frames": ["▁", "▃", "▄", "▅", "▆", "▇", "█", "▇", "▆", "▅", "▄", "▃"]
+  },
+  "grow_e": {
+    "frames": ["▉", "▊", "▋", "▌", "▍", "▎", "▏", "▎", "▍", "▌", "▋", "▊", "▉"]
+  }
+}
