@@ -2,7 +2,7 @@
   "_meta": {
     "source": "briandowns/spinner",
     "url": "https://github.com/briandowns/spinner",
-    "raw_url": "https://github.com/briandowns/spinner/blob/master/character_sets.go",
+    "raw_url": "https://raw.githubusercontent.com/briandowns/spinner/master/character_sets.go",
     "license": "Apache-2.0",
     "license_url": "https://github.com/briandowns/spinner/blob/master/LICENSE",
     "copyright": "Copyright (c) 2022 Brian J. Downs",

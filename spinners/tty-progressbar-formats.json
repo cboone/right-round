@@ -2,7 +2,7 @@
   "_meta": {
     "source": "piotrmurach/tty-progressbar",
     "url": "https://github.com/piotrmurach/tty-progressbar",
-    "raw_url": "https://github.com/piotrmurach/tty-progressbar/blob/master/lib/tty/progressbar/formats.rb",
+    "raw_url": "https://raw.githubusercontent.com/piotrmurach/tty-progressbar/master/lib/tty/progressbar/formats.rb",
     "license": "MIT",
     "license_url": "https://github.com/piotrmurach/tty-progressbar/blob/master/LICENSE.txt",
     "copyright": "Copyright (c) 2014 Piotr Murach",

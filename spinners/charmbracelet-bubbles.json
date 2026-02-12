@@ -2,7 +2,7 @@
   "_meta": {
     "source": "charmbracelet/bubbles",
     "url": "https://github.com/charmbracelet/bubbles",
-    "raw_url": "https://github.com/charmbracelet/bubbles/blob/master/spinner/spinner.go",
+    "raw_url": "https://raw.githubusercontent.com/charmbracelet/bubbles/master/spinner/spinner.go",
     "license": "MIT",
     "license_url": "https://github.com/charmbracelet/bubbles/blob/master/LICENSE",
     "copyright": "Copyright (c) 2020-2023 Charmbracelet, Inc",

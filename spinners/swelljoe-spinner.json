@@ -2,7 +2,7 @@
   "_meta": {
     "source": "swelljoe/spinner",
     "url": "https://github.com/swelljoe/spinner",
-    "raw_url": "https://github.com/swelljoe/spinner/blob/master/spinner.sh",
+    "raw_url": "https://raw.githubusercontent.com/swelljoe/spinner/master/spinner.sh",
     "license": "Not explicitly stated in repository",
     "description": "POSIX shell compatible spinner function with colors and Unicode graphics. Includes ASCII spinners (work on any terminal) and Unicode spinners (need a modern terminal). Default: UNI_DOTS2.",
     "spinner_count": 34,
