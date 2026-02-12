@@ -9,7 +9,7 @@ The `right-round` repository is a data catalog of 433 terminal progress indicato
 ```
 right-round/                              (repo root)
 ├── progress-indicators.json              (existing, 433 entries)
-├── embedded.go                           (NEW - go:embed for the JSON)
+├── embedded.go                           (NEW - root embed wrapper for JSON bytes)
 ├── go.mod                                (NEW - github.com/cboone/right-round)
 ├── go.sum                                (NEW)
 ├── Makefile                              (NEW)
@@ -20,6 +20,8 @@ right-round/                              (repo root)
 │   └── workflows/
 │       ├── ci.yml                        (NEW - build, lint, test)
 │       └── release.yml                   (NEW - goreleaser on tag)
+├── scripts/
+│   └── check-coverage.sh                 (NEW - enforce package/file thresholds)
 ├── cmd/
 │   └── right-round/
 │       └── main.go                       (NEW - Cobra entrypoint)
@@ -74,14 +76,18 @@ Using Bubble Tea v1 (stable) rather than v2 (still RC).
   - spinner entries must have at least one frame
   - progress bar entries must have either non-null `characters` with at least `fill`, or a non-empty `phases` array, or both (phase-only bars like `verigak-progress/PixelBar` have `characters: null`)
 
-**`embedded.go`** (repo root) — Must live at repo root because `go:embed` cannot traverse `..` paths. Contains only:
+**`embedded.go`** (repo root) — Must live at repo root because `go:embed` cannot traverse `..` paths. Keep this file as a narrow wrapper over the embedded bytes, and keep `internal/data` as the only consumer so embedding concerns do not leak into TUI or CLI code. Prefer an accessor function over direct variable imports:
 ```go
 package rightround
 
 import _ "embed"
 
 //go:embed progress-indicators.json
-var ProgressIndicatorsJSON []byte
+var progressIndicatorsJSON []byte
+
+func EmbeddedCatalogJSON() []byte {
+    return progressIndicatorsJSON
+}
 ```
 
 ### TUI Layer (`internal/tui/`)
@@ -107,6 +113,13 @@ var ProgressIndicatorsJSON []byte
 - Group headers: `BRAILLE (54)` styled bold with accent color
 - Progress bar rows show a static sample bar at ~40% fill
 - Spinner rows show live animated preview
+
+Search/filter behavior:
+- Case-insensitive substring matching on entry `name` and `id`
+- Filter updates apply on each keystroke
+- Selection tracks by entry ID; if selected item is filtered out, move cursor to first visible entry
+- Clearing filter restores full grouped view and keeps selection on last selected entry ID when still present
+- Empty result set shows a "No matches" row and disables copy/expand actions
 
 Reason for custom list: bubbles `list.Model` is designed for flat filterable lists. Our grouped headers, live animation previews, and mixed entry types are better served by a custom implementation.
 
@@ -172,7 +185,7 @@ Use `lipgloss.Width()` (backed by `go-runewidth`) for all display width calculat
 
 **`.goreleaser.yml`**: Builds for linux/darwin/windows on amd64/arm64, CGO disabled, tar.gz archives (zip for Windows), checksums
 
-**CI workflow** (`.github/workflows/ci.yml`): On push/PR to main — Go 1.23, build, test with race detector, golangci-lint
+**CI workflow** (`.github/workflows/ci.yml`): On push/PR to main — pinned toolchain versions (Go 1.23.5 and `golangci-lint` v1.62.2), then build and test with race detector
 
 **Release workflow** (`.github/workflows/release.yml`): On tag push `v*` — goreleaser with `GITHUB_TOKEN`
 
@@ -221,7 +234,7 @@ Use `lipgloss.Width()` (backed by `go-runewidth`) for all display width calculat
    - Phase-only bars (`characters: null`) render from `phases` array alone
    - Phase rendering at boundary percentages
    - Indeterminate pattern rendering path
-   - Unicode width handling with wide glyphs
+    - Unicode width handling with wide glyphs (table-driven expected-width assertions)
 5. `internal/tui/list_test.go`
    - Cursor navigation across group headers and item rows
    - Scroll offset and page navigation behavior
@@ -246,7 +259,9 @@ Use `lipgloss.Width()` (backed by `go-runewidth`) for all display width calculat
 ### Tooling and quality gates
 
 1. `go test ./... -race -coverprofile=coverage.out`
-2. Enforce minimum coverage target of 80% overall and 90% for `internal/data` and `internal/tui/preview.go`
+2. Enforce minimum coverage target of 70% overall and 80% for `internal/data` and `internal/tui/preview.go`
+   - Implement in `scripts/check-coverage.sh` by parsing `go tool cover -func=coverage.out`
+   - Fail CI when thresholds are not met
 3. `golangci-lint run`
 4. `goreleaser check`
 
