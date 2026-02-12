@@ -9,6 +9,7 @@ Collected on 2026-02-12. No deduplication has been performed.
 ## Spinner Collections
 
 ### cli-spinners.json
+
 - **Source:** [sindresorhus/cli-spinners](https://github.com/sindresorhus/cli-spinners)
 - **License:** MIT
 - **Items:** ~95 named spinners with interval (ms) and frames
@@ -17,6 +18,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   The single most widely referenced spinner data source.
 
 ### briandowns-spinner.json
+
 - **Source:** [briandowns/spinner](https://github.com/briandowns/spinner)
 - **License:** Apache-2.0
 - **Items:** 93 indexed character sets (0-90 plus 2 dynamic clock sets)
@@ -24,6 +26,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   card suits, circled numbers, fractions, and alphabet cycling.
 
 ### antofthy-spinners.txt
+
 - **Source:** [Anthony Thyssen's Spinners.txt](https://antofthy.gitlab.io/info/ascii/Spinners.txt)
 - **License:** No explicit license (reference/catalog)
 - **Items:** 80+ character sequences across multiple categories
@@ -33,6 +36,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   box graphics, and progress bar characters. Last updated Dec 2025.
 
 ### charmbracelet-bubbles.json
+
 - **Source:** [charmbracelet/bubbles](https://github.com/charmbracelet/bubbles)
 - **License:** MIT
 - **Items:** 12 built-in spinner types
@@ -40,6 +44,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   [gum](https://github.com/charmbracelet/gum) via `gum spin`.
 
 ### tty-spinner-formats.json
+
 - **Source:** [piotrmurach/tty-spinner](https://github.com/piotrmurach/tty-spinner)
 - **License:** MIT
 - **Items:** 44 predefined spinner formats
@@ -47,12 +52,14 @@ Collected on 2026-02-12. No deduplication has been performed.
   burger, dance (fish), shark, and pong.
 
 ### bash-loading-animations.json
+
 - **Source:** [Silejonu/bash_loading_animations](https://github.com/Silejonu/bash_loading_animations)
 - **License:** GPL-3.0
 - **Items:** 38 animations (8 ASCII, 30 UTF-8)
 - **Notes:** Ready-to-use for Bash scripts. Intervals specified in seconds.
 
 ### swelljoe-spinner.json
+
 - **Source:** [swelljoe/spinner](https://github.com/swelljoe/spinner)
 - **License:** Not explicitly stated
 - **Items:** 34 definitions (5 ASCII, 24 Unicode, 5 wide multi-character)
@@ -60,6 +67,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   rotating arrows. Wide spinners include progress, propeller, and snake.
 
 ### throbber-widgets-tui.json
+
 - **Source:** [arkbig/throbber-widgets-tui](https://github.com/arkbig/throbber-widgets-tui)
 - **License:** MIT
 - **Items:** 21 symbol sets
@@ -67,29 +75,34 @@ Collected on 2026-02-12. No deduplication has been performed.
   Aboriginal Syllabics, and parenthesis-based spinners.
 
 ### asika32764-gist.json
+
 - **Source:** [asika32764 GitHub Gist](https://gist.github.com/asika32764/19956edcc5e893b2cbe3768e91590cf1)
 - **License:** No license stated
 - **Items:** 17 sets
 - **Notes:** Ruby implementation with circle-tail spinners.
 
 ### ora-spinners-extended.json
+
 - **Source:** [RubenVerg/ora_spinners](https://github.com/RubenVerg/ora_spinners)
 - **License:** ISC
 - **Items:** 5 sliding-dot variants
 - **Notes:** Extends cli-spinners with succeed/fail/warn/info terminal states.
 
 ### rosetta-code.json
+
 - **Source:** [Rosetta Code](https://rosettacode.org/wiki/Spinning_rod_animation/Text)
 - **License:** GNU FDL 1.2
 - **Items:** 11 sets
 - **Notes:** Unique bird flying (CJK bracket) and plant/flower spinners.
 
 ### willcarhart-blog.json
+
 - **Source:** [willcarh.art blog](https://willcarh.art/blog/how-to-write-better-bash-spinners)
 - **License:** Blog post (no explicit code license)
 - **Items:** 3 sets
 
 ### odino-blog.json
+
 - **Source:** [odino.org blog](https://odino.org/command-line-spinners-the-amazing-tale-of-modern-typewriters-and-digital-movies/)
 - **License:** Blog post (no explicit code license)
 - **Items:** 2 sets (including quadrant block spinner)
@@ -97,6 +110,7 @@ Collected on 2026-02-12. No deduplication has been performed.
 ## Progress Bar Character Collections
 
 ### unicode-progress-bar-characters.json
+
 - **Source:** Compiled from multiple references
 - **References:** [changaco.oy.lc](https://changaco.oy.lc/unicode-progress-bars/),
   [ascii.bar](https://www.ascii.bar/),
@@ -114,6 +128,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   fill progressions, halfwidth CJK forms, ASCII styles, and bracket delimiters.
 
 ### tty-progressbar-formats.json
+
 - **Source:** [piotrmurach/tty-progressbar](https://github.com/piotrmurach/tty-progressbar)
 - **License:** MIT
 - **Items:** 22 preconfigured bar formats
@@ -122,6 +137,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   bracket, tread, track, wave.
 
 ### verigak-progress.json
+
 - **Source:** [verigak/progress](https://github.com/verigak/progress)
 - **License:** ISC
 - **Items:** 7 bar types + 5 spinner types
@@ -130,6 +146,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   FillingSquaresBar and FillingCirclesBar use geometric pairs.
 
 ### cli-progress-presets.json
+
 - **Source:** [npkgz/cli-progress](https://github.com/npkgz/cli-progress)
 - **License:** MIT
 - **Items:** 4 built-in presets
@@ -137,6 +154,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   shades_grey (same with ANSI grey), rect (`■`/` `).
 
 ### tqdm-bar-characters.json
+
 - **Source:** [tqdm/tqdm](https://github.com/tqdm/tqdm)
 - **License:** MIT AND MPL-2.0
 - **Items:** 2 built-in character sets + custom support
@@ -145,6 +163,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   strings supported via the `ascii` parameter.
 
 ### schollz-progressbar.json
+
 - **Source:** [schollz/progressbar](https://github.com/schollz/progressbar)
 - **License:** MIT
 - **Items:** 3 predefined themes + examples
@@ -152,6 +171,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   BarStart, BarEnd. Includes a PAC-MAN example.
 
 ### cheggaaa-pb.json
+
 - **Source:** [cheggaaa/pb](https://github.com/cheggaaa/pb)
 - **License:** BSD-3-Clause
 - **Items:** v1 FORMAT string + v3 template function
@@ -160,6 +180,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   current-position via cycle function.
 
 ### fancybar-python.json
+
 - **Source:** [jenca-adam/fancybar](https://github.com/jenca-adam/fancybar)
 - **License:** MIT
 - **Items:** 6 named bar types
@@ -167,6 +188,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   block with truecolor), and standard ASCII types.
 
 ### ruby-progressbar.json
+
 - **Source:** [jfelchner/ruby-progressbar](https://github.com/jfelchner/ruby-progressbar)
 - **License:** MIT
 - **Items:** Default characters + PAC-MAN example
@@ -174,6 +196,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   KHEE and Halfwidth Katakana Middle Dot.
 
 ### indicatif-rust.json
+
 - **Source:** [console-rs/indicatif](https://github.com/console-rs/indicatif)
 - **License:** MIT
 - **Items:** Common progress_chars and tick_chars examples
@@ -182,6 +205,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   characters for filled/current/empty.
 
 ### social-media-progress-bars.json
+
 - **Source:** Compiled from [copy-paste.net](https://copy-paste.net/en/loading-bar.php),
   [emojicombos.com](https://emojicombos.com/ascii-progress-bar),
   [emojimagic.io](https://emojimagic.io/progress-bar),
@@ -193,6 +217,7 @@ Collected on 2026-02-12. No deduplication has been performed.
   colored squares, and decorative star/heart/diamond styles.
 
 ### osc-9-4-terminal-progress.json
+
 - **Source:** [ConEmu](https://conemu.github.io/en/AnsiEscapeCodes.html),
   [Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/tutorials/progress-bar-sequences),
   [rockorager.dev](https://rockorager.dev/misc/osc-9-4-progress-bars/)
@@ -209,40 +234,40 @@ Collected on 2026-02-12. No deduplication has been performed.
 The `sindresorhus/cli-spinners` JSON file is the de facto standard, referenced
 by libraries in:
 
-| Language | Libraries |
-|----------|-----------|
-| Node.js  | ora, @topcli/spinner, spinnies, cli-spinner |
-| Python   | halo, yaspin, rich, py-spinners |
-| Go       | yacspin (also draws from briandowns/spinner) |
-| Ruby     | tty-spinner (has its own formats too) |
+| Language | Libraries                                       |
+| -------- | ----------------------------------------------- |
+| Node.js  | ora, @topcli/spinner, spinnies, cli-spinner     |
+| Python   | halo, yaspin, rich, py-spinners                 |
+| Go       | yacspin (also draws from briandowns/spinner)    |
+| Ruby     | tty-spinner (has its own formats too)           |
 | Rust     | indicatif (references it for custom tick_chars) |
-| Swift    | CLISpinner |
-| R        | cli (r-lib) |
-| Elixir   | cli_spinners |
-| Crystal  | spinner-frames.cr |
+| Swift    | CLISpinner                                      |
+| R        | cli (r-lib)                                     |
+| Elixir   | cli_spinners                                    |
+| Crystal  | spinner-frames.cr                               |
 
 ### Progress Bar Character Conventions
 
 Most progress bar libraries define these character slots:
 
-| Slot | Description | Common defaults |
-|------|-------------|----------------|
-| Fill/Saucer/Complete | Filled portion | `=`, `#`, `█`, `▰`, `■` |
-| Head/Tip/Current | Leading edge | `>`, `█`, `▸`, none |
+| Slot                     | Description       | Common defaults         |
+| ------------------------ | ----------------- | ----------------------- |
+| Fill/Saucer/Complete     | Filled portion    | `=`, `#`, `█`, `▰`, `■` |
+| Head/Tip/Current         | Leading edge      | `>`, `█`, `▸`, none     |
 | Empty/Padding/Incomplete | Remaining portion | `-`, ` `, `░`, `▱`, `□` |
-| Start/Prefix | Left delimiter | `[`, `\|`, `▐` |
-| End/Suffix | Right delimiter | `]`, `\|`, `▌` |
+| Start/Prefix             | Left delimiter    | `[`, `\|`, `▐`          |
+| End/Suffix               | Right delimiter   | `]`, `\|`, `▌`          |
 
 ### Sub-Character Resolution
 
 For smoother progress bars, several libraries support fractional fills:
 
-| Technique | Characters | Resolution |
-|-----------|-----------|------------|
-| Left fractional blocks | `▏▎▍▌▋▊▉█` | 8 steps/char |
-| Shade progression | `░▒▓█` | 4 steps/char |
-| Braille fill | `⡀⡄⡆⡇⣇⣧⣷⣿` | 8 steps/char |
-| tqdm ASCII digits | `" 123456789#"` | 10 steps/char |
+| Technique              | Characters      | Resolution    |
+| ---------------------- | --------------- | ------------- |
+| Left fractional blocks | `▏▎▍▌▋▊▉█`      | 8 steps/char  |
+| Shade progression      | `░▒▓█`          | 4 steps/char  |
+| Braille fill           | `⡀⡄⡆⡇⣇⣧⣷⣿`      | 8 steps/char  |
+| tqdm ASCII digits      | `" 123456789#"` | 10 steps/char |
 
 ## Character Categories
 
