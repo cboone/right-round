@@ -1,0 +1,19 @@
+# Binaries and build output
+bin/
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binaries and coverage
+*.test
+*.out
+coverage.out
+
+# Go workspace checksum
+go.work.sum
+
+# Local machine settings
+**/settings.local.json
