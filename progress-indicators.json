@@ -3,36 +3,36 @@
   "generated": "2026-02-12",
   "description": "Consolidated collection of terminal progress indicators: spinners, progress bar character sets, and related animation data. Collected from open-source libraries, reference documents, gists, and blog posts across multiple programming language ecosystems.",
   "stats": {
-    "total_entries": 433,
-    "spinners": 333,
-    "progress_bars": 100,
+    "total_entries": 482,
+    "spinners": 368,
+    "progress_bars": 114,
     "deduplicated_entries": 86,
     "duplicates_removed": 180,
     "original_total_before_dedup": 613,
     "exceptions": 6,
     "source_collections": 26,
     "spinner_groups": {
-      "braille": 54,
-      "bounce": 41,
-      "scroll": 34,
-      "emoji": 34,
-      "block": 30,
-      "line": 28,
-      "symbol": 25,
-      "geometric": 24,
-      "toggle": 23,
-      "arrow": 15,
-      "dot": 9,
-      "novelty": 8,
-      "text": 8
+      "braille": 57,
+      "bounce": 43,
+      "emoji": 38,
+      "scroll": 37,
+      "block": 32,
+      "line": 31,
+      "symbol": 29,
+      "geometric": 27,
+      "toggle": 26,
+      "arrow": 17,
+      "dot": 11,
+      "novelty": 10,
+      "text": 10
     },
     "progress_bar_groups": {
-      "geometric": 28,
-      "phased": 21,
-      "ascii": 19,
-      "decorative": 16,
+      "geometric": 31,
+      "phased": 23,
+      "ascii": 22,
+      "decorative": 20,
       "block": 11,
-      "emoji": 5
+      "emoji": 7
     }
   },
   "entry_schema": {
@@ -13665,6 +13665,1140 @@
         ],
         "original_key": "emoji_squares/purple_white",
         "license": "Public domain Unicode characters; compilations have no stated license",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/braille-double-orbit",
+      "name": "braille double orbit",
+      "type": "spinner",
+      "group": "braille",
+      "frames": [
+        "⢁",
+        "⡈",
+        "⠔",
+        "⠢"
+      ],
+      "interval_ms": 100,
+      "notes": "Two dots rotating in opposite directions around the 8-dot braille cell, always 180° apart",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "braille-double-orbit",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/braille-cascade",
+      "name": "braille cascade",
+      "type": "spinner",
+      "group": "braille",
+      "frames": [
+        "⠉",
+        "⠒",
+        "⠤",
+        "⣀"
+      ],
+      "interval_ms": 120,
+      "notes": "Horizontal row of dots falling from top to bottom of the braille cell",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "braille-cascade",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/braille-spiral",
+      "name": "braille spiral fill",
+      "type": "spinner",
+      "group": "braille",
+      "frames": [
+        "⠀",
+        "⠁",
+        "⠉",
+        "⠙",
+        "⠹",
+        "⢹",
+        "⣹",
+        "⣽",
+        "⣿",
+        "⣾",
+        "⣶",
+        "⣦",
+        "⣆",
+        "⡆",
+        "⠆",
+        "⠂"
+      ],
+      "interval_ms": 60,
+      "notes": "Dots light up one by one in a clockwise spiral until full, then extinguish in the same order",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "braille-spiral",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/circle-fill",
+      "name": "circle fill",
+      "type": "spinner",
+      "group": "geometric",
+      "frames": [
+        "○",
+        "◔",
+        "◑",
+        "◕",
+        "●",
+        "◕",
+        "◑",
+        "◔"
+      ],
+      "interval_ms": 120,
+      "notes": "Circle progressively fills from empty to full, then empties again. Uses Unicode pie-slice characters.",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "circle-fill",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/shape-shift",
+      "name": "shape shift",
+      "type": "spinner",
+      "group": "geometric",
+      "frames": [
+        "○",
+        "△",
+        "□",
+        "◇",
+        "☆",
+        "◇",
+        "□",
+        "△"
+      ],
+      "interval_ms": 180,
+      "notes": "Cycles through fundamental geometric shapes: circle, triangle, square, diamond, star and back",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "shape-shift",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/concentric-rings",
+      "name": "concentric rings",
+      "type": "spinner",
+      "group": "geometric",
+      "frames": [
+        "·",
+        "○",
+        "◎",
+        "◉",
+        "●",
+        "◉",
+        "◎",
+        "○"
+      ],
+      "interval_ms": 100,
+      "notes": "Concentric circles pulsing outward and inward: dot, circle, bullseye, fisheye, filled",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "concentric-rings",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/triangle-spin",
+      "name": "triangle spin",
+      "type": "spinner",
+      "group": "arrow",
+      "frames": [
+        "▲",
+        "▶",
+        "▼",
+        "◀"
+      ],
+      "interval_ms": 120,
+      "notes": "Solid triangles pointing up, right, down, left in clockwise rotation",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "triangle-spin",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/arrow-trail",
+      "name": "arrow trail",
+      "type": "spinner",
+      "group": "arrow",
+      "frames": [
+        "▸▹▹▹",
+        "▹▸▹▹",
+        "▹▹▸▹",
+        "▹▹▹▸",
+        "▹▹▸▹",
+        "▹▸▹▹"
+      ],
+      "interval_ms": 100,
+      "notes": "A filled arrowhead bouncing back and forth among hollow ones",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "arrow-trail",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/zodiac",
+      "name": "zodiac cycle",
+      "type": "spinner",
+      "group": "symbol",
+      "frames": [
+        "♈",
+        "♉",
+        "♊",
+        "♋",
+        "♌",
+        "♍",
+        "♎",
+        "♏",
+        "♐",
+        "♑",
+        "♒",
+        "♓"
+      ],
+      "interval_ms": 180,
+      "notes": "All twelve zodiac signs from Aries through Pisces",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "zodiac",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/dice-roll",
+      "name": "dice roll",
+      "type": "spinner",
+      "group": "symbol",
+      "frames": [
+        "⚀",
+        "⚁",
+        "⚂",
+        "⚃",
+        "⚄",
+        "⚅"
+      ],
+      "interval_ms": 150,
+      "notes": "All six die faces cycling as if a die were tumbling",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "dice-roll",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/musical-notes",
+      "name": "musical notes",
+      "type": "spinner",
+      "group": "symbol",
+      "frames": [
+        "♩",
+        "♪",
+        "♫",
+        "♬"
+      ],
+      "interval_ms": 200,
+      "notes": "Quarter note, eighth note, beamed eighth notes, beamed sixteenth notes",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "musical-notes",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/alchemical",
+      "name": "alchemical elements",
+      "type": "spinner",
+      "group": "symbol",
+      "frames": [
+        "🜀",
+        "🜁",
+        "🜂",
+        "🜃",
+        "🜄",
+        "🜅",
+        "🜆",
+        "🜇"
+      ],
+      "interval_ms": 180,
+      "notes": "Alchemical symbols for quintessence, air, fire, earth, water, aqua fortis, aqua regia, and bismuth ore",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "alchemical",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/hourglass",
+      "name": "hourglass flip",
+      "type": "spinner",
+      "group": "toggle",
+      "frames": [
+        "⧖",
+        "⧗"
+      ],
+      "interval_ms": 500,
+      "notes": "White and black hourglasses alternating, as if the hourglass is being flipped",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "hourglass",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/ballot-box",
+      "name": "ballot box",
+      "type": "spinner",
+      "group": "toggle",
+      "frames": [
+        "☐",
+        "☑",
+        "☒"
+      ],
+      "interval_ms": 300,
+      "notes": "Empty ballot box, check mark, then X mark—cycling through validation states",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "ballot-box",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/power-toggle",
+      "name": "power toggle",
+      "type": "spinner",
+      "group": "toggle",
+      "frames": [
+        "⏻",
+        "⏼"
+      ],
+      "interval_ms": 400,
+      "notes": "Power symbol toggling between standby and on",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "power-toggle",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/weather",
+      "name": "weather cycle",
+      "type": "spinner",
+      "group": "emoji",
+      "frames": [
+        "☀️ ",
+        "🌤️ ",
+        "⛅️ ",
+        "🌥️ ",
+        "☁️ ",
+        "🌧️ ",
+        "⛈️ ",
+        "🌧️ ",
+        "☁️ ",
+        "🌥️ ",
+        "⛅️ ",
+        "🌤️ "
+      ],
+      "interval_ms": 200,
+      "notes": "Full weather cycle from sunshine through storm and back",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "weather",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/growing-plant",
+      "name": "growing plant",
+      "type": "spinner",
+      "group": "emoji",
+      "frames": [
+        "🌱 ",
+        "🌿 ",
+        "🪴 ",
+        "🌳 "
+      ],
+      "interval_ms": 400,
+      "notes": "Seedling growing into a full tree: sprout, herb, potted plant, deciduous tree",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "growing-plant",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/butterfly-lifecycle",
+      "name": "butterfly lifecycle",
+      "type": "spinner",
+      "group": "emoji",
+      "frames": [
+        "🥚 ",
+        "🐛 ",
+        "🪱 ",
+        "🦋 "
+      ],
+      "interval_ms": 400,
+      "notes": "Metamorphosis: egg, caterpillar, cocoon, butterfly",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "butterfly-lifecycle",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/space-journey",
+      "name": "space journey",
+      "type": "spinner",
+      "group": "emoji",
+      "frames": [
+        "🚀 ",
+        "🪐 ",
+        "⭐ ",
+        "🌌 ",
+        "🛸 ",
+        "🌙 ",
+        "🌍 "
+      ],
+      "interval_ms": 250,
+      "notes": "A journey through space: rocket, ringed planet, star, milky way, flying saucer, crescent moon, earth",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "space-journey",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/sine-wave",
+      "name": "sine wave",
+      "type": "spinner",
+      "group": "scroll",
+      "frames": [
+        "▁▃▅▇▅▃",
+        "▃▅▇▅▃▁",
+        "▅▇▅▃▁▃",
+        "▇▅▃▁▃▅",
+        "▅▃▁▃▅▇",
+        "▃▁▃▅▇▅"
+      ],
+      "interval_ms": 100,
+      "notes": "A sine wave scrolling through vertical block elements like an audio visualizer",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "sine-wave",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/light-chase",
+      "name": "light chase",
+      "type": "spinner",
+      "group": "scroll",
+      "frames": [
+        "●○○○○",
+        "○●○○○",
+        "○○●○○",
+        "○○○●○",
+        "○○○○●",
+        "○○○●○",
+        "○○●○○",
+        "○●○○○"
+      ],
+      "interval_ms": 80,
+      "notes": "A single filled circle bouncing back and forth among hollow circles, like a chaser light",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "light-chase",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/comet",
+      "name": "comet trail",
+      "type": "spinner",
+      "group": "scroll",
+      "frames": [
+        "░▒▓█▓▒░",
+        "▒▓█▓▒░░",
+        "▓█▓▒░░▒",
+        "█▓▒░░▒▓",
+        "▓▒░░▒▓█",
+        "▒░░▒▓█▓",
+        "░░▒▓█▓▒"
+      ],
+      "interval_ms": 80,
+      "notes": "A bright core with fading shade trail scrolling across, like a comet",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "comet",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/newtons-cradle",
+      "name": "Newton's cradle",
+      "type": "spinner",
+      "group": "novelty",
+      "frames": [
+        "●  ○○○○ ",
+        " ● ○○○○ ",
+        "  ○○○○○ ",
+        "  ○○○○ ●",
+        " ○○○○  ●",
+        "  ○○○○ ●",
+        "  ○○○○○ ",
+        " ● ○○○○ "
+      ],
+      "interval_ms": 100,
+      "notes": "Newton's cradle: left ball swings in, transfers energy, right ball swings out and back",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "newtons-cradle",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/clock-pendulum",
+      "name": "clock pendulum",
+      "type": "spinner",
+      "group": "novelty",
+      "frames": [
+        "●···┴····",
+        "·●··┴····",
+        "··●·┴····",
+        "···●┴····",
+        "····┴●···",
+        "····┴·●··",
+        "····┴··●·",
+        "····┴·●··",
+        "···●┴····",
+        "··●·┴····"
+      ],
+      "interval_ms": 100,
+      "notes": "A pendulum bob swinging back and forth beneath a pivot point",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "clock-pendulum",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/dot-pulse",
+      "name": "dot pulse",
+      "type": "spinner",
+      "group": "dot",
+      "frames": [
+        "·",
+        "•",
+        "●",
+        "•"
+      ],
+      "interval_ms": 150,
+      "notes": "Single dot pulsing from small to large and back: middle dot, bullet, black circle",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "dot-pulse",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/dot-orbit",
+      "name": "dot orbit",
+      "type": "spinner",
+      "group": "dot",
+      "frames": [
+        "●··",
+        "·●·",
+        "··●",
+        "·●·"
+      ],
+      "interval_ms": 120,
+      "notes": "A large dot cycling through three positions like an orbiting body",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "dot-orbit",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/rounded-corner-spin",
+      "name": "rounded corner spin",
+      "type": "spinner",
+      "group": "line",
+      "frames": [
+        "╭",
+        "╮",
+        "╯",
+        "╰"
+      ],
+      "interval_ms": 120,
+      "notes": "Rounded box-drawing corners rotating clockwise: top-left, top-right, bottom-right, bottom-left",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "rounded-corner-spin",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/double-line-spin",
+      "name": "double line spin",
+      "type": "spinner",
+      "group": "line",
+      "frames": [
+        "═",
+        "╲",
+        "║",
+        "╱"
+      ],
+      "interval_ms": 100,
+      "notes": "Double-line horizontal and vertical with box-drawing diagonals for a heavier spin",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "double-line-spin",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/t-junction-spin",
+      "name": "T-junction spin",
+      "type": "spinner",
+      "group": "line",
+      "frames": [
+        "┬",
+        "┤",
+        "┴",
+        "├"
+      ],
+      "interval_ms": 120,
+      "notes": "Box-drawing T-junctions rotating: top, right, bottom, left",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "t-junction-spin",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/elder-futhark",
+      "name": "Elder Futhark runes",
+      "type": "spinner",
+      "group": "text",
+      "frames": [
+        "ᚠ",
+        "ᚢ",
+        "ᚦ",
+        "ᚨ",
+        "ᚱ",
+        "ᚲ",
+        "ᚷ",
+        "ᚹ"
+      ],
+      "interval_ms": 180,
+      "notes": "First eight runes of the Elder Futhark alphabet: fehu, uruz, thurisaz, ansuz, raido, kauna, gebo, wunjo",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "elder-futhark",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/greek-letters",
+      "name": "Greek letters",
+      "type": "spinner",
+      "group": "text",
+      "frames": [
+        "α",
+        "β",
+        "γ",
+        "δ",
+        "ε",
+        "ζ",
+        "η",
+        "θ"
+      ],
+      "interval_ms": 150,
+      "notes": "First eight lowercase Greek letters: alpha through theta",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "greek-letters",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/pulse-ring",
+      "name": "pulse ring",
+      "type": "spinner",
+      "group": "bounce",
+      "frames": [
+        "·",
+        "○",
+        "◎",
+        "◉",
+        "●",
+        "◉",
+        "◎",
+        "○"
+      ],
+      "interval_ms": 100,
+      "notes": "Expanding and contracting concentric circles: dot, ring, bullseye, fisheye, filled, then back",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "pulse-ring",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/shade-breathe",
+      "name": "shade breathe",
+      "type": "spinner",
+      "group": "bounce",
+      "frames": [
+        " ",
+        "░",
+        "▒",
+        "▓",
+        "█",
+        "▓",
+        "▒",
+        "░"
+      ],
+      "interval_ms": 100,
+      "notes": "Block shade characters fading in and out like breathing: light, medium, dark, full, then back",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "shade-breathe",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/quadrant-orbit",
+      "name": "quadrant orbit",
+      "type": "spinner",
+      "group": "block",
+      "frames": [
+        "▘",
+        "▝",
+        "▗",
+        "▖"
+      ],
+      "interval_ms": 120,
+      "notes": "Single quadrant block orbiting clockwise: upper-left, upper-right, lower-right, lower-left",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "quadrant-orbit",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/half-slide",
+      "name": "half slide",
+      "type": "spinner",
+      "group": "block",
+      "frames": [
+        "▀",
+        "▐",
+        "▄",
+        "▌"
+      ],
+      "interval_ms": 120,
+      "notes": "Half-block sliding clockwise: upper, right, lower, left",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "half-slide",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/tilde-wave",
+      "name": "tilde wave",
+      "type": "progress_bar",
+      "group": "ascii",
+      "characters": {
+        "fill": "~",
+        "empty": "-"
+      },
+      "notes": "Wavy fill for a fluid/liquid feel",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "tilde-wave",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/colon-march",
+      "name": "colon march",
+      "type": "progress_bar",
+      "group": "ascii",
+      "characters": {
+        "fill": ":",
+        "empty": "."
+      },
+      "notes": "Colons marching over dots, subtle and compact",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "colon-march",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/pipe-fill",
+      "name": "pipe fill",
+      "type": "progress_bar",
+      "group": "ascii",
+      "characters": {
+        "fill": "|",
+        "empty": ".",
+        "start": "[",
+        "end": "]"
+      },
+      "notes": "Vertical pipes filling a bracketed bar",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "pipe-fill",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/triangles-right",
+      "name": "triangles right",
+      "type": "progress_bar",
+      "group": "geometric",
+      "characters": {
+        "fill": "▶",
+        "empty": "▷"
+      },
+      "notes": "Filled and hollow right-pointing triangles",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "triangles-right",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/nested-circles",
+      "name": "nested circles",
+      "type": "progress_bar",
+      "group": "geometric",
+      "characters": {
+        "fill": "◉",
+        "empty": "○"
+      },
+      "notes": "Fisheye (filled circle in ring) and hollow circles",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "nested-circles",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/lozenges",
+      "name": "lozenges",
+      "type": "progress_bar",
+      "group": "geometric",
+      "characters": {
+        "fill": "◆",
+        "empty": "◇"
+      },
+      "notes": "Filled and hollow diamond/lozenge shapes",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "lozenges",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/music-bar",
+      "name": "music notes",
+      "type": "progress_bar",
+      "group": "decorative",
+      "characters": {
+        "fill": "♫",
+        "empty": "♪"
+      },
+      "notes": "Beamed eighth notes (filled) and single eighth notes (empty)",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "music-bar",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/flowers",
+      "name": "flowers",
+      "type": "progress_bar",
+      "group": "decorative",
+      "characters": {
+        "fill": "✿",
+        "empty": "❀"
+      },
+      "notes": "Black florette (filled) and white florette (empty)",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "flowers",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/sparkles",
+      "name": "sparkles",
+      "type": "progress_bar",
+      "group": "decorative",
+      "characters": {
+        "fill": "✦",
+        "empty": "✧"
+      },
+      "notes": "Black four-pointed star (filled) and white four-pointed star (empty)",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "sparkles",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/arrows-bar",
+      "name": "arrows",
+      "type": "progress_bar",
+      "group": "decorative",
+      "characters": {
+        "fill": "▸",
+        "empty": "▹",
+        "head": "►"
+      },
+      "notes": "Small right-pointing triangles with a larger head, pointing the direction of progress",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "arrows-bar",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/circle-phases",
+      "name": "circle phases",
+      "type": "progress_bar",
+      "group": "phased",
+      "characters": {
+        "fill": "●",
+        "empty": "○"
+      },
+      "phases": [
+        "○",
+        "◔",
+        "◑",
+        "◕",
+        "●"
+      ],
+      "notes": "Sub-character resolution using circle quadrant fills: empty, quarter, half, three-quarter, full",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "circle-phases",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/shade-phases",
+      "name": "shade phases",
+      "type": "progress_bar",
+      "group": "phased",
+      "characters": {
+        "fill": "█",
+        "empty": " "
+      },
+      "phases": [
+        " ",
+        "░",
+        "▒",
+        "▓",
+        "█"
+      ],
+      "notes": "Five-level shade progression: space, light shade, medium shade, dark shade, full block",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "shade-phases",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/fire-and-ice",
+      "name": "fire and ice",
+      "type": "progress_bar",
+      "group": "emoji",
+      "characters": {
+        "fill": "🔥",
+        "empty": "🧊"
+      },
+      "notes": "Fire emoji (complete) melting ice emoji (remaining)",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "fire-and-ice",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/battery-charge",
+      "name": "battery charge",
+      "type": "progress_bar",
+      "group": "emoji",
+      "characters": {
+        "fill": "⚡",
+        "empty": "▫️"
+      },
+      "notes": "Lightning bolt (charged) and white small square (empty) for a charging battery feel",
+      "source": {
+        "collection": "original/invented",
+        "url": "",
+        "original_key": "battery-charge",
+        "license": "CC0-1.0",
+        "copyright": "Original creation for right-round collection",
         "retrieved": "2026-02-12"
       }
     }
