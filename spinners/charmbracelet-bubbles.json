@@ -1,0 +1,74 @@
+{
+  "_meta": {
+    "source": "charmbracelet/bubbles",
+    "url": "https://github.com/charmbracelet/bubbles",
+    "raw_url": "https://github.com/charmbracelet/bubbles/blob/master/spinner/spinner.go",
+    "license": "MIT",
+    "license_url": "https://github.com/charmbracelet/bubbles/blob/master/LICENSE",
+    "copyright": "Copyright (c) 2020-2023 Charmbracelet, Inc",
+    "description": "TUI spinner component for Bubble Tea (Go). Each spinner has Frames ([]string) and FPS (time.Duration). Also used by the gum CLI tool.",
+    "spinner_count": 12,
+    "retrieved": "2026-02-12",
+    "notes": "gum spin uses these same spinners via --spinner flag: line, dot, minidot, jump, pulse, points, globe, moon, monkey, meter, hamburger"
+  },
+  "Line": {
+    "fps_description": "time.Second / 10",
+    "fps_ms": 100,
+    "frames": ["|", "/", "-", "\\"]
+  },
+  "Dot": {
+    "fps_description": "time.Second / 10",
+    "fps_ms": 100,
+    "frames": ["⣾ ", "⣽ ", "⣻ ", "⢿ ", "⡿ ", "⣟ ", "⣯ ", "⣷ "]
+  },
+  "MiniDot": {
+    "fps_description": "time.Second / 12",
+    "fps_ms": 83,
+    "frames": ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+  },
+  "Jump": {
+    "fps_description": "time.Second / 10",
+    "fps_ms": 100,
+    "frames": ["⢄", "⢂", "⢁", "⡁", "⡈", "⡐", "⡠"]
+  },
+  "Pulse": {
+    "fps_description": "time.Second / 8",
+    "fps_ms": 125,
+    "frames": ["█", "▓", "▒", "░"]
+  },
+  "Points": {
+    "fps_description": "time.Second / 7",
+    "fps_ms": 142,
+    "frames": ["∙∙∙", "●∙∙", "∙●∙", "∙∙●"]
+  },
+  "Globe": {
+    "fps_description": "time.Second / 4",
+    "fps_ms": 250,
+    "frames": ["🌍", "🌎", "🌏"]
+  },
+  "Moon": {
+    "fps_description": "time.Second / 8",
+    "fps_ms": 125,
+    "frames": ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"]
+  },
+  "Monkey": {
+    "fps_description": "time.Second / 3",
+    "fps_ms": 333,
+    "frames": ["🙈", "🙉", "🙊"]
+  },
+  "Meter": {
+    "fps_description": "time.Second / 7",
+    "fps_ms": 142,
+    "frames": ["▱▱▱", "▰▱▱", "▰▰▱", "▰▰▰", "▰▰▱", "▰▱▱", "▱▱▱"]
+  },
+  "Hamburger": {
+    "fps_description": "time.Second / 3",
+    "fps_ms": 333,
+    "frames": ["☱", "☲", "☴", "☲"]
+  },
+  "Ellipsis": {
+    "fps_description": "time.Second / 3",
+    "fps_ms": 333,
+    "frames": ["", ".", "..", "..."]
+  }
+}
