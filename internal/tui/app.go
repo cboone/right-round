@@ -113,6 +113,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.width = msg.Width
 		m.height = msg.Height
 		m.updateLayout()
+		if m.width >= wideThreshold {
+			m.detail.setEntry(m.list.selectedEntry())
+		}
 		return m, nil
 
 	case animTickMsg:
@@ -330,7 +333,6 @@ func (m Model) View() string {
 	if m.width >= wideThreshold {
 		// Side by side layout
 		listView := m.list.view()
-		m.detail.setEntry(m.list.selectedEntry())
 		detailView := m.detail.view()
 		content := lipgloss.JoinHorizontal(lipgloss.Top, listView, detailView)
 		b.WriteString(content)

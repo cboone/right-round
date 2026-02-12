@@ -134,24 +134,45 @@ func renderIndeterminate(pattern string, width int, offset int) string {
 		return ""
 	}
 
-	patLen := lipgloss.Width(pattern)
-	var b strings.Builder
+	// Convert pattern to runes and compute per-rune cell widths for consistent indexing
+	patRunes := []rune(pattern)
+	patCellWidths := make([]int, len(patRunes))
+	totalCells := 0
+	for i, r := range patRunes {
+		w := lipgloss.Width(string(r))
+		patCellWidths[i] = w
+		totalCells += w
+	}
 
-	pos := offset % (width + patLen)
-	for i := 0; i < width; i++ {
-		relPos := i - pos + patLen
-		if relPos >= 0 && relPos < patLen {
-			// Inside the pattern - extract the character at this position
-			runeIdx := 0
-			for _, r := range pattern {
-				if runeIdx == relPos {
-					b.WriteRune(r)
+	var b strings.Builder
+	pos := offset % (width + totalCells)
+	cellCol := 0
+	for cellCol < width {
+		relCell := cellCol - pos + totalCells
+		// Find which rune (if any) covers this cell position
+		wrote := false
+		if relCell >= 0 && relCell < totalCells {
+			cumulative := 0
+			for ri, rw := range patCellWidths {
+				if relCell >= cumulative && relCell < cumulative+rw {
+					// Only emit the rune at its first cell to avoid duplicates
+					if relCell == cumulative {
+						b.WriteRune(patRunes[ri])
+						cellCol += rw
+					} else {
+						// Mid-glyph cell: skip with space
+						b.WriteRune(' ')
+						cellCol++
+					}
+					wrote = true
 					break
 				}
-				runeIdx++
+				cumulative += rw
 			}
-		} else {
+		}
+		if !wrote {
 			b.WriteRune(' ')
+			cellCol++
 		}
 	}
 

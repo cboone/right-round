@@ -172,6 +172,11 @@ func (m *listModel) goToBottom() {
 }
 
 func (m *listModel) moveToNextEntry(dir int) {
+	if len(m.rows) == 0 {
+		m.cursor = 0
+		return
+	}
+	// Skip headers in the given direction
 	for m.cursor >= 0 && m.cursor < len(m.rows) && m.rows[m.cursor].isHeader {
 		m.cursor += dir
 	}
@@ -180,6 +185,18 @@ func (m *listModel) moveToNextEntry(dir int) {
 	}
 	if m.cursor >= len(m.rows) {
 		m.cursor = len(m.rows) - 1
+	}
+	// If still on a header after clamping (hit boundary), try opposite direction
+	if m.rows[m.cursor].isHeader {
+		for m.cursor >= 0 && m.cursor < len(m.rows) && m.rows[m.cursor].isHeader {
+			m.cursor -= dir
+		}
+		if m.cursor < 0 {
+			m.cursor = 0
+		}
+		if m.cursor >= len(m.rows) {
+			m.cursor = len(m.rows) - 1
+		}
 	}
 }
 

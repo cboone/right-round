@@ -14,14 +14,18 @@ check_threshold() {
     local threshold="$2"
     local label="$3"
 
-    local pct
-    pct=$(go tool cover -func="$COVERAGE_FILE" \
+    local result
+    result=$(go tool cover -func="$COVERAGE_FILE" \
         | { grep "$pattern" || true; } \
         | awk '{print $NF}' \
         | sed 's/%//' \
-        | awk '{sum += $1; count++} END {if (count > 0) printf "%.1f", sum/count; else print "0.0"}')
+        | awk '{sum += $1; count++} END {printf "%d %.1f", count, (count > 0 ? sum/count : 0)}')
 
-    if [[ "$pct" == "0.0" ]]; then
+    local count pct
+    count=$(echo "$result" | awk '{print $1}')
+    pct=$(echo "$result" | awk '{print $2}')
+
+    if [[ "$count" -eq 0 ]]; then
         echo "WARN: No coverage data found for $label"
         return 0
     fi

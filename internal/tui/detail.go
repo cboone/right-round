@@ -26,15 +26,34 @@ func newDetailModel(anim *animEngine) detailModel {
 }
 
 func (m *detailModel) setEntry(entry *data.EntryEnvelope) {
+	// Only reset scroll position when the entry actually changes
+	oldID := ""
+	newID := ""
+	if m.entry != nil {
+		oldID = m.entry.Entry.ID
+	}
+	if entry != nil {
+		newID = entry.Entry.ID
+	}
 	m.entry = entry
-	m.viewport.GotoTop()
+	if newID != oldID {
+		m.viewport.GotoTop()
+	}
 }
 
 func (m *detailModel) setSize(width, height int) {
 	m.width = width
 	m.height = height
-	m.viewport.Width = width - 2 // border padding
-	m.viewport.Height = height - 2
+	vpWidth := width - 2 // border padding
+	vpHeight := height - 2
+	if vpWidth < 0 {
+		vpWidth = 0
+	}
+	if vpHeight < 0 {
+		vpHeight = 0
+	}
+	m.viewport.Width = vpWidth
+	m.viewport.Height = vpHeight
 }
 
 func (m *detailModel) updateContent() {
@@ -158,8 +177,16 @@ func (m *detailModel) updateContent() {
 
 func (m *detailModel) view() string {
 	m.updateContent()
+	w := m.width - 2
+	h := m.height - 2
+	if w < 0 {
+		w = 0
+	}
+	if h < 0 {
+		h = 0
+	}
 	return detailBorderStyle.
-		Width(m.width - 2).
-		Height(m.height - 2).
+		Width(w).
+		Height(h).
 		Render(m.viewport.View())
 }
