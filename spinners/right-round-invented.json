@@ -156,7 +156,7 @@
   },
   "phasedMoon": {
     "group": "phased",
-    "phases": [" ", "◔", "◑", "◕", "●"],
+    "phases": ["○", "◔", "◑", "◕", "●"],
     "complete": "●",
     "incomplete": "○",
     "start": "(",

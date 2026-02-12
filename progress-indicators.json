@@ -13682,7 +13682,7 @@
       "interval_ms": 100,
       "notes": "Two dots rotating in opposite directions around the 8-dot braille cell, always 180° apart",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "braille-double-orbit",
         "license": "MIT",
@@ -13705,7 +13705,7 @@
       "interval_ms": 120,
       "notes": "Horizontal row of dots falling from top to bottom of the braille cell",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "braille-cascade",
         "license": "MIT",
@@ -13740,7 +13740,7 @@
       "interval_ms": 60,
       "notes": "Dots light up one by one in a clockwise spiral until full, then extinguish in the same order",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "braille-spiral",
         "license": "MIT",
@@ -13767,7 +13767,7 @@
       "interval_ms": 120,
       "notes": "Circle progressively fills from empty to full, then empties again. Uses Unicode pie-slice characters.",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "circle-fill",
         "license": "MIT",
@@ -13794,7 +13794,7 @@
       "interval_ms": 180,
       "notes": "Cycles through fundamental geometric shapes: circle, triangle, square, diamond, star and back",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "shape-shift",
         "license": "MIT",
@@ -13821,7 +13821,7 @@
       "interval_ms": 100,
       "notes": "Concentric circles pulsing outward and inward: dot, circle, bullseye, fisheye, filled",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "concentric-rings",
         "license": "MIT",
@@ -13844,7 +13844,7 @@
       "interval_ms": 120,
       "notes": "Solid triangles pointing up, right, down, left in clockwise rotation",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "triangle-spin",
         "license": "MIT",
@@ -13869,7 +13869,7 @@
       "interval_ms": 100,
       "notes": "A filled arrowhead bouncing back and forth among hollow ones",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "arrow-trail",
         "license": "MIT",
@@ -13900,7 +13900,7 @@
       "interval_ms": 180,
       "notes": "All twelve zodiac signs from Aries through Pisces",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "zodiac",
         "license": "MIT",
@@ -13925,7 +13925,7 @@
       "interval_ms": 150,
       "notes": "All six die faces cycling as if a die were tumbling",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "dice-roll",
         "license": "MIT",
@@ -13948,7 +13948,7 @@
       "interval_ms": 200,
       "notes": "Quarter note, eighth note, beamed eighth notes, beamed sixteenth notes",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "musical-notes",
         "license": "MIT",
@@ -13975,7 +13975,7 @@
       "interval_ms": 180,
       "notes": "Alchemical symbols for quintessence, air, fire, earth, water, aqua fortis, aqua regia, and bismuth ore",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "alchemical",
         "license": "MIT",
@@ -13996,7 +13996,7 @@
       "interval_ms": 500,
       "notes": "White and black hourglasses alternating, as if the hourglass is being flipped",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "hourglass",
         "license": "MIT",
@@ -14018,7 +14018,7 @@
       "interval_ms": 300,
       "notes": "Empty ballot box, check mark, then X mark—cycling through validation states",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "ballot-box",
         "license": "MIT",
@@ -14039,7 +14039,7 @@
       "interval_ms": 400,
       "notes": "Power symbol toggling between standby and on",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "power-toggle",
         "license": "MIT",
@@ -14070,7 +14070,7 @@
       "interval_ms": 200,
       "notes": "Full weather cycle from sunshine through storm and back",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "weather",
         "license": "MIT",
@@ -14093,7 +14093,7 @@
       "interval_ms": 400,
       "notes": "Seedling growing into a full tree: sprout, herb, potted plant, deciduous tree",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "growing-plant",
         "license": "MIT",
@@ -14116,7 +14116,7 @@
       "interval_ms": 400,
       "notes": "Metamorphosis: egg, caterpillar, cocoon, butterfly",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "butterfly-lifecycle",
         "license": "MIT",
@@ -14142,7 +14142,7 @@
       "interval_ms": 250,
       "notes": "A journey through space: rocket, ringed planet, star, milky way, flying saucer, crescent moon, earth",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "space-journey",
         "license": "MIT",
@@ -14167,7 +14167,7 @@
       "interval_ms": 100,
       "notes": "A sine wave scrolling through vertical block elements like an audio visualizer",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "sine-wave",
         "license": "MIT",
@@ -14194,7 +14194,7 @@
       "interval_ms": 80,
       "notes": "A single filled circle bouncing back and forth among hollow circles, like a chaser light",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "light-chase",
         "license": "MIT",
@@ -14220,7 +14220,7 @@
       "interval_ms": 80,
       "notes": "A bright core with fading shade trail scrolling across, like a comet",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "comet",
         "license": "MIT",
@@ -14247,7 +14247,7 @@
       "interval_ms": 100,
       "notes": "Newton's cradle: left ball swings in, transfers energy, right ball swings out and back",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "newtons-cradle",
         "license": "MIT",
@@ -14276,7 +14276,7 @@
       "interval_ms": 100,
       "notes": "A pendulum bob swinging back and forth beneath a pivot point",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "clock-pendulum",
         "license": "MIT",
@@ -14299,7 +14299,7 @@
       "interval_ms": 150,
       "notes": "Single dot pulsing from small to large and back: middle dot, bullet, black circle",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "dot-pulse",
         "license": "MIT",
@@ -14322,7 +14322,7 @@
       "interval_ms": 120,
       "notes": "A large dot cycling through three positions like an orbiting body",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "dot-orbit",
         "license": "MIT",
@@ -14345,7 +14345,7 @@
       "interval_ms": 120,
       "notes": "Rounded box-drawing corners rotating clockwise: top-left, top-right, bottom-right, bottom-left",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "rounded-corner-spin",
         "license": "MIT",
@@ -14368,7 +14368,7 @@
       "interval_ms": 100,
       "notes": "Double-line horizontal and vertical with box-drawing diagonals for a heavier spin",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "double-line-spin",
         "license": "MIT",
@@ -14391,7 +14391,7 @@
       "interval_ms": 120,
       "notes": "Box-drawing T-junctions rotating: top, right, bottom, left",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "t-junction-spin",
         "license": "MIT",
@@ -14418,7 +14418,7 @@
       "interval_ms": 180,
       "notes": "First eight runes of the Elder Futhark alphabet: fehu, uruz, thurisaz, ansuz, raido, kauna, gebo, wunjo",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "elder-futhark",
         "license": "MIT",
@@ -14445,7 +14445,7 @@
       "interval_ms": 150,
       "notes": "First eight lowercase Greek letters: alpha through theta",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "greek-letters",
         "license": "MIT",
@@ -14472,7 +14472,7 @@
       "interval_ms": 100,
       "notes": "Block shade characters fading in and out like breathing: light, medium, dark, full, then back",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "shade-breathe",
         "license": "MIT",
@@ -14495,7 +14495,7 @@
       "interval_ms": 120,
       "notes": "Half-block sliding clockwise: upper, right, lower, left",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "half-slide",
         "license": "MIT",
@@ -14515,7 +14515,7 @@
       },
       "notes": "Wavy fill for a fluid/liquid feel",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "tilde-wave",
         "license": "MIT",
@@ -14535,7 +14535,7 @@
       },
       "notes": "Colons marching over dots, subtle and compact",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "colon-march",
         "license": "MIT",
@@ -14557,7 +14557,7 @@
       },
       "notes": "Vertical pipes filling a bracketed bar",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "pipe-fill",
         "license": "MIT",
@@ -14577,7 +14577,7 @@
       },
       "notes": "Fisheye (filled circle in ring) and hollow circles",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "nested-circles",
         "license": "MIT",
@@ -14597,7 +14597,7 @@
       },
       "notes": "Filled and hollow diamond/lozenge shapes",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "lozenges",
         "license": "MIT",
@@ -14617,7 +14617,7 @@
       },
       "notes": "Beamed eighth notes (filled) and single eighth notes (empty)",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "music-bar",
         "license": "MIT",
@@ -14637,7 +14637,7 @@
       },
       "notes": "Black florette (filled) and white florette (empty)",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "flowers",
         "license": "MIT",
@@ -14657,7 +14657,7 @@
       },
       "notes": "Black four-pointed star (filled) and white four-pointed star (empty)",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "sparkles",
         "license": "MIT",
@@ -14678,7 +14678,7 @@
       },
       "notes": "Small right-pointing triangles with a larger head, pointing the direction of progress",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "arrows-bar",
         "license": "MIT",
@@ -14705,7 +14705,7 @@
       ],
       "notes": "Sub-character resolution using circle quadrant fills: empty, quarter, half, three-quarter, full",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "circle-phases",
         "license": "MIT",
@@ -14732,7 +14732,7 @@
       ],
       "notes": "Five-level shade progression: space, light shade, medium shade, dark shade, full block",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "shade-phases",
         "license": "MIT",
@@ -14752,7 +14752,7 @@
       },
       "notes": "Fire emoji (complete) melting ice emoji (remaining)",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "fire-and-ice",
         "license": "MIT",
@@ -14772,7 +14772,7 @@
       },
       "notes": "Lightning bolt (charged) and white small square (empty) for a charging battery feel",
       "source": {
-        "collection": "original/invented",
+        "collection": "right-round original designs",
         "url": "",
         "original_key": "battery-charge",
         "license": "MIT",
@@ -15212,7 +15212,7 @@
         "end": ")"
       },
       "phases": [
-        " ",
+        "○",
         "◔",
         "◑",
         "◕",
