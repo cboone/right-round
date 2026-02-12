@@ -1,0 +1,140 @@
+{
+  "_meta": {
+    "source": "Silejonu/bash_loading_animations",
+    "url": "https://github.com/Silejonu/bash_loading_animations",
+    "raw_url": "https://raw.githubusercontent.com/Silejonu/bash_loading_animations/main/bash_loading_animations.sh",
+    "license": "GPL-3.0",
+    "license_url": "https://github.com/Silejonu/bash_loading_animations/blob/main/LICENSE",
+    "description": "Ready-to-use loading animations in ASCII and UTF-8 for easy integration into Bash scripts. Each entry has an interval (seconds) as first element, then frame strings.",
+    "spinner_count": 38,
+    "retrieved": "2026-02-12"
+  },
+  "_ascii": {
+    "classic": {
+      "interval_sec": 0.25,
+      "frames": ["-", "\\", "|", "/"]
+    },
+    "box": {
+      "interval_sec": 0.2,
+      "frames": ["┤", "┴", "├", "┬"]
+    },
+    "bubble": {
+      "interval_sec": 0.6,
+      "frames": ["·", "o", "O", "O", "o", "·"]
+    },
+    "breathe": {
+      "interval_sec": 0.9,
+      "frames": ["  ()  ", " (  ) ", "(    )", " (  ) "]
+    },
+    "growing_dots": {
+      "interval_sec": 0.5,
+      "frames": [".  ", ".. ", "...", ".. ", ".  ", "   "]
+    },
+    "passing_dots": {
+      "interval_sec": 0.25,
+      "frames": [".  ", ".. ", "...", " ..", "  .", "   "]
+    },
+    "metro": {
+      "interval_sec": 0.2,
+      "frames": ["[    ]", "[=   ]", "[==  ]", "[=== ]", "[ ===]", "[  ==]", "[   =]"]
+    },
+    "snake": {
+      "interval_sec": 0.4,
+      "frames": ["[=     ]", "[~<    ]", "[~~=   ]", "[~~~<  ]", "[ ~~~= ]", "[  ~~~<]", "[   ~~~]", "[    ~~]", "[     ~]", "[      ]"]
+    }
+  },
+  "_utf8": {
+    "classic_utf8": {
+      "interval_sec": 0.25,
+      "frames": ["\u2014", "\\", "|", "/"]
+    },
+    "bounce": {
+      "interval_sec": 0.3,
+      "frames": [".", "\u00b7", "\u02d9", "\u00b7"]
+    },
+    "vertical_block": {
+      "interval_sec": 0.25,
+      "frames": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█", "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁"]
+    },
+    "horizontal_block": {
+      "interval_sec": 0.25,
+      "frames": ["▏", "▎", "▍", "▌", "▋", "▊", "▉", "▉", "▊", "▋", "▌", "▍", "▎", "▏"]
+    },
+    "quarter": {
+      "interval_sec": 0.25,
+      "frames": ["▖", "▘", "▝", "▗"]
+    },
+    "triangle": {
+      "interval_sec": 0.45,
+      "frames": ["◢", "◣", "◤", "◥"]
+    },
+    "semi_circle": {
+      "interval_sec": 0.1,
+      "frames": ["◐", "◓", "◑", "◒"]
+    },
+    "rotating_eyes": {
+      "interval_sec": 0.4,
+      "frames": ["◡◡", "⊙⊙", "⊙⊙", "◠◠"]
+    },
+    "firework": {
+      "interval_sec": 0.4,
+      "frames": ["⢀", "⠠", "⠐", "⠈", "*", "*", " "]
+    },
+    "braille": {
+      "interval_sec": 0.2,
+      "frames": ["⠁", "⠂", "⠄", "⡀", "⢀", "⠠", "⠐", "⠈"]
+    },
+    "braille_whitespace": {
+      "interval_sec": 0.2,
+      "frames": ["⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷"]
+    },
+    "trigram": {
+      "interval_sec": 0.25,
+      "frames": ["☰", "☱", "☳", "☶", "☴"]
+    },
+    "arrow": {
+      "interval_sec": 0.15,
+      "frames": ["↑", "↗", "→", "↘", "↓", "↙", "←", "↖", "↑", "↗", "→", "↘", "↓"]
+    },
+    "bouncing_ball": {
+      "interval_sec": 0.4,
+      "frames": ["(●     )", "( ●    )", "(  ●   )", "(   ●  )", "(    ● )", "(     ●)", "(    ● )", "(   ●  )", "(  ●   )", "( ●    )"]
+    },
+    "big_dot": {
+      "interval_sec": 0.7,
+      "frames": ["∙∙∙", "●∙∙", "∙●∙", "∙∙●"]
+    },
+    "earth": {
+      "interval_sec": 0.45,
+      "frames": ["🌍", "🌎", "🌏"]
+    },
+    "clock": {
+      "interval_sec": 0.2,
+      "frames": ["🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"]
+    },
+    "moon": {
+      "interval_sec": 0.8,
+      "frames": ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"]
+    },
+    "orange_pulse": {
+      "interval_sec": 0.35,
+      "frames": ["🔸", "🔶", "🟠", "🟠", "🔶"]
+    },
+    "blue_pulse": {
+      "interval_sec": 0.35,
+      "frames": ["🔹", "🔷", "🔵", "🔵", "🔷"]
+    },
+    "blink": {
+      "interval_sec": 0.25,
+      "frames": ["😐", "😐", "😐", "😐", "😐", "😐", "😐", "😐", "😐", "😑"]
+    },
+    "sick": {
+      "interval_sec": 0.9,
+      "frames": ["🤢", "🤢", "🤮"]
+    },
+    "monkey": {
+      "interval_sec": 0.4,
+      "frames": ["🙉", "🙈", "🙊", "🙈"]
+    }
+  }
+}
