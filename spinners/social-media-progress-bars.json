@@ -1,0 +1,100 @@
+{
+  "_meta": {
+    "source": "Various social media / copy-paste progress bar collections",
+    "references": [
+      "https://copy-paste.net/en/loading-bar.php",
+      "https://emojicombos.com/ascii-progress-bar",
+      "https://emojicombos.com/loading-bar",
+      "https://emojimagic.io/progress-bar",
+      "https://textgenerator.net/patterns/loading-symbol",
+      "https://thecoolsymbols.com/loading.html",
+      "https://www.symbolselect.com/loading-symbols/"
+    ],
+    "license": "Public domain Unicode characters; compilations have no stated license",
+    "description": "Progress bar character patterns commonly shared on social media (Discord, TikTok, Instagram, etc). These are static text representations, not animated. They use standard Unicode characters that render on all modern platforms.",
+    "retrieved": "2026-02-12"
+  },
+
+  "block_styles": {
+    "description": "Progress bars using block elements",
+    "examples_10_wide": {
+      "0%":   "░░░░░░░░░░",
+      "10%":  "█░░░░░░░░░",
+      "20%":  "██░░░░░░░░",
+      "30%":  "███░░░░░░░",
+      "40%":  "████░░░░░░",
+      "50%":  "█████░░░░░",
+      "60%":  "██████░░░░",
+      "70%":  "███████░░░",
+      "80%":  "████████░░",
+      "90%":  "█████████░",
+      "100%": "██████████"
+    },
+    "characters": { "filled": "█", "empty": "░" }
+  },
+
+  "shade_gradient": {
+    "description": "Shade gradient style with softer appearance",
+    "characters": { "filled": "▓", "empty": "░" },
+    "example": "▓▓▓▓▓▓░░░░"
+  },
+
+  "bracketed_block": {
+    "description": "Block bars contained within brackets",
+    "characters": { "filled": "█", "empty": "░", "start": "[", "end": "]" },
+    "example": "[████████░░]"
+  },
+
+  "ascii_arrow": {
+    "description": "Classic terminal aesthetic",
+    "characters": { "filled": "=", "head": ">", "empty": " ", "start": "[", "end": "]" },
+    "example": "[=========> ]"
+  },
+
+  "circle_dots": {
+    "description": "Filled and empty circles",
+    "characters": { "filled": "●", "empty": "○" },
+    "example": "●●●●●○○○○○"
+  },
+
+  "square_dots": {
+    "description": "Filled and empty squares",
+    "characters": { "filled": "■", "empty": "□" },
+    "example": "■■■■■□□□□□"
+  },
+
+  "parallelogram": {
+    "description": "Filled and outlined parallelograms",
+    "characters": { "filled": "▰", "empty": "▱" },
+    "example": "▰▰▰▰▰▱▱▱▱▱"
+  },
+
+  "rectangles": {
+    "description": "Filled and empty vertical rectangles",
+    "characters": { "filled": "▮", "empty": "▯" },
+    "example": "▮▮▮▮▮▯▯▯▯▯"
+  },
+
+  "emoji_squares": {
+    "description": "Emoji colored square progress bars",
+    "green_white": { "filled": "🟩", "empty": "⬜", "example": "🟩🟩🟩⬜⬜" },
+    "red_white": { "filled": "🟥", "empty": "⬜", "example": "🟥🟥🟥⬜⬜" },
+    "blue_white": { "filled": "🟦", "empty": "⬜", "example": "🟦🟦🟦⬜⬜" },
+    "orange_white": { "filled": "🟧", "empty": "⬜", "example": "🟧🟧🟧⬜⬜" },
+    "purple_white": { "filled": "🟪", "empty": "⬜", "example": "🟪🟪🟪⬜⬜" },
+    "black_white": { "filled": "⬛", "empty": "⬜", "example": "⬛⬛⬛⬜⬜" }
+  },
+
+  "emoji_circles": {
+    "description": "Emoji circle progress",
+    "characters": { "filled": "⚫", "empty": "⚪" },
+    "example": "⚫⚫⚫⚪⚪"
+  },
+
+  "star_hearts_diamond": {
+    "description": "Decorative styles using stars, hearts, or diamonds",
+    "stars":    { "filled": "★", "empty": "☆", "example": "★★★☆☆" },
+    "hearts":   { "filled": "♥", "empty": "♡", "example": "♥♥♥♡♡" },
+    "diamonds": { "filled": "♦", "empty": "♢", "example": "♦♦♦♢♢" }
+  }
+}
