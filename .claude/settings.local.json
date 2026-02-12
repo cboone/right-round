@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(git -C /Users/hpg/Development/right-round__worktrees/feature-create-demo-app log --oneline -20)",
-      "Bash(python3:*)"
-    ]
-  }
-}
