@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "source": "npkgz/cli-progress",
+    "url": "https://github.com/npkgz/cli-progress",
+    "npm_url": "https://www.npmjs.com/package/cli-progress",
+    "license": "MIT",
+    "license_url": "https://github.com/npkgz/cli-progress/blob/master/LICENSE.md",
+    "description": "Node.js terminal progress bar library with 4 built-in presets defining bar character pairs. Supports single and multi-bar modes.",
+    "preset_count": 4,
+    "retrieved": "2026-02-12"
+  },
+  "legacy": {
+    "barCompleteChar": "=",
+    "barIncompleteChar": "-",
+    "format": "progress [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}"
+  },
+  "shades_classic": {
+    "barCompleteChar": "█",
+    "barCompleteChar_codepoint": "U+2588",
+    "barIncompleteChar": "░",
+    "barIncompleteChar_codepoint": "U+2591",
+    "format": " {bar} {percentage}% | ETA: {eta}s | {value}/{total}"
+  },
+  "shades_grey": {
+    "barCompleteChar": "█",
+    "barCompleteChar_codepoint": "U+2588",
+    "barIncompleteChar": "░",
+    "barIncompleteChar_codepoint": "U+2591",
+    "format": " \u001b[90m{bar}\u001b[0m {percentage}% | ETA: {eta}s | {value}/{total}",
+    "notes": "Same characters as shades_classic but with ANSI grey coloring"
+  },
+  "rect": {
+    "barCompleteChar": "■",
+    "barCompleteChar_codepoint": "U+25A0",
+    "barIncompleteChar": " ",
+    "format": " {bar}■ {percentage}% | ETA: {eta}s | {value}/{total}"
+  }
+}
