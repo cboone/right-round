@@ -36,6 +36,7 @@ func newListModel(groups []data.Group, anim *animEngine) listModel {
 		anim:   anim,
 	}
 	m.rows = m.buildRows(groups, "")
+	m.moveToNextEntry(1)
 	return m
 }
 
