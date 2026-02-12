@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "source": "cheggaaa/pb",
+    "url": "https://github.com/cheggaaa/pb",
+    "license": "BSD-3-Clause",
+    "license_url": "https://github.com/cheggaaa/pb/blob/master/LICENSE",
+    "description": "Go console progress bar library. v1 uses a simple FORMAT string, v3 uses Go text/template with a bar function accepting 5 character arguments: start, fill, current, empty, end.",
+    "retrieved": "2026-02-12"
+  },
+  "v1": {
+    "default_format": "[=>-]",
+    "format_meaning": {
+      "char_1": "bar start: [",
+      "char_2": "bar fill: =",
+      "char_3": "current position / head: >",
+      "char_4": "bar empty: -",
+      "char_5": "bar end: ]"
+    }
+  },
+  "v3": {
+    "template_bar_function": "{{ bar . \"<\" \"-\" \".\" \".\" \">\" }}",
+    "arguments": ["start", "fill", "current", "empty", "end"],
+    "builtin_templates": ["Default", "Simple", "Full"],
+    "notes": "The current position can be animated using the cycle function, e.g. (cycle . \"↖\" \"↗\" \"↘\" \"↙\")"
+  },
+  "common_character_sets": {
+    "ascii": { "start": "[", "fill": "=", "head": ">", "empty": "-", "end": "]" },
+    "unicode_block": { "start": "", "fill": "█", "head": "", "empty": "░", "end": "" },
+    "angle": { "start": "<", "fill": "-", "head": "", "empty": ".", "end": ">" }
+  }
+}
