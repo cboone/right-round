@@ -94,12 +94,6 @@
     ],
     "notes": "Scrolling wave that reads like a moving signal trace."
   },
-  "emojiWeatherFront": {
-    "group": "emoji",
-    "interval": 140,
-    "frames": ["🌤 ", "⛅ ", "🌥 ", "☁️ ", "🌧 ", "⛈ ", "🌧 ", "☁️ ", "🌥 ", "⛅ "],
-    "notes": "Cycles through clear-to-storm-to-clear weather states."
-  },
   "noveltyCircuitProbe": {
     "group": "novelty",
     "interval": 90,
