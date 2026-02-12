@@ -1,0 +1,17 @@
+{
+  "_meta": {
+    "source": "odino.org - Command line spinners: the magic tale of modern typewriters and terminal movies",
+    "url": "https://odino.org/command-line-spinners-the-amazing-tale-of-modern-typewriters-and-digital-movies/",
+    "license": "Blog post, no explicit code license",
+    "description": "Spinner character sets from a blog post explaining how CLI spinners work, with examples in Go. Notable for the quadrant block spinner.",
+    "retrieved": "2026-02-12"
+  },
+  "braille_dots": {
+    "interval_ms": 50,
+    "frames": ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+  },
+  "quadrant_blocks": {
+    "note": "Interactive demo spinner from the blog",
+    "frames": ["▛", "▜", "▟", "▙"]
+  }
+}
