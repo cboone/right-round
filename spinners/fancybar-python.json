@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "source": "jenca-adam/fancybar",
+    "url": "https://github.com/jenca-adam/fancybar",
+    "pypi_url": "https://pypi.org/project/fancybar/",
+    "license": "MIT",
+    "license_url": "https://github.com/jenca-adam/fancybar/blob/master/LICENSE",
+    "description": "Highly customizable Python terminal progress bar with 6 named bar types. Some use color, some use Unicode, and the gradient type uses truecolor.",
+    "bar_type_count": 6,
+    "retrieved": "2026-02-12"
+  },
+  "space": {
+    "char": " ",
+    "filler": " ",
+    "notes": "Colored bar: background color provides the visual fill. Requires colored terminal."
+  },
+  "plus_minus": {
+    "char": "+",
+    "filler": "-",
+    "notes": "Default colors: green fill, red empty"
+  },
+  "hash": {
+    "char": "#",
+    "filler": " ",
+    "notes": "Works on any terminal"
+  },
+  "triangle": {
+    "char": "▶",
+    "char_codepoint": "U+25B6",
+    "filler": "▷",
+    "filler_codepoint": "U+25B7",
+    "notes": "Requires Unicode terminal"
+  },
+  "dot": {
+    "char": ".",
+    "filler": " ",
+    "notes": "Works on any terminal"
+  },
+  "gradient": {
+    "char": "▌",
+    "char_codepoint": "U+258C",
+    "notes": "Color shifts from start_color to end_color. Requires truecolor terminal and Unicode support."
+  }
+}
