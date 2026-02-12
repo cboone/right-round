@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+#
+# gif2gif - Convert an animated GIF into an ASCII art animated GIF
+#
+# Dependencies: ffmpeg, chafa, textimg, imagemagick (convert)
+#
+# Usage: gif2gif input.gif [output.gif] [WxH]
+#
+set -euo pipefail
+
+INPUT="${1:?Usage: gif2gif input.gif [output.gif] [WxH]}"
+OUTPUT="${2:-ascii_output.gif}"
+SIZE="${3:-80}"
+
+CHAFA_SIZE="$SIZE"
+
+# Verify dependencies
+for cmd in ffmpeg ffprobe chafa textimg; do
+  if ! command -v "$cmd" &>/dev/null; then
+    echo "Error: '$cmd' is not installed." >&2
+    exit 1
+  fi
+done
+
+# ImageMagick 7 uses 'magick', older versions use 'convert'
+if command -v magick &>/dev/null; then
+  MAGICK="magick"
+elif command -v convert &>/dev/null; then
+  MAGICK="convert"
+else
+  echo "Error: ImageMagick is not installed (need 'magick' or 'convert')." >&2
+  exit 1
+fi
+
+WORKDIR=$(mktemp -d)
+trap 'rm -rf "$WORKDIR"' EXIT
+
+echo "Working in $WORKDIR"
+
+# 1. Extract frame delay (centiseconds) from the source GIF
+#    GIFs store delay per frame; grab the first one as a baseline.
+DELAY=$(ffprobe -v error -select_streams v:0 \
+  -show_entries stream=r_frame_rate \
+  -of csv=p=0 "$INPUT" | awk -F'/' '{
+        if ($2 > 0) printf "%.0f", 100 / ($1 / $2);
+        else printf "10";
+    }')
+echo "Frame delay: ${DELAY} centiseconds"
+
+# 2. Extract frames as individual PNGs
+echo "Extracting frames..."
+ffmpeg -v warning -i "$INPUT" -fps_mode vfr "$WORKDIR/frame_%04d.png"
+
+FRAME_COUNT=$(ls "$WORKDIR"/frame_*.png 2>/dev/null | wc -l)
+echo "Extracted $FRAME_COUNT frames"
+
+if [[ "$FRAME_COUNT" -eq 0 ]]; then
+  echo "Error: No frames extracted from $INPUT" >&2
+  exit 1
+fi
+
+# 3. Convert each frame: image -> ANSI art -> PNG
+echo "Converting frames to ASCII art..."
+n=0
+for frame in "$WORKDIR"/frame_*.png; do
+  base=$(basename "$frame" .png)
+  ascii_png="$WORKDIR/${base}_ascii.png"
+
+  # Chafa -> ANSI text -> PNG via textimg
+  chafa \
+    --color-extractor median \
+    --color-space=din99d \
+    --colors 256 \
+    --fill braille \
+    --format=symbols \
+    --optimize 0 \
+    --polite on \
+    --size="${CHAFA_SIZE}" \
+    --symbols ascii \
+    --work 9 \
+    "$frame" |
+    textimg \
+      --fontfile /Users/hpg/Library/Fonts/MonaspaceArgonNF-Medium.otf \
+      --fontsize 20 \
+      --out "$ascii_png"
+
+  n=$((n + 1))
+  printf "\r  Frame %d / %d" "$n" "$FRAME_COUNT"
+done
+echo ""
+
+# 4. Reassemble into an animated GIF
+echo "Assembling animated GIF..."
+"$MAGICK" \
+  -delay "$DELAY" \
+  -loop 0 \
+  "$WORKDIR"/frame_*_ascii.png \
+  "$OUTPUT"
+
+echo "Done: $OUTPUT ($(du -h "$OUTPUT" | cut -f1))"
