@@ -3,11 +3,12 @@ package tui
 import (
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
 	"github.com/cboone/right-round/internal/data"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 const tickInterval = 16 * time.Millisecond // ~60 FPS
+const indeterminateInterval = 80 * time.Millisecond
 
 type animTickMsg time.Time
 
@@ -40,17 +41,31 @@ func tick() tea.Cmd {
 func (a *animEngine) advance(elapsed time.Duration, visibleIDs []string, entries map[string]*data.Entry) {
 	for _, id := range visibleIDs {
 		entry, ok := entries[id]
-		if !ok || entry.Type != "spinner" || len(entry.Frames) == 0 {
+		if !ok {
 			continue
 		}
 
 		state := a.getOrCreate(id)
 		state.accumulator += elapsed
 
-		interval := entryInterval(entry)
-		for state.accumulator >= interval {
-			state.frameIndex = (state.frameIndex + 1) % len(entry.Frames)
-			state.accumulator -= interval
+		switch entry.Type {
+		case "spinner":
+			if len(entry.Frames) == 0 {
+				continue
+			}
+			interval := entryInterval(entry)
+			for state.accumulator >= interval {
+				state.frameIndex = (state.frameIndex + 1) % len(entry.Frames)
+				state.accumulator -= interval
+			}
+		case "progress_bar":
+			if entry.Indeterminate == nil || *entry.Indeterminate == "" {
+				continue
+			}
+			for state.accumulator >= indeterminateInterval {
+				state.frameIndex++
+				state.accumulator -= indeterminateInterval
+			}
 		}
 	}
 }
@@ -62,6 +77,10 @@ func (a *animEngine) currentFrame(id string, frames []string) string {
 	}
 	state := a.getOrCreate(id)
 	return frames[state.frameIndex%len(frames)]
+}
+
+func (a *animEngine) currentOffset(id string) int {
+	return a.getOrCreate(id).frameIndex
 }
 
 func (a *animEngine) getOrCreate(id string) *animState {

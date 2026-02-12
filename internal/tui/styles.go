@@ -44,8 +44,6 @@ var (
 				Bold(true).
 				Foreground(accentColor)
 
-	detailValueStyle = lipgloss.NewStyle()
-
 	// Help bar
 	helpStyle = lipgloss.NewStyle().
 			Foreground(subtleColor)

@@ -131,6 +131,40 @@ func TestAnimEngine_NonSpinnerSkipped(t *testing.T) {
 	engine.advance(100*time.Millisecond, []string{"bar"}, entries)
 }
 
+func TestAnimEngine_IndeterminateProgressBarAdvance(t *testing.T) {
+	engine := newAnimEngine()
+	pattern := "<=>"
+	entries := map[string]*data.Entry{
+		"bar": {
+			ID:            "bar",
+			Type:          "progress_bar",
+			Indeterminate: &pattern,
+		},
+	}
+
+	assert.Equal(t, 0, engine.currentOffset("bar"))
+	engine.advance(80*time.Millisecond, []string{"bar"}, entries)
+	assert.Equal(t, 1, engine.currentOffset("bar"))
+
+	engine.advance(160*time.Millisecond, []string{"bar"}, entries)
+	assert.Equal(t, 3, engine.currentOffset("bar"))
+}
+
+func TestAnimEngine_IndeterminateProgressBarEmptyPatternSkipped(t *testing.T) {
+	engine := newAnimEngine()
+	pattern := ""
+	entries := map[string]*data.Entry{
+		"bar": {
+			ID:            "bar",
+			Type:          "progress_bar",
+			Indeterminate: &pattern,
+		},
+	}
+
+	engine.advance(500*time.Millisecond, []string{"bar"}, entries)
+	assert.Equal(t, 0, engine.currentOffset("bar"))
+}
+
 func TestEntryInterval(t *testing.T) {
 	tests := []struct {
 		name     string

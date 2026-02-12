@@ -4,28 +4,27 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/charmbracelet/lipgloss"
 	"github.com/cboone/right-round/internal/data"
+	"github.com/charmbracelet/lipgloss"
 )
 
 // listRow represents a single renderable row in the list panel.
 type listRow struct {
 	isHeader bool
-	header   string    // non-empty for group headers
-	count    int       // entry count for group headers
+	header   string              // non-empty for group headers
+	count    int                 // entry count for group headers
 	entry    *data.EntryEnvelope // non-nil for entry rows
 }
 
 // listModel manages the grouped list panel.
 type listModel struct {
-	groups    []data.Group
-	rows      []listRow
-	cursor    int
-	offset    int
-	height    int
-	width     int
-	filter    string
-	filtering bool
+	groups []data.Group
+	rows   []listRow
+	cursor int
+	offset int
+	height int
+	width  int
+	filter string
 
 	anim *animEngine
 }
@@ -218,6 +217,9 @@ func (m *listModel) view() string {
 
 	previewColWidth := 8
 	nameWidth := m.width - previewColWidth - 4 // 4 for cursor + padding
+	if nameWidth < 1 {
+		nameWidth = 1
+	}
 
 	var b strings.Builder
 	end := m.offset + m.height
@@ -237,17 +239,15 @@ func (m *listModel) view() string {
 		entry := row.entry
 		selected := i == m.cursor
 		name := entry.Entry.Name
-		if lipgloss.Width(name) > nameWidth {
-			name = name[:nameWidth-1] + "..."
-		}
+		name = truncateWithEllipsis(name, nameWidth)
 
 		var preview string
 		if entry.Entry.Type == "spinner" {
 			frame := m.anim.currentFrame(entry.Entry.ID, entry.Entry.Frames)
-			if lipgloss.Width(frame) > previewColWidth {
-				frame = frame[:previewColWidth]
-			}
+			frame = truncateToWidth(frame, previewColWidth)
 			preview = frame
+		} else if entry.Entry.Indeterminate != nil && *entry.Entry.Indeterminate != "" {
+			preview = renderIndeterminate(*entry.Entry.Indeterminate, previewColWidth, m.anim.currentOffset(entry.Entry.ID))
 		} else {
 			preview = renderStaticBar(entry.Entry.Characters, entry.Entry.Phases, previewColWidth)
 		}
@@ -268,5 +268,42 @@ func (m *listModel) view() string {
 		b.WriteString(cursor + nameStr + strings.Repeat(" ", padding) + preview + "\n")
 	}
 
+	return b.String()
+}
+
+func truncateWithEllipsis(s string, maxWidth int) string {
+	if maxWidth <= 0 {
+		return ""
+	}
+	if lipgloss.Width(s) <= maxWidth {
+		return s
+	}
+	if maxWidth <= 3 {
+		return strings.Repeat(".", maxWidth)
+	}
+
+	targetWidth := maxWidth - 3
+	truncated := truncateToWidth(s, targetWidth)
+	return truncated + "..."
+}
+
+func truncateToWidth(s string, maxWidth int) string {
+	if maxWidth <= 0 {
+		return ""
+	}
+	if lipgloss.Width(s) <= maxWidth {
+		return s
+	}
+
+	var b strings.Builder
+	used := 0
+	for _, r := range s {
+		rw := lipgloss.Width(string(r))
+		if used+rw > maxWidth {
+			break
+		}
+		b.WriteRune(r)
+		used += rw
+	}
 	return b.String()
 }

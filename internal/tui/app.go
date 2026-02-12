@@ -5,10 +5,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cboone/right-round/internal/data"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/cboone/right-round/internal/data"
 )
 
 const wideThreshold = 100
@@ -185,28 +185,28 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		if m.focus == focusList {
 			m.list.moveUp()
 		} else {
-			m.detail.viewport.LineUp(1)
+			m.detail.viewport.ScrollUp(1)
 		}
 
 	case matchKey(msg, keys.Down):
 		if m.focus == focusList {
 			m.list.moveDown()
 		} else {
-			m.detail.viewport.LineDown(1)
+			m.detail.viewport.ScrollDown(1)
 		}
 
 	case matchKey(msg, keys.PageUp):
 		if m.focus == focusList {
 			m.list.pageUp()
 		} else {
-			m.detail.viewport.HalfViewUp()
+			m.detail.viewport.HalfPageUp()
 		}
 
 	case matchKey(msg, keys.PageDown):
 		if m.focus == focusList {
 			m.list.pageDown()
 		} else {
-			m.detail.viewport.HalfViewDown()
+			m.detail.viewport.HalfPageDown()
 		}
 
 	case matchKey(msg, keys.Home):

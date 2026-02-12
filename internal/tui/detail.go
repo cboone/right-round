@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/charmbracelet/bubbles/viewport"
 	"github.com/cboone/right-round/internal/data"
+	"github.com/charmbracelet/bubbles/viewport"
 )
 
 type detailModel struct {
@@ -32,7 +32,7 @@ func (m *detailModel) setEntry(entry *data.EntryEnvelope) {
 func (m *detailModel) setSize(width, height int) {
 	m.width = width
 	m.height = height
-	m.viewport.Width = width - 2  // border padding
+	m.viewport.Width = width - 2 // border padding
 	m.viewport.Height = height - 2
 }
 
@@ -80,6 +80,11 @@ func (m *detailModel) updateContent() {
 			b.WriteString(fmt.Sprintf("  %3.0f%% %s\n", pct*100, bar))
 		}
 
+		if e.Indeterminate != nil && *e.Indeterminate != "" {
+			preview := renderIndeterminate(*e.Indeterminate, barWidth, m.anim.currentOffset(e.ID))
+			b.WriteString("\n" + detailLabelStyle.Render("Indeterminate preview: ") + preview + "\n")
+		}
+
 		if e.Characters != nil {
 			b.WriteString("\n" + detailLabelStyle.Render("Characters:") + "\n")
 			b.WriteString(fmt.Sprintf("  fill: %q  empty: %q", e.Characters.Fill, e.Characters.Empty))
@@ -100,7 +105,7 @@ func (m *detailModel) updateContent() {
 		}
 
 		if e.Indeterminate != nil {
-			b.WriteString(detailLabelStyle.Render("Indeterminate: ") + *e.Indeterminate + "\n")
+			b.WriteString(detailLabelStyle.Render("Indeterminate pattern: ") + *e.Indeterminate + "\n")
 		}
 	}
 
