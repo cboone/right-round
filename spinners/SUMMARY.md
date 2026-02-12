@@ -107,6 +107,16 @@ Collected on 2026-02-12. No deduplication has been performed on the per-source f
 - **License:** Blog post (no explicit code license)
 - **Items:** 2 sets (including quadrant block spinner)
 
+### right-round-invented.json
+
+- **Source:** In-repo original designs
+- **License:** MIT (repository license)
+- **Items:** 13 spinner sets, 6 progress bar styles
+- **Notes:** Original designs created to cover every spinner group (braille,
+  line, dot, block, geometric, arrow, toggle, bounce, scroll, emoji, novelty,
+  text, symbol) and every progress bar group (ascii, block, geometric,
+  decorative, phased, emoji) used by this collection taxonomy.
+
 ## Progress Bar Character Collections
 
 ### unicode-progress-bar-characters.json
@@ -291,5 +301,5 @@ This collection uses characters from these Unicode blocks:
 
 ## File Count
 
-- **25 collection files** (13 spinner, 11 progress bar, 1 protocol spec)
+- **26 collection files** (13 spinner, 11 progress bar, 1 mixed, 1 protocol spec)
 - **1 summary document** (this file)
