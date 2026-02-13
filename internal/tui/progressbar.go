@@ -60,8 +60,16 @@ func renderProgressBar(chars *data.BarCharacters, phases []string, pct float64, 
 
 	// Head only renders at the advancing boundary (not at 0% or 100%)
 	hasHead := chars.Head != nil && fillCells > 0 && fillCells < innerWidth
+	headWidth := 0
 	if hasHead {
-		fillCells--
+		headWidth = lipgloss.Width(*chars.Head)
+		if headWidth < 1 {
+			headWidth = 1
+		}
+		fillCells -= headWidth
+		if fillCells < 0 {
+			fillCells = 0
+		}
 	}
 
 	// Fill portion

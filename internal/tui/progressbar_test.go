@@ -99,6 +99,14 @@ func TestRenderStaticBar(t *testing.T) {
 	assert.Equal(t, "####------", bar)
 }
 
+func TestRenderProgressBar_MultiCellHead(t *testing.T) {
+	chars := &data.BarCharacters{Fill: "=", Empty: "-", Head: strPtr("=>")}
+	bar := renderProgressBar(chars, nil, 0.5, 10)
+	// Head "=>" is 2 cells; total should still be 10 cells
+	assert.Equal(t, 10, lipgloss.Width(bar))
+	assert.Contains(t, bar, "=>")
+}
+
 func TestRenderProgressBar_UnicodeWidth(t *testing.T) {
 	tests := []struct {
 		name   string

@@ -296,6 +296,9 @@ func (m *Model) updateLayout() {
 		helpHeight = 2
 	}
 	contentHeight := m.height - 2 - helpHeight
+	if contentHeight < 1 {
+		contentHeight = 1
+	}
 
 	if m.width >= wideThreshold {
 		listWidth := m.width * 40 / 100

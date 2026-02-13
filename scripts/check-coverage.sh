@@ -16,7 +16,7 @@ check_threshold() {
 
     local result
     result=$(go tool cover -func="$COVERAGE_FILE" \
-        | { grep "$pattern" || true; } \
+        | { grep -F "$pattern" || true; } \
         | awk '{print $NF}' \
         | sed 's/%//' \
         | awk '{sum += $1; count++} END {printf "%d %.1f", count, (count > 0 ? sum/count : 0)}')

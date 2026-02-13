@@ -294,6 +294,19 @@ func TestModel_StatusMessage(t *testing.T) {
 	assert.Contains(t, view, "Copied to clipboard!")
 }
 
+func TestModel_SmallTerminalHeight(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+
+	// Simulate very small terminal (height=2 yields contentHeight=2-2-1=-1 unclamped)
+	updated, _ := m.Update(tea.WindowSizeMsg{Width: 80, Height: 2})
+	m = updated.(Model)
+
+	assert.Equal(t, 2, m.height)
+	// Layout should not panic and list height should be at least 1
+	assert.GreaterOrEqual(t, m.list.height, 1)
+}
+
 func TestModel_Init(t *testing.T) {
 	grouped := makeTestGroupedEntries()
 	m := New(grouped, "", "")
