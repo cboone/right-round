@@ -21,15 +21,15 @@ func TestLoadCatalog_EmbeddedData(t *testing.T) {
 	for _, g := range grouped.SpinnerGroups {
 		totalSpinners += len(g.Entries)
 	}
-	assert.Equal(t, 333, totalSpinners)
+	assert.Equal(t, 378, totalSpinners)
 
 	totalBars := 0
 	for _, g := range grouped.ProgressBarGroups {
 		totalBars += len(g.Entries)
 	}
-	assert.Equal(t, 100, totalBars)
+	assert.Equal(t, 119, totalBars)
 
-	assert.Equal(t, 433, len(grouped.AllEntries))
+	assert.Equal(t, 497, len(grouped.AllEntries))
 }
 
 func TestLoadCatalog_GroupOrdering(t *testing.T) {
