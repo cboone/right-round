@@ -3,36 +3,36 @@
   "generated": "2026-02-12",
   "description": "Consolidated collection of terminal progress indicators: spinners, progress bar character sets, and related animation data. Collected from open-source libraries, reference documents, gists, and blog posts across multiple programming language ecosystems.",
   "stats": {
-    "total_entries": 433,
-    "spinners": 333,
-    "progress_bars": 100,
+    "total_entries": 497,
+    "spinners": 378,
+    "progress_bars": 119,
     "deduplicated_entries": 86,
     "duplicates_removed": 180,
-    "original_total_before_dedup": 613,
+    "original_total_before_dedup": 677,
     "exceptions": 6,
     "source_collections": 26,
     "spinner_groups": {
-      "braille": 54,
-      "bounce": 41,
-      "scroll": 34,
-      "emoji": 34,
-      "block": 30,
-      "line": 28,
-      "symbol": 25,
-      "geometric": 24,
-      "toggle": 23,
-      "arrow": 15,
-      "dot": 9,
-      "novelty": 8,
-      "text": 8
+      "braille": 58,
+      "bounce": 43,
+      "scroll": 38,
+      "emoji": 38,
+      "line": 32,
+      "block": 32,
+      "symbol": 30,
+      "geometric": 28,
+      "toggle": 27,
+      "arrow": 18,
+      "dot": 12,
+      "novelty": 11,
+      "text": 11
     },
     "progress_bar_groups": {
-      "geometric": 28,
-      "phased": 21,
-      "ascii": 19,
-      "decorative": 16,
-      "block": 11,
-      "emoji": 5
+      "geometric": 31,
+      "phased": 24,
+      "ascii": 23,
+      "decorative": 21,
+      "block": 12,
+      "emoji": 8
     }
   },
   "entry_schema": {
@@ -13665,6 +13665,1590 @@
         ],
         "original_key": "emoji_squares/purple_white",
         "license": "Public domain Unicode characters; compilations have no stated license",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "original/braille-double-orbit",
+      "name": "braille double orbit",
+      "type": "spinner",
+      "group": "braille",
+      "frames": [
+        "⢁",
+        "⡈",
+        "⠔",
+        "⠢"
+      ],
+      "interval_ms": 100,
+      "notes": "Two dots rotating in opposite directions around the 8-dot braille cell, always 180° apart",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "braille-double-orbit",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/braille-cascade",
+      "name": "braille cascade",
+      "type": "spinner",
+      "group": "braille",
+      "frames": [
+        "⠉",
+        "⠒",
+        "⠤",
+        "⣀"
+      ],
+      "interval_ms": 120,
+      "notes": "Horizontal row of dots falling from top to bottom of the braille cell",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "braille-cascade",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/braille-spiral",
+      "name": "braille spiral fill",
+      "type": "spinner",
+      "group": "braille",
+      "frames": [
+        "⠀",
+        "⠁",
+        "⠉",
+        "⠙",
+        "⠹",
+        "⢹",
+        "⣹",
+        "⣽",
+        "⣿",
+        "⣾",
+        "⣶",
+        "⣦",
+        "⣆",
+        "⡆",
+        "⠆",
+        "⠂"
+      ],
+      "interval_ms": 60,
+      "notes": "Dots light up one by one in a clockwise spiral until full, then extinguish in the same order",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "braille-spiral",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/circle-fill",
+      "name": "circle fill",
+      "type": "spinner",
+      "group": "geometric",
+      "frames": [
+        "○",
+        "◔",
+        "◑",
+        "◕",
+        "●",
+        "◕",
+        "◑",
+        "◔"
+      ],
+      "interval_ms": 120,
+      "notes": "Circle progressively fills from empty to full, then empties again. Uses Unicode pie-slice characters.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "circle-fill",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/shape-shift",
+      "name": "shape shift",
+      "type": "spinner",
+      "group": "geometric",
+      "frames": [
+        "○",
+        "△",
+        "□",
+        "◇",
+        "☆",
+        "◇",
+        "□",
+        "△"
+      ],
+      "interval_ms": 180,
+      "notes": "Cycles through fundamental geometric shapes: circle, triangle, square, diamond, star and back",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "shape-shift",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/concentric-rings",
+      "name": "concentric rings",
+      "type": "spinner",
+      "group": "geometric",
+      "frames": [
+        "·",
+        "○",
+        "◎",
+        "◉",
+        "●",
+        "◉",
+        "◎",
+        "○"
+      ],
+      "interval_ms": 100,
+      "notes": "Concentric circles pulsing outward and inward: dot, circle, bullseye, fisheye, filled",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "concentric-rings",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/triangle-spin",
+      "name": "triangle spin",
+      "type": "spinner",
+      "group": "arrow",
+      "frames": [
+        "▲",
+        "▶",
+        "▼",
+        "◀"
+      ],
+      "interval_ms": 120,
+      "notes": "Solid triangles pointing up, right, down, left in clockwise rotation",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "triangle-spin",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/arrow-trail",
+      "name": "arrow trail",
+      "type": "spinner",
+      "group": "arrow",
+      "frames": [
+        "▸▹▹▹",
+        "▹▸▹▹",
+        "▹▹▸▹",
+        "▹▹▹▸",
+        "▹▹▸▹",
+        "▹▸▹▹"
+      ],
+      "interval_ms": 100,
+      "notes": "A filled arrowhead bouncing back and forth among hollow ones",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "arrow-trail",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/zodiac",
+      "name": "zodiac cycle",
+      "type": "spinner",
+      "group": "symbol",
+      "frames": [
+        "♈",
+        "♉",
+        "♊",
+        "♋",
+        "♌",
+        "♍",
+        "♎",
+        "♏",
+        "♐",
+        "♑",
+        "♒",
+        "♓"
+      ],
+      "interval_ms": 180,
+      "notes": "All twelve zodiac signs from Aries through Pisces",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "zodiac",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/dice-roll",
+      "name": "dice roll",
+      "type": "spinner",
+      "group": "symbol",
+      "frames": [
+        "⚀",
+        "⚁",
+        "⚂",
+        "⚃",
+        "⚄",
+        "⚅"
+      ],
+      "interval_ms": 150,
+      "notes": "All six die faces cycling as if a die were tumbling",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "dice-roll",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/musical-notes",
+      "name": "musical notes",
+      "type": "spinner",
+      "group": "symbol",
+      "frames": [
+        "♩",
+        "♪",
+        "♫",
+        "♬"
+      ],
+      "interval_ms": 200,
+      "notes": "Quarter note, eighth note, beamed eighth notes, beamed sixteenth notes",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "musical-notes",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/alchemical",
+      "name": "alchemical elements",
+      "type": "spinner",
+      "group": "symbol",
+      "frames": [
+        "🜀",
+        "🜁",
+        "🜂",
+        "🜃",
+        "🜄",
+        "🜅",
+        "🜆",
+        "🜇"
+      ],
+      "interval_ms": 180,
+      "notes": "Alchemical symbols for quintessence, air, fire, earth, water, aqua fortis, aqua regia, and bismuth ore",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "alchemical",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/hourglass",
+      "name": "hourglass flip",
+      "type": "spinner",
+      "group": "toggle",
+      "frames": [
+        "⧖",
+        "⧗"
+      ],
+      "interval_ms": 500,
+      "notes": "White and black hourglasses alternating, as if the hourglass is being flipped",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "hourglass",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/ballot-box",
+      "name": "ballot box",
+      "type": "spinner",
+      "group": "toggle",
+      "frames": [
+        "☐",
+        "☑",
+        "☒"
+      ],
+      "interval_ms": 300,
+      "notes": "Empty ballot box, check mark, then X mark—cycling through validation states",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "ballot-box",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/power-toggle",
+      "name": "power toggle",
+      "type": "spinner",
+      "group": "toggle",
+      "frames": [
+        "⏻",
+        "⏼"
+      ],
+      "interval_ms": 400,
+      "notes": "Power symbol toggling between standby and on",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "power-toggle",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/weather",
+      "name": "weather cycle",
+      "type": "spinner",
+      "group": "emoji",
+      "frames": [
+        "☀️ ",
+        "🌤️ ",
+        "⛅️ ",
+        "🌥️ ",
+        "☁️ ",
+        "🌧️ ",
+        "⛈️ ",
+        "🌧️ ",
+        "☁️ ",
+        "🌥️ ",
+        "⛅️ ",
+        "🌤️ "
+      ],
+      "interval_ms": 200,
+      "notes": "Full weather cycle from sunshine through storm and back",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "weather",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/growing-plant",
+      "name": "growing plant",
+      "type": "spinner",
+      "group": "emoji",
+      "frames": [
+        "🌱 ",
+        "🌿 ",
+        "🪴 ",
+        "🌳 "
+      ],
+      "interval_ms": 400,
+      "notes": "Seedling growing into a full tree: sprout, herb, potted plant, deciduous tree",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "growing-plant",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/butterfly-lifecycle",
+      "name": "butterfly lifecycle",
+      "type": "spinner",
+      "group": "emoji",
+      "frames": [
+        "🥚 ",
+        "🐛 ",
+        "🪱 ",
+        "🦋 "
+      ],
+      "interval_ms": 400,
+      "notes": "Metamorphosis: egg, caterpillar, cocoon, butterfly",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "butterfly-lifecycle",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/space-journey",
+      "name": "space journey",
+      "type": "spinner",
+      "group": "emoji",
+      "frames": [
+        "🚀 ",
+        "🪐 ",
+        "⭐ ",
+        "🌌 ",
+        "🛸 ",
+        "🌙 ",
+        "🌍 "
+      ],
+      "interval_ms": 250,
+      "notes": "A journey through space: rocket, ringed planet, star, milky way, flying saucer, crescent moon, earth",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "space-journey",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/sine-wave",
+      "name": "sine wave",
+      "type": "spinner",
+      "group": "scroll",
+      "frames": [
+        "▁▃▅▇▅▃",
+        "▃▅▇▅▃▁",
+        "▅▇▅▃▁▃",
+        "▇▅▃▁▃▅",
+        "▅▃▁▃▅▇",
+        "▃▁▃▅▇▅"
+      ],
+      "interval_ms": 100,
+      "notes": "A sine wave scrolling through vertical block elements like an audio visualizer",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "sine-wave",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/light-chase",
+      "name": "light chase",
+      "type": "spinner",
+      "group": "scroll",
+      "frames": [
+        "●○○○○",
+        "○●○○○",
+        "○○●○○",
+        "○○○●○",
+        "○○○○●",
+        "○○○●○",
+        "○○●○○",
+        "○●○○○"
+      ],
+      "interval_ms": 80,
+      "notes": "A single filled circle bouncing back and forth among hollow circles, like a chaser light",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "light-chase",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/comet",
+      "name": "comet trail",
+      "type": "spinner",
+      "group": "scroll",
+      "frames": [
+        "░▒▓█▓▒░",
+        "▒▓█▓▒░░",
+        "▓█▓▒░░▒",
+        "█▓▒░░▒▓",
+        "▓▒░░▒▓█",
+        "▒░░▒▓█▓",
+        "░░▒▓█▓▒"
+      ],
+      "interval_ms": 80,
+      "notes": "A bright core with fading shade trail scrolling across, like a comet",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "comet",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/newtons-cradle",
+      "name": "Newton's cradle",
+      "type": "spinner",
+      "group": "novelty",
+      "frames": [
+        "●  ○○○○ ",
+        " ● ○○○○ ",
+        "  ○○○○○ ",
+        "  ○○○○ ●",
+        " ○○○○  ●",
+        "  ○○○○ ●",
+        "  ○○○○○ ",
+        " ● ○○○○ "
+      ],
+      "interval_ms": 100,
+      "notes": "Newton's cradle: left ball swings in, transfers energy, right ball swings out and back",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "newtons-cradle",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/clock-pendulum",
+      "name": "clock pendulum",
+      "type": "spinner",
+      "group": "novelty",
+      "frames": [
+        "●···┴····",
+        "·●··┴····",
+        "··●·┴····",
+        "···●┴····",
+        "····┴●···",
+        "····┴·●··",
+        "····┴··●·",
+        "····┴·●··",
+        "···●┴····",
+        "··●·┴····"
+      ],
+      "interval_ms": 100,
+      "notes": "A pendulum bob swinging back and forth beneath a pivot point",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "clock-pendulum",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/dot-pulse",
+      "name": "dot pulse",
+      "type": "spinner",
+      "group": "dot",
+      "frames": [
+        "·",
+        "•",
+        "●",
+        "•"
+      ],
+      "interval_ms": 150,
+      "notes": "Single dot pulsing from small to large and back: middle dot, bullet, black circle",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "dot-pulse",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/dot-orbit",
+      "name": "dot orbit",
+      "type": "spinner",
+      "group": "dot",
+      "frames": [
+        "●··",
+        "·●·",
+        "··●",
+        "·●·"
+      ],
+      "interval_ms": 120,
+      "notes": "A large dot cycling through three positions like an orbiting body",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "dot-orbit",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/rounded-corner-spin",
+      "name": "rounded corner spin",
+      "type": "spinner",
+      "group": "line",
+      "frames": [
+        "╭",
+        "╮",
+        "╯",
+        "╰"
+      ],
+      "interval_ms": 120,
+      "notes": "Rounded box-drawing corners rotating clockwise: top-left, top-right, bottom-right, bottom-left",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "rounded-corner-spin",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/double-line-spin",
+      "name": "double line spin",
+      "type": "spinner",
+      "group": "line",
+      "frames": [
+        "═",
+        "╲",
+        "║",
+        "╱"
+      ],
+      "interval_ms": 100,
+      "notes": "Double-line horizontal and vertical with box-drawing diagonals for a heavier spin",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "double-line-spin",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/t-junction-spin",
+      "name": "T-junction spin",
+      "type": "spinner",
+      "group": "line",
+      "frames": [
+        "┬",
+        "┤",
+        "┴",
+        "├"
+      ],
+      "interval_ms": 120,
+      "notes": "Box-drawing T-junctions rotating: top, right, bottom, left",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "t-junction-spin",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/elder-futhark",
+      "name": "Elder Futhark runes",
+      "type": "spinner",
+      "group": "text",
+      "frames": [
+        "ᚠ",
+        "ᚢ",
+        "ᚦ",
+        "ᚨ",
+        "ᚱ",
+        "ᚲ",
+        "ᚷ",
+        "ᚹ"
+      ],
+      "interval_ms": 180,
+      "notes": "First eight runes of the Elder Futhark alphabet: fehu, uruz, thurisaz, ansuz, raido, kauna, gebo, wunjo",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "elder-futhark",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/greek-letters",
+      "name": "Greek letters",
+      "type": "spinner",
+      "group": "text",
+      "frames": [
+        "α",
+        "β",
+        "γ",
+        "δ",
+        "ε",
+        "ζ",
+        "η",
+        "θ"
+      ],
+      "interval_ms": 150,
+      "notes": "First eight lowercase Greek letters: alpha through theta",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "greek-letters",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/shade-breathe",
+      "name": "shade breathe",
+      "type": "spinner",
+      "group": "bounce",
+      "frames": [
+        " ",
+        "░",
+        "▒",
+        "▓",
+        "█",
+        "▓",
+        "▒",
+        "░"
+      ],
+      "interval_ms": 100,
+      "notes": "Block shade characters fading in and out like breathing: light, medium, dark, full, then back",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "shade-breathe",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/half-slide",
+      "name": "half slide",
+      "type": "spinner",
+      "group": "block",
+      "frames": [
+        "▀",
+        "▐",
+        "▄",
+        "▌"
+      ],
+      "interval_ms": 120,
+      "notes": "Half-block sliding clockwise: upper, right, lower, left",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "half-slide",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/tilde-wave",
+      "name": "tilde wave",
+      "type": "progress_bar",
+      "group": "ascii",
+      "characters": {
+        "fill": "~",
+        "empty": "-"
+      },
+      "notes": "Wavy fill for a fluid/liquid feel",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "tilde-wave",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/colon-march",
+      "name": "colon march",
+      "type": "progress_bar",
+      "group": "ascii",
+      "characters": {
+        "fill": ":",
+        "empty": "."
+      },
+      "notes": "Colons marching over dots, subtle and compact",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "colon-march",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/pipe-fill",
+      "name": "pipe fill",
+      "type": "progress_bar",
+      "group": "ascii",
+      "characters": {
+        "fill": "|",
+        "empty": ".",
+        "start": "[",
+        "end": "]"
+      },
+      "notes": "Vertical pipes filling a bracketed bar",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "pipe-fill",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/nested-circles",
+      "name": "nested circles",
+      "type": "progress_bar",
+      "group": "geometric",
+      "characters": {
+        "fill": "◉",
+        "empty": "○"
+      },
+      "notes": "Fisheye (filled circle in ring) and hollow circles",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "nested-circles",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/lozenges",
+      "name": "lozenges",
+      "type": "progress_bar",
+      "group": "geometric",
+      "characters": {
+        "fill": "◆",
+        "empty": "◇"
+      },
+      "notes": "Filled and hollow diamond/lozenge shapes",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "lozenges",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/music-bar",
+      "name": "music notes",
+      "type": "progress_bar",
+      "group": "decorative",
+      "characters": {
+        "fill": "♫",
+        "empty": "♪"
+      },
+      "notes": "Beamed eighth notes (filled) and single eighth notes (empty)",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "music-bar",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/flowers",
+      "name": "flowers",
+      "type": "progress_bar",
+      "group": "decorative",
+      "characters": {
+        "fill": "✿",
+        "empty": "❀"
+      },
+      "notes": "Black florette (filled) and white florette (empty)",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "flowers",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/sparkles",
+      "name": "sparkles",
+      "type": "progress_bar",
+      "group": "decorative",
+      "characters": {
+        "fill": "✦",
+        "empty": "✧"
+      },
+      "notes": "Black four-pointed star (filled) and white four-pointed star (empty)",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "sparkles",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/arrows-bar",
+      "name": "arrows",
+      "type": "progress_bar",
+      "group": "decorative",
+      "characters": {
+        "fill": "▸",
+        "empty": "▹",
+        "head": "►"
+      },
+      "notes": "Small right-pointing triangles with a larger head, pointing the direction of progress",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "arrows-bar",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/circle-phases",
+      "name": "circle phases",
+      "type": "progress_bar",
+      "group": "phased",
+      "characters": {
+        "fill": "●",
+        "empty": "○"
+      },
+      "phases": [
+        "○",
+        "◔",
+        "◑",
+        "◕",
+        "●"
+      ],
+      "notes": "Sub-character resolution using circle quadrant fills: empty, quarter, half, three-quarter, full",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "circle-phases",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/shade-phases",
+      "name": "shade phases",
+      "type": "progress_bar",
+      "group": "phased",
+      "characters": {
+        "fill": "█",
+        "empty": " "
+      },
+      "phases": [
+        " ",
+        "░",
+        "▒",
+        "▓",
+        "█"
+      ],
+      "notes": "Five-level shade progression: space, light shade, medium shade, dark shade, full block",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "shade-phases",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/fire-and-ice",
+      "name": "fire and ice",
+      "type": "progress_bar",
+      "group": "emoji",
+      "characters": {
+        "fill": "🔥",
+        "empty": "🧊"
+      },
+      "notes": "Fire emoji (complete) melting ice emoji (remaining)",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "fire-and-ice",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "original/battery-charge",
+      "name": "battery charge",
+      "type": "progress_bar",
+      "group": "emoji",
+      "characters": {
+        "fill": "⚡",
+        "empty": "▫️"
+      },
+      "notes": "Lightning bolt (charged) and white small square (empty) for a charging battery feel",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "battery-charge",
+        "license": "MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12",
+        "license_url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    {
+      "id": "right-round-invented/braille-radar-sweep",
+      "name": "braille radar sweep",
+      "type": "spinner",
+      "group": "braille",
+      "frames": [
+        "⢀⠀",
+        "⠠⠀",
+        "⠐⠀",
+        "⠈⠀",
+        "⠀⠈",
+        "⠀⠐",
+        "⠀⠠",
+        "⠀⢀",
+        "⠀⡀",
+        "⠀⠄",
+        "⠀⠂",
+        "⠀⠁",
+        "⠁⠀",
+        "⠂⠀",
+        "⠄⠀",
+        "⡀⠀"
+      ],
+      "interval_ms": 90,
+      "notes": "Two-cell sweep that gives a clockwise scan effect.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "brailleRadarSweep",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/line-tripod",
+      "name": "line tripod",
+      "type": "spinner",
+      "group": "line",
+      "frames": [
+        "╹",
+        "╺",
+        "╻",
+        "╸"
+      ],
+      "interval_ms": 90,
+      "notes": "Compact single-cell spinner using heavy line caps.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "lineTripod",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/dot-seesaw",
+      "name": "dot seesaw",
+      "type": "spinner",
+      "group": "dot",
+      "frames": [
+        "●···",
+        "·●··",
+        "··●·",
+        "···●",
+        "··●·",
+        "·●··"
+      ],
+      "interval_ms": 100,
+      "notes": "One active dot rocking left and right across a 4-cell lane.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "dotSeesaw",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/block-escalator",
+      "name": "block escalator",
+      "type": "spinner",
+      "group": "block",
+      "frames": [
+        "▁▁",
+        "▂▁",
+        "▃▂",
+        "▄▃",
+        "▅▄",
+        "▆▅",
+        "▇▆",
+        "█▇",
+        "▇█",
+        "▆▇",
+        "▅▆",
+        "▄▅",
+        "▃▄",
+        "▂▃",
+        "▁▂"
+      ],
+      "interval_ms": 85,
+      "notes": "Dual-cell staircase pulse with mirrored descent.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "blockEscalator",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/geometric-pinwheel",
+      "name": "geometric pinwheel",
+      "type": "spinner",
+      "group": "geometric",
+      "frames": [
+        "◢◤",
+        "◥◢",
+        "◣◥",
+        "◤◣"
+      ],
+      "interval_ms": 95,
+      "notes": "Quarter triangles arranged as a rotating pinwheel.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "geometricPinwheel",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/arrow-crosswind",
+      "name": "arrow crosswind",
+      "type": "spinner",
+      "group": "arrow",
+      "frames": [
+        "↑↗",
+        "→↘",
+        "↓↙",
+        "←↖"
+      ],
+      "interval_ms": 100,
+      "notes": "Directional pair rotates through cardinal and diagonal vectors.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "arrowCrosswind",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/toggle-latch",
+      "name": "toggle latch",
+      "type": "spinner",
+      "group": "toggle",
+      "frames": [
+        "⊏⊐",
+        "⊐⊏"
+      ],
+      "interval_ms": 220,
+      "notes": "Simple two-state latch animation.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "toggleLatch",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/bounce-pulse",
+      "name": "bounce pulse",
+      "type": "spinner",
+      "group": "bounce",
+      "frames": [
+        "˙",
+        "•",
+        "●",
+        "•"
+      ],
+      "interval_ms": 110,
+      "notes": "Single glyph pulse from light to solid and back.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "bouncePulse",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/scroll-ticker",
+      "name": "scroll ticker",
+      "type": "spinner",
+      "group": "scroll",
+      "frames": [
+        "▐▁▁▁▁▌",
+        "▐▃▁▁▁▌",
+        "▐▅▃▁▁▌",
+        "▐▇▅▃▁▌",
+        "▐█▇▅▃▌",
+        "▐▇█▇▅▌",
+        "▐▅▇█▇▌",
+        "▐▃▅▇█▌",
+        "▐▁▃▅▇▌",
+        "▐▁▁▃▅▌",
+        "▐▁▁▁▃▌",
+        "▐▁▁▁▁▌"
+      ],
+      "interval_ms": 80,
+      "notes": "Scrolling wave that reads like a moving signal trace.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "scrollTicker",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/novelty-circuit-probe",
+      "name": "novelty circuit probe",
+      "type": "spinner",
+      "group": "novelty",
+      "frames": [
+        "[····]",
+        "[◉···]",
+        "[◉◉··]",
+        "[◉◉◉·]",
+        "[◉◉◉◉]",
+        "[·◉◉◉]",
+        "[··◉◉]",
+        "[···◉]"
+      ],
+      "interval_ms": 90,
+      "notes": "Theme spinner resembling an LED test strip sweep.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "noveltyCircuitProbe",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/text-checksum",
+      "name": "text checksum",
+      "type": "spinner",
+      "group": "text",
+      "frames": [
+        "hash:00",
+        "hash:1f",
+        "hash:3e",
+        "hash:5d",
+        "hash:7c",
+        "hash:9b",
+        "hash:ba",
+        "hash:d9"
+      ],
+      "interval_ms": 120,
+      "notes": "Hex-like text spinner suitable for data verification tasks.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "textChecksum",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      },
+      "completion_states": {
+        "succeed": "hash:ok",
+        "fail": "hash:xx"
+      }
+    },
+    {
+      "id": "right-round-invented/symbol-trigrams",
+      "name": "symbol trigrams",
+      "type": "spinner",
+      "group": "symbol",
+      "frames": [
+        "☰",
+        "☱",
+        "☲",
+        "☳",
+        "☴",
+        "☵",
+        "☶",
+        "☷"
+      ],
+      "interval_ms": 100,
+      "notes": "Eight trigrams sequence used as a symbolic cycle.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "symbolTrigrams",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/ascii-relay",
+      "name": "ascii relay",
+      "type": "progress_bar",
+      "group": "ascii",
+      "characters": {
+        "fill": "=",
+        "head": ">",
+        "empty": ".",
+        "start": "{",
+        "end": "}"
+      },
+      "indeterminate": "~>~",
+      "notes": "High-contrast ASCII style for terminals without Unicode support.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "asciiRelay",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/block-forge",
+      "name": "block forge",
+      "type": "progress_bar",
+      "group": "block",
+      "characters": {
+        "fill": "▓",
+        "head": "█",
+        "empty": "░",
+        "start": "▕",
+        "end": "▏"
+      },
+      "indeterminate": "░▓░",
+      "notes": "Dense block fill with explicit head character.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "blockForge",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/geometric-crystals",
+      "name": "geometric crystals",
+      "type": "progress_bar",
+      "group": "geometric",
+      "characters": {
+        "fill": "◆",
+        "head": "◈",
+        "empty": "◇",
+        "start": "⟨",
+        "end": "⟩"
+      },
+      "indeterminate": "◇◈◇",
+      "notes": "Diamond-based bar with a distinct leading edge.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "geometricCrystals",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/decorative-spark",
+      "name": "decorative spark",
+      "type": "progress_bar",
+      "group": "decorative",
+      "characters": {
+        "fill": "✦",
+        "head": "✶",
+        "empty": "·",
+        "start": "❲",
+        "end": "❳"
+      },
+      "indeterminate": "·✶·",
+      "notes": "Ornamental style intended for playful CLI output.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "decorativeSpark",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/phased-moon",
+      "name": "phased moon",
+      "type": "progress_bar",
+      "group": "phased",
+      "characters": {
+        "fill": "●",
+        "empty": "○",
+        "start": "(",
+        "end": ")"
+      },
+      "phases": [
+        "○",
+        "◔",
+        "◑",
+        "◕",
+        "●"
+      ],
+      "indeterminate": "◔◑◕",
+      "notes": "Five-phase smooth fill using moon-like circular glyphs.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "phasedMoon",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
+        "retrieved": "2026-02-12"
+      }
+    },
+    {
+      "id": "right-round-invented/emoji-traffic",
+      "name": "emoji traffic",
+      "type": "progress_bar",
+      "group": "emoji",
+      "characters": {
+        "fill": "🟢",
+        "head": "🟡",
+        "empty": "⚪"
+      },
+      "indeterminate": "⚪🟡⚪",
+      "notes": "Simple traffic-light semantics for status-rich progress displays.",
+      "source": {
+        "collection": "right-round original designs",
+        "url": "",
+        "original_key": "emojiTraffic",
+        "license": "MIT",
+        "license_url": "https://opensource.org/licenses/MIT",
+        "copyright": "Copyright (c) 2026 Christopher Boone",
         "retrieved": "2026-02-12"
       }
     }
