@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Convert an animated GIF to ASCII art GIF via asciinema cast file.
+#
+# Pipeline: GIF -> frames -> chafa ANSI text -> .cast file -> agg -> GIF
+#
+# Dependencies: chafa, magick (ImageMagick), agg, jq
+#   brew install chafa imagemagick agg jq
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+require_command() {
+    if ! command -v "$1" >/dev/null 2>&1; then
+        printf 'Missing required command: %s\n' "$1" >&2
+        exit 1
+    fi
+}
+
+# Format centiseconds as a decimal seconds string: 175 -> "1.75"
+cs_to_seconds() {
+    local cs="$1"
+    printf '%d.%02d' "$((cs / 100))" "$((cs % 100))"
+}
+
+# ---------------------------------------------------------------------------
+# Configuration (hardcoded for now)
+# ---------------------------------------------------------------------------
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd -- "$script_dir/.." && pwd)"
+
+input_gif="$repo_root/images/vinyl-loop.gif"
+output_gif="$repo_root/images/vinyl-ascii.gif"
+cast_cols=80
+cast_rows=40
+chafa_size="${cast_cols}x${cast_rows}"
+agg_font_size=14
+
+# ---------------------------------------------------------------------------
+# Dependency checks
+# ---------------------------------------------------------------------------
+
+require_command chafa
+require_command magick
+require_command agg
+require_command jq
+
+if [[ ! -f "$input_gif" ]]; then
+    printf 'Input GIF not found: %s\n' "$input_gif" >&2
+    exit 1
+fi
+
+# ---------------------------------------------------------------------------
+# Temp directory
+# ---------------------------------------------------------------------------
+
+work_dir="$(mktemp -d "${TMPDIR:-/tmp}/gif2gif.XXXXXX")"
+trap 'rm -rf "$work_dir"' EXIT
+
+mkdir -p "$work_dir/frames" "$work_dir/ansi"
+
+# ---------------------------------------------------------------------------
+# Extract frame delays (centiseconds) and count
+# ---------------------------------------------------------------------------
+
+mapfile -t delays < <(magick identify -format '%T\n' "$input_gif")
+frame_count="${#delays[@]}"
+
+if [[ "$frame_count" -eq 0 ]]; then
+    printf 'No frames found in %s\n' "$input_gif" >&2
+    exit 1
+fi
+
+printf 'Source: %s (%d frames)\n' "$input_gif" "$frame_count"
+
+# ---------------------------------------------------------------------------
+# Extract frames as PNGs (coalesce handles partial-frame GIF optimizations)
+# ---------------------------------------------------------------------------
+
+printf 'Extracting frames...\n'
+magick "$input_gif" -coalesce "$work_dir/frames/frame-%03d.png"
+
+# ---------------------------------------------------------------------------
+# Convert each frame to ANSI text via chafa
+# ---------------------------------------------------------------------------
+
+printf 'Converting frames to ANSI text...\n'
+for ((i = 0; i < frame_count; i++)); do
+    frame_id="$(printf '%03d' "$i")"
+    chafa \
+        --format symbols \
+        --colors 256 \
+        --size "$chafa_size" \
+        --animate off \
+        --polite on \
+        "$work_dir/frames/frame-$frame_id.png" \
+        > "$work_dir/ansi/frame-$frame_id.txt"
+    printf '\r  Frame %d / %d' "$((i + 1))" "$frame_count"
+done
+printf '\n'
+
+# ---------------------------------------------------------------------------
+# Measure actual row count from chafa output (may be less than cast_rows
+# due to aspect ratio preservation)
+# ---------------------------------------------------------------------------
+
+actual_rows="$(wc -l < "$work_dir/ansi/frame-000.txt" | tr -d ' ')"
+
+printf 'Cast dimensions: %dx%d\n' "$cast_cols" "$actual_rows"
+
+# ---------------------------------------------------------------------------
+# Build asciinema v2 cast file
+# ---------------------------------------------------------------------------
+
+cast_file="$work_dir/output.cast"
+
+printf '{"version": 2, "width": %d, "height": %d}\n' \
+    "$cast_cols" "$actual_rows" > "$cast_file"
+
+cumulative_cs=0
+for ((i = 0; i < frame_count; i++)); do
+    frame_id="$(printf '%03d' "$i")"
+    ansi_file="$work_dir/ansi/frame-$frame_id.txt"
+    timestamp="$(cs_to_seconds "$cumulative_cs")"
+
+    if ((i > 0)); then
+        # Clear screen + cursor home, then the frame content
+        json_data="$(printf '\033[2J\033[H'; cat "$ansi_file")"
+    else
+        json_data="$(cat "$ansi_file")"
+    fi
+
+    # jq -Rs reads raw text and outputs it as a JSON-encoded string
+    json_data="$(printf '%s' "$json_data" | jq -Rs '.')"
+
+    printf '[%s, "o", %s]\n' "$timestamp" "$json_data" >> "$cast_file"
+
+    cumulative_cs=$((cumulative_cs + delays[i]))
+done
+
+printf 'Built cast file: %d events, %ss duration\n' \
+    "$frame_count" "$(cs_to_seconds "$cumulative_cs")"
+
+# ---------------------------------------------------------------------------
+# Render cast to GIF with agg
+# ---------------------------------------------------------------------------
+
+printf 'Rendering with agg...\n'
+agg --font-size "$agg_font_size" "$cast_file" "$output_gif"
+
+printf 'Done: %s\n' "$output_gif"
