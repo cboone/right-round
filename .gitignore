@@ -1,5 +1,8 @@
 # Binaries and build output
 bin/
+!bin/
+bin/*
+!bin/gif2gif
 dist/
 *.exe
 *.exe~

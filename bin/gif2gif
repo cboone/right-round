@@ -1,0 +1,235 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+require_command() {
+    local name="$1"
+    if ! command -v "$name" >/dev/null 2>&1; then
+        printf 'Missing required command: %s\n' "$name" >&2
+        exit 1
+    fi
+}
+
+sum_delays() {
+    local total=0
+    local value
+    for value in "$@"; do
+        total=$((total + value))
+    done
+    printf '%s\n' "$total"
+}
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd -- "$script_dir/.." && pwd)"
+
+input_gif="$repo_root/images/vinyl-loop.gif"
+output_gif="$repo_root/images/vinyl-loop-chafa.gif"
+
+chafa_size="120x48"
+vhs_font_family="Menlo"
+vhs_font_size="18"
+vhs_width="2000"
+vhs_height="1500"
+vhs_framerate="30"
+vhs_settle_time="200ms"
+vhs_render_sleep_seconds="3"
+frame_render_max_attempts="3"
+frame_area_threshold_percent="95"
+
+require_command chafa
+require_command magick
+require_command gifsicle
+require_command vhs
+
+if [[ ! -f "$input_gif" ]]; then
+    printf 'Input GIF not found: %s\n' "$input_gif" >&2
+    exit 1
+fi
+
+work_dir="$(mktemp -d "${TMPDIR:-/tmp}/gif2gif.XXXXXX")"
+cleanup() {
+    rm -rf "$work_dir"
+}
+trap cleanup EXIT
+
+mkdir -p "$work_dir/source" "$work_dir/ansi" "$work_dir/tape" "$work_dir/vhs" "$work_dir/rendered"
+
+read -r source_width source_height < <(magick identify -format '%w %h\n' "$input_gif[0]")
+mapfile -t source_delays < <(magick identify -format '%T\n' "$input_gif")
+
+frame_count="${#source_delays[@]}"
+if [[ "$frame_count" -eq 0 ]]; then
+    printf 'No frames found in %s\n' "$input_gif" >&2
+    exit 1
+fi
+
+loop_forever="false"
+if gifsicle --info "$input_gif" | grep -q 'loop forever'; then
+    loop_forever="true"
+fi
+
+printf 'Extracting %s frames from %s\n' "$frame_count" "$input_gif"
+magick "$input_gif" -coalesce "$work_dir/source/frame-%05d.png"
+
+baseline_trim_area=""
+
+for ((i = 0; i < frame_count; i++)); do
+    frame_id="$(printf '%05d' "$i")"
+    source_frame="$work_dir/source/frame-$frame_id.png"
+    ansi_frame="$work_dir/ansi/frame-$frame_id.ansi"
+    tape_file="$work_dir/tape/frame-$frame_id.tape"
+    vhs_gif_name="frame-$frame_id.gif"
+    vhs_gif="$work_dir/vhs/$vhs_gif_name"
+    rendered_frame="$work_dir/rendered/frame-$frame_id.png"
+    coalesced_pattern="$work_dir/vhs/frame-$frame_id-coalesced-%02d.png"
+
+    printf 'Rendering frame %s/%s\n' "$((i + 1))" "$frame_count"
+
+    chafa \
+        --format symbols \
+        --symbols ascii \
+        --fill braille \
+        --colors 256 \
+        --optimize 0 \
+        --relative off \
+        --polite on \
+        --size "$chafa_size" \
+        "$source_frame" > "$ansi_frame"
+
+    ansi_shell_path="$(printf '%q' "$ansi_frame")"
+    cat > "$tape_file" <<EOF
+Output $vhs_gif_name
+Set Shell "bash"
+Set FontFamily "$vhs_font_family"
+Set FontSize $vhs_font_size
+Set Width $vhs_width
+Set Height $vhs_height
+Set Padding 0
+Set Margin 0
+Set Framerate $vhs_framerate
+Set TypingSpeed 0ms
+Hide
+Type "clear; cat $ansi_shell_path; sleep $vhs_render_sleep_seconds"
+Enter
+Show
+Sleep $vhs_settle_time
+EOF
+
+    best_frame=""
+    best_trim_geometry=""
+    best_trim_area=0
+    area_threshold=0
+
+    for ((attempt = 1; attempt <= frame_render_max_attempts; attempt++)); do
+        rm -f "$vhs_gif" "$work_dir"/vhs/frame-"$frame_id"-coalesced-*.png
+
+        (
+            cd "$work_dir/vhs"
+            vhs -q "$tape_file"
+        )
+
+        magick "$vhs_gif" -coalesce "$coalesced_pattern"
+
+        best_frame=""
+        best_trim_geometry=""
+        best_trim_area=0
+        for candidate in "$work_dir"/vhs/frame-"$frame_id"-coalesced-*.png; do
+            [[ -f "$candidate" ]] || continue
+            trim_geometry="$(magick "$candidate" -trim -format '%@' info:)"
+            [[ -n "$trim_geometry" ]] || continue
+
+            trim_width="${trim_geometry%%x*}"
+            trim_rest="${trim_geometry#*x}"
+            trim_height="${trim_rest%%+*}"
+            trim_area=$((trim_width * trim_height))
+
+            if ((trim_area > best_trim_area)); then
+                best_trim_area="$trim_area"
+                best_trim_geometry="$trim_geometry"
+                best_frame="$candidate"
+            fi
+        done
+
+        if [[ -z "$best_frame" ]]; then
+            continue
+        fi
+
+        if [[ -z "${baseline_trim_area:-}" ]]; then
+            baseline_trim_area="$best_trim_area"
+        fi
+
+        area_threshold=$((baseline_trim_area * frame_area_threshold_percent / 100))
+        if ((best_trim_area >= area_threshold)); then
+            break
+        fi
+
+        if ((attempt < frame_render_max_attempts)); then
+            printf 'Retrying frame %s after partial render (%s < %s)\n' \
+                "$frame_id" "$best_trim_area" "$area_threshold"
+        fi
+    done
+
+    if [[ -z "$best_frame" ]]; then
+        printf 'No VHS frame rendered for source frame %s\n' "$frame_id" >&2
+        exit 1
+    fi
+
+    if ((area_threshold > 0)) && ((best_trim_area < area_threshold)); then
+        printf 'Rendered frame %s remained partial after %s attempts (%s < %s)\n' \
+            "$frame_id" "$frame_render_max_attempts" "$best_trim_area" "$area_threshold" >&2
+        exit 1
+    fi
+
+    if [[ -z "$best_trim_geometry" ]]; then
+        printf 'Could not compute crop geometry for source frame %s\n' "$frame_id" >&2
+        exit 1
+    fi
+
+    magick "$best_frame" \
+        -crop "$best_trim_geometry" +repage \
+        -resize "${source_width}x${source_height}!" \
+        "$rendered_frame"
+done
+
+rebuilt_gif="$work_dir/rebuilt.gif"
+assemble_cmd=(magick)
+for ((i = 0; i < frame_count; i++)); do
+    frame_id="$(printf '%05d' "$i")"
+    assemble_cmd+=(-delay "${source_delays[$i]}" "$work_dir/rendered/frame-$frame_id.png")
+done
+
+if [[ "$loop_forever" == "true" ]]; then
+    assemble_cmd+=(-loop 0 "$rebuilt_gif")
+else
+    assemble_cmd+=("$rebuilt_gif")
+fi
+
+"${assemble_cmd[@]}"
+
+if [[ "$loop_forever" == "true" ]]; then
+    gifsicle -O3 --careful --colors 256 --loopcount=forever "$rebuilt_gif" -o "$output_gif"
+else
+    gifsicle -O3 --careful --colors 256 "$rebuilt_gif" -o "$output_gif"
+fi
+
+mapfile -t output_delays < <(magick identify -format '%T\n' "$output_gif")
+if [[ "${#output_delays[@]}" -eq 0 ]]; then
+    printf 'Output GIF has no frames\n' >&2
+    exit 1
+fi
+
+if [[ "$loop_forever" == "true" ]] && ! gifsicle --info "$output_gif" | grep -q 'loop forever'; then
+    printf 'Output GIF loop mode mismatch: expected loop forever\n' >&2
+    exit 1
+fi
+
+source_total_delay="$(sum_delays "${source_delays[@]}")"
+output_total_delay="$(sum_delays "${output_delays[@]}")"
+
+if [[ "$source_total_delay" != "$output_total_delay" ]]; then
+    printf 'Output total delay mismatch: expected %s got %s\n' "$source_total_delay" "$output_total_delay" >&2
+    exit 1
+fi
+
+printf 'Done: %s\n' "$output_gif"
+printf 'Frames: %s source / %s output\n' "$frame_count" "${#output_delays[@]}"
+printf 'Total delay ticks: %s (source) / %s (output)\n' "$source_total_delay" "$output_total_delay"
