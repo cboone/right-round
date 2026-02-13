@@ -2,13 +2,13 @@
 
 ## Context
 
-The `right-round` repository is a data catalog of 433 terminal progress indicators (333 spinners, 100 progress bars) consolidated from 26 open-source collections into a single `progress-indicators.json` file. There is currently no way to browse or preview these indicators. This plan creates a Go TUI application using Cobra and Bubble Tea that lets users navigate, preview, and copy indicators interactively.
+The `right-round` repository is a data catalog of 497 terminal progress indicators (378 spinners, 119 progress bars) consolidated from 26 open-source collections into a single `progress-indicators.json` file. There is currently no way to browse or preview these indicators. This plan creates a Go TUI application using Cobra and Bubble Tea that lets users navigate, preview, and copy indicators interactively.
 
 ## Directory Structure
 
 ```
 right-round/                              (repo root)
-├── progress-indicators.json              (existing, 433 entries)
+├── progress-indicators.json              (existing, 497 entries)
 ├── embedded.go                           (NEW - root embed wrapper for JSON bytes)
 ├── go.mod                                (NEW - github.com/cboone/right-round)
 ├── go.sum                                (NEW)
@@ -136,7 +136,7 @@ Reason for custom list: bubbles `list.Model` is designed for flat filterable lis
 - One global `tea.Tick` at 16ms instead of per-spinner tickers
 - Per-entry accumulator tracks elapsed time since last frame advance
 - Only animates entries currently visible on screen (typically 15-20)
-- Default interval of 100ms for spinners with null `interval_ms` (207 of 333)
+- Default interval of 100ms for spinners with null `interval_ms` (207 of 378)
 - Frame advancement: while `accumulated >= entryInterval`, advance frame index and subtract interval (carry remainder forward to avoid drift)
 - Supports fractional catch-up when terminal redraw lags by more than one interval
 
@@ -216,7 +216,7 @@ Use `lipgloss.Width()` (backed by `go-runewidth`) for all display width calculat
    - JSON unmarshal coverage for optional/null fields (`interval_ms`, `notes`, `phases`, `indeterminate`, `completion_states`)
    - Source fields (`raw_url`, `license_url`, `references`) are preserved
 2. `internal/data/loader_test.go`
-   - Loads embedded catalog and validates expected counts (433 total, 333 spinners, 100 bars)
+   - Loads embedded catalog and validates expected counts (497 total, 378 spinners, 119 bars)
    - Group ordering is count-desc then name-asc
    - Entry sorting within group is stable and deterministic
    - Loader rejects malformed spinner entries with empty frames

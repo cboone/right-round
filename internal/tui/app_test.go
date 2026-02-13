@@ -167,6 +167,23 @@ func TestModel_SearchEnterConfirms(t *testing.T) {
 	// Filter should still be active (not cleared)
 }
 
+func TestModel_CtrlCQuitsWhileFiltering(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+	m.width = 120
+	m.height = 40
+	m.updateLayout()
+
+	// Enter search mode with /
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'/'}})
+	m = updated.(Model)
+	assert.True(t, m.filtering)
+
+	// ctrl+c should quit even while filtering
+	_, cmd := m.Update(tea.KeyMsg{Type: tea.KeyCtrlC})
+	assert.NotNil(t, cmd)
+}
+
 func TestModel_NarrowLayoutEnterExpands(t *testing.T) {
 	grouped := makeTestGroupedEntries()
 	m := New(grouped, "", "")

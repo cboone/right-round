@@ -1,6 +1,6 @@
 # right-round
 
-A TUI for browsing 433 terminal progress indicators (333 spinners, 100 progress bars) from 26 open-source collections.
+A TUI for browsing 497 terminal progress indicators (378 spinners, 119 progress bars) from 26 open-source collections.
 
 Navigate, preview live animations, and copy entries as JSON.
 

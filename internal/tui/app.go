@@ -163,6 +163,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	// Always allow ctrl+c to quit, even during filtering
+	if msg.String() == "ctrl+c" {
+		return m, tea.Quit
+	}
+
 	// Handle filtering mode
 	if m.filtering {
 		switch msg.String() {
