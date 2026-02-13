@@ -1,5 +1,7 @@
 # right-round
 
+<img align="right" src="images/vinyl-ascii.gif" width="260">
+
 A TUI for browsing 497 terminal progress indicators (378 spinners, 119 progress bars) from 26 open-source collections.
 
 Navigate, preview live animations, and copy entries as JSON.
@@ -43,21 +45,21 @@ right-round --group braille
 
 ## Keybindings
 
-| Key           | Action                              |
-|---------------|-------------------------------------|
-| `j` / `down`  | Move cursor down                    |
-| `k` / `up`    | Move cursor up                      |
-| `pgdn`        | Page down                           |
-| `pgup`        | Page up                             |
-| `home`        | Go to top                           |
-| `end`         | Go to bottom                        |
-| `enter` / `l` | Expand detail view (narrow mode)    |
-| `esc` / `h`   | Collapse back to list               |
-| `tab`         | Switch between Spinners / Progress Bars |
-| `/`           | Search/filter by name               |
-| `c`           | Copy selected entry as JSON         |
-| `?`           | Toggle full help                    |
-| `q` / `ctrl+c`| Quit                               |
+| Key            | Action                                  |
+| -------------- | --------------------------------------- |
+| `j` / `down`   | Move cursor down                        |
+| `k` / `up`     | Move cursor up                          |
+| `pgdn`         | Page down                               |
+| `pgup`         | Page up                                 |
+| `home`         | Go to top                               |
+| `end`          | Go to bottom                            |
+| `enter` / `l`  | Expand detail view (narrow mode)        |
+| `esc` / `h`    | Collapse back to list                   |
+| `tab`          | Switch between Spinners / Progress Bars |
+| `/`            | Search/filter by name                   |
+| `c`            | Copy selected entry as JSON             |
+| `?`            | Toggle full help                        |
+| `q` / `ctrl+c` | Quit                                    |
 
 ## Layout
 
@@ -73,17 +75,6 @@ All 433 entries are embedded in the binary from `progress-indicators.json`, a co
 - **Spinners** (333): animated frame sequences grouped into braille, line, dot, block, geometric, arrow, toggle, bounce, scroll, emoji, novelty, text, and symbol
 - **Progress bars** (100): character sets for bar rendering grouped into ascii, block, geometric, decorative, phased, and emoji
 
-## Development
-
-```sh
-make build    # Build to bin/right-round
-make test     # Run tests with race detector and coverage
-make lint     # Run golangci-lint
-make run      # Build and run
-make tidy     # Run go mod tidy
-make clean    # Remove build artifacts
-```
-
 ## License
 
-See [LICENSE](LICENSE).
+[MIT License](./LICENSE). TL;DR: Do whatever you want with this software, just keep the copyright notice included. The authors aren't liable if something goes wrong.
