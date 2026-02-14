@@ -454,6 +454,21 @@ func TestModel_MouseWheelDeprecatedTypeScrollsDetail(t *testing.T) {
 	assert.Greater(t, m.detail.viewport.YOffset, before)
 }
 
+func TestModel_MouseWheelScrollsDetailFromRightPane(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+	updated, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 30})
+	m = updated.(Model)
+
+	m.detail.viewport.SetContent(strings.Repeat("line\n", 200))
+	before := m.detail.viewport.YOffset
+
+	updated, _ = m.Update(tea.MouseMsg{X: m.list.width + 2, Y: 6, Action: tea.MouseActionPress, Button: tea.MouseButtonWheelDown})
+	m = updated.(Model)
+
+	assert.Greater(t, m.detail.viewport.YOffset, before)
+}
+
 func TestModel_ViewHeightStableAfterHelpToggle(t *testing.T) {
 	grouped := makeTestGroupedEntries()
 	m := New(grouped, "", "")
@@ -487,6 +502,26 @@ func TestModel_ViewHeightStableAcrossMouseClick(t *testing.T) {
 	updated, _ = m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
 	m = updated.(Model)
 	assert.Equal(t, 30, lipgloss.Height(m.View()))
+}
+
+func TestModel_ViewHeightStableAcrossRepeatedGroupClicks(t *testing.T) {
+	grouped := makeMouseTestGroupedEntries()
+	m := New(grouped, "", "")
+
+	updated, _ := m.Update(tea.WindowSizeMsg{Width: 78, Height: 24})
+	m = updated.(Model)
+	assert.Equal(t, 24, lipgloss.Height(m.View()))
+
+	groupWidth, _ := m.list.columnWidths()
+	for i := 0; i < 20; i++ {
+		updated, _ = m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+		m = updated.(Model)
+		assert.Equal(t, 24, lipgloss.Height(m.View()))
+
+		updated, _ = m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
+		m = updated.(Model)
+		assert.Equal(t, 24, lipgloss.Height(m.View()))
+	}
 }
 
 func TestModel_ViewHeightStableForSymbolGroupAnimation(t *testing.T) {

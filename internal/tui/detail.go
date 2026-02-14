@@ -19,6 +19,8 @@ type detailModel struct {
 
 func newDetailModel(anim *animEngine) detailModel {
 	vp := viewport.New(0, 0)
+	vp.MouseWheelEnabled = true
+	vp.MouseWheelDelta = 2
 	return detailModel{
 		viewport: vp,
 		anim:     anim,

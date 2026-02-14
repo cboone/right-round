@@ -188,6 +188,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	defer m.updateLayout()
+
 	// Always allow ctrl+c to quit, even during filtering
 	if msg.String() == "ctrl+c" {
 		return m, tea.Quit
@@ -202,13 +204,11 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.filterInput = ""
 			m.filterBox.SetValue("")
 			m.list.setFilter("")
-			m.updateLayout()
 			return m, nil
 		case "enter":
 			m.filtering = false
 			m.filterBox.Blur()
 			m.filterInput = m.filterBox.Value()
-			m.updateLayout()
 			return m, nil
 		default:
 			var cmd tea.Cmd
@@ -339,7 +339,6 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.filtering = true
 		m.filterBox.SetValue(m.filterInput)
 		m.filterBox.CursorEnd()
-		m.updateLayout()
 		return m, m.filterBox.Focus()
 
 	case matchKey(msg, keys.Copy):
@@ -349,7 +348,6 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case matchKey(msg, keys.Help):
 		m.showFullHelp = !m.showFullHelp
-		m.updateLayout()
 	}
 
 	// Update detail panel with current selection in wide mode
@@ -413,6 +411,8 @@ func (m *Model) syncListFocus() {
 }
 
 func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
+	defer m.updateLayout()
+
 	if msg.Y < tabBarHeight && isMouseClick(msg) && m.typeLock == "" {
 		if tab, ok := m.tabAtX(msg.X); ok {
 			if tab == tabSpinners && m.tab != tabSpinners {
@@ -471,6 +471,8 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 			} else {
 				m.detail.viewport.ScrollUp(2)
 			}
+		} else {
+			m.detail.viewport, _ = m.detail.viewport.Update(msg)
 		}
 		if isMouseClick(msg) {
 			m.focus = focusDetail
@@ -486,6 +488,8 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 			} else {
 				m.detail.viewport.ScrollUp(2)
 			}
+		} else {
+			m.detail.viewport, _ = m.detail.viewport.Update(msg)
 		}
 		return m, nil
 	}
@@ -516,6 +520,37 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 
 // View renders the full TUI.
 func (m Model) View() string {
+	// Recompute layout from the exact footer we're about to render.
+	bottom := ""
+	if m.filtering {
+		bottom = filterPromptStyle.Render("Filter ") + m.filterBox.View()
+	} else if m.statusMsg != "" {
+		bottom = statusStyle.Render(m.statusMsg)
+	} else {
+		helpModel := m.help
+		helpModel.ShowAll = m.showFullHelp
+		helpModel.Width = m.width
+		bottom = helpModel.View(m.currentHelpKeyMap())
+	}
+
+	bottomHeight := lipgloss.Height(bottom)
+	if bottomHeight < 1 {
+		bottomHeight = 1
+	}
+	contentHeight := m.height - tabBarHeight - bottomHeight
+	if contentHeight < 1 {
+		contentHeight = 1
+	}
+	if m.width >= wideThreshold {
+		listWidth := m.width * 55 / 100
+		detailWidth := m.width - listWidth
+		m.list.setSize(listWidth, contentHeight)
+		m.detail.setSize(detailWidth, contentHeight)
+	} else {
+		m.list.setSize(m.width, contentHeight)
+		m.detail.setSize(m.width, contentHeight)
+	}
+
 	var b strings.Builder
 
 	// Tab bar
@@ -560,16 +595,7 @@ func (m Model) View() string {
 	b.WriteString("\n")
 
 	// Status / filter bar
-	if m.filtering {
-		b.WriteString(filterPromptStyle.Render("Filter ") + m.filterBox.View())
-	} else if m.statusMsg != "" {
-		b.WriteString(statusStyle.Render(m.statusMsg))
-	} else {
-		helpModel := m.help
-		helpModel.ShowAll = m.showFullHelp
-		helpModel.Width = m.width
-		b.WriteString(helpModel.View(m.currentHelpKeyMap()))
-	}
+	b.WriteString(bottom)
 
 	return b.String()
 }
