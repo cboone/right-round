@@ -7,6 +7,7 @@ import (
 
 	rightround "github.com/cboone/right-round"
 	"github.com/cboone/right-round/internal/data"
+	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/stretchr/testify/assert"
@@ -569,4 +570,48 @@ func TestModel_ViewHeightStableForSymbolGroupAnimation(t *testing.T) {
 		m = updated.(Model)
 		assert.Equal(t, 30, lipgloss.Height(m.View()))
 	}
+}
+
+func TestModel_ContextualHelpByFocus(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+	updated, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 30})
+	m = updated.(Model)
+
+	km := m.currentHelpKeyMap()
+	assert.True(t, hasBindingKey(km.ShortHelp(), "o"))
+	assert.True(t, hasBindingKey(km.ShortHelp(), "c"))
+
+	m.focus = focusGroups
+	km = m.currentHelpKeyMap()
+	assert.True(t, hasBindingKey(km.ShortHelp(), "["))
+	assert.True(t, hasBindingKey(km.ShortHelp(), "s"))
+
+	m.focus = focusDetail
+	km = m.currentHelpKeyMap()
+	assert.True(t, hasBindingKey(km.ShortHelp(), "v"))
+	assert.True(t, hasBindingKey(km.ShortHelp(), "esc"))
+}
+
+func TestModel_ContextualHelpHonorsTypeLock(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "spinner", "")
+	updated, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 30})
+	m = updated.(Model)
+
+	km := m.currentHelpKeyMap()
+	for _, group := range km.FullHelp() {
+		assert.False(t, hasBindingKey(group, "tab"))
+	}
+}
+
+func hasBindingKey(bindings []key.Binding, target string) bool {
+	for _, b := range bindings {
+		for _, k := range b.Keys() {
+			if k == target {
+				return true
+			}
+		}
+	}
+	return false
 }

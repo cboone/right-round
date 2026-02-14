@@ -425,7 +425,7 @@ func (m Model) bottomBarHeight() int {
 	helpModel := m.help
 	helpModel.ShowAll = m.showFullHelp
 	helpModel.Width = m.width
-	h := lipgloss.Height(helpModel.View(keys))
+	h := lipgloss.Height(helpModel.View(m.currentHelpKeyMap()))
 	if h < 1 {
 		return 1
 	}
@@ -779,7 +779,7 @@ func (m Model) View() string {
 		helpModel := m.help
 		helpModel.ShowAll = m.showFullHelp
 		helpModel.Width = m.width
-		b.WriteString(helpModel.View(keys))
+		b.WriteString(helpModel.View(m.currentHelpKeyMap()))
 	}
 
 	return b.String()
@@ -851,4 +851,62 @@ func (m Model) tabAtX(x int) (activeTab, bool) {
 		return tabProgressBars, true
 	}
 	return tabSpinners, false
+}
+
+type contextualHelpKeyMap struct {
+	short []key.Binding
+	full  [][]key.Binding
+}
+
+func (k contextualHelpKeyMap) ShortHelp() []key.Binding {
+	return k.short
+}
+
+func (k contextualHelpKeyMap) FullHelp() [][]key.Binding {
+	return k.full
+}
+
+func (m Model) currentHelpKeyMap() contextualHelpKeyMap {
+	nav := []key.Binding{keys.Up, keys.Down, keys.PageUp, keys.PageDown, keys.Home, keys.End}
+	manage := []key.Binding{keys.Search, keys.Options, keys.Help, keys.Quit}
+
+	if m.typeLock == "" {
+		manage = append(manage, keys.Tab)
+	}
+
+	switch m.focus {
+	case focusGroups:
+		short := []key.Binding{keys.Up, keys.Right, keys.PrevGroup, keys.Sort, keys.Search, keys.Options, keys.Quit}
+		full := [][]key.Binding{
+			nav,
+			{keys.Left, keys.Right, keys.PrevGroup, keys.NextGroup, keys.Sort},
+			manage,
+		}
+		return contextualHelpKeyMap{short: short, full: full}
+
+	case focusDetail:
+		short := []key.Binding{keys.Up, keys.Back, keys.Verbose, keys.Copy, keys.Options, keys.Quit}
+		full := [][]key.Binding{
+			nav,
+			{keys.Back, keys.Left, keys.Verbose, keys.Copy},
+			manage,
+		}
+		return contextualHelpKeyMap{short: short, full: full}
+
+	default:
+		entryFocus := []key.Binding{keys.Left, keys.Right, keys.Enter, keys.Copy, keys.Sort, keys.Verbose}
+		if m.width >= wideThreshold {
+			entryFocus = []key.Binding{keys.Left, keys.Right, keys.Copy, keys.Sort, keys.Verbose}
+		}
+		short := []key.Binding{keys.Up, keys.Left, keys.Right, keys.Copy, keys.Search, keys.Options, keys.Quit}
+		if m.width < wideThreshold {
+			short = []key.Binding{keys.Up, keys.Left, keys.Enter, keys.Copy, keys.Search, keys.Options, keys.Quit}
+		}
+		full := [][]key.Binding{
+			nav,
+			entryFocus,
+			manage,
+		}
+		return contextualHelpKeyMap{short: short, full: full}
+	}
 }
