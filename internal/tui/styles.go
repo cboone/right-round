@@ -2,18 +2,19 @@ package tui
 
 import (
 	"charm.land/lipgloss/v2"
-	"charm.land/lipgloss/v2/compat"
 )
 
 var (
-	accentColor = compat.AdaptiveColor{Light: lipgloss.Color("#874BFD"), Dark: lipgloss.Color("#7D56F4")}
-	subtleColor = compat.AdaptiveColor{Light: lipgloss.Color("#666666"), Dark: lipgloss.Color("#999999")}
-	warnColor   = compat.AdaptiveColor{Light: lipgloss.Color("#FF6600"), Dark: lipgloss.Color("#FF9933")}
+	// Palette inspired by Huh's Base16 theme.
+	primaryColor     = lipgloss.Color("6")
+	interactiveColor = lipgloss.Color("3")
+	subtleColor      = lipgloss.Color("8")
+	warnColor        = lipgloss.Color("9")
 
 	// Tab styles
 	activeTabStyle = lipgloss.NewStyle().
 			Bold(true).
-			Foreground(accentColor).
+			Foreground(primaryColor).
 			Padding(0, 2)
 
 	inactiveTabStyle = lipgloss.NewStyle().
@@ -28,12 +29,12 @@ var (
 	// List styles
 	groupHeaderStyle = lipgloss.NewStyle().
 				Bold(true).
-				Foreground(accentColor).
+				Foreground(primaryColor).
 				MarginTop(1)
 
 	selectedItemStyle = lipgloss.NewStyle().
 				Bold(true).
-				Foreground(accentColor)
+				Foreground(interactiveColor)
 
 	normalItemStyle = lipgloss.NewStyle()
 
@@ -42,7 +43,7 @@ var (
 
 	listPaneTitleStyle = lipgloss.NewStyle().
 				Bold(true).
-				Foreground(accentColor)
+				Foreground(primaryColor)
 
 	listPaneMetaStyle = lipgloss.NewStyle().
 				Foreground(subtleColor)
@@ -50,26 +51,26 @@ var (
 	// Detail panel styles
 	detailBorderStyle = lipgloss.NewStyle().
 				BorderStyle(lipgloss.RoundedBorder()).
-				BorderForeground(accentColor).
+				BorderForeground(subtleColor).
 				Padding(0, 1)
 
 	detailLabelStyle = lipgloss.NewStyle().
 				Bold(true).
-				Foreground(accentColor)
+				Foreground(primaryColor)
 
 	// Help bar
 	helpStyle = lipgloss.NewStyle().
 			Foreground(subtleColor)
 
 	helpKeyStyle = lipgloss.NewStyle().
-			Foreground(accentColor)
+			Foreground(interactiveColor)
 
 	helpDescStyle = lipgloss.NewStyle().
 			Foreground(subtleColor)
 
 	filterPromptStyle = lipgloss.NewStyle().
 				Bold(true).
-				Foreground(accentColor)
+				Foreground(interactiveColor)
 
 	// Status message
 	statusStyle = lipgloss.NewStyle().
