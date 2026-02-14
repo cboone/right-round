@@ -51,6 +51,21 @@ var (
 	helpStyle = lipgloss.NewStyle().
 			Foreground(subtleColor)
 
+	helpKeyStyle = lipgloss.NewStyle().
+			Foreground(accentColor)
+
+	helpDescStyle = lipgloss.NewStyle().
+			Foreground(subtleColor)
+
+	filterPromptStyle = lipgloss.NewStyle().
+				Bold(true).
+				Foreground(accentColor)
+
+	optionsModalStyle = lipgloss.NewStyle().
+				BorderStyle(lipgloss.RoundedBorder()).
+				BorderForeground(accentColor).
+				Padding(1, 2)
+
 	// Status message
 	statusStyle = lipgloss.NewStyle().
 			Foreground(warnColor)

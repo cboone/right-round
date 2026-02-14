@@ -150,6 +150,14 @@ func (m *listModel) toggleGroupSort() {
 	m.rebuildVisibleGroups(m.filter)
 }
 
+func (m *listModel) setGroupSort(mode groupSortMode) {
+	if m.groupSort == mode {
+		return
+	}
+	m.groupSort = mode
+	m.rebuildVisibleGroups(m.filter)
+}
+
 func (m *listModel) groupSortLabel() string {
 	if m.groupSort == groupSortBySize {
 		return "size"

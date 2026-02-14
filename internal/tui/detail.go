@@ -62,6 +62,14 @@ func (m *detailModel) toggleVerbose() {
 	m.viewport.GotoTop()
 }
 
+func (m *detailModel) setVerbose(v bool) {
+	if m.verbose == v {
+		return
+	}
+	m.verbose = v
+	m.viewport.GotoTop()
+}
+
 func (m *detailModel) verboseLabel() string {
 	if m.verbose {
 		return "verbose"

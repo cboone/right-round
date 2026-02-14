@@ -6,8 +6,11 @@ import (
 	"time"
 
 	"github.com/cboone/right-round/internal/data"
+	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/huh"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -48,6 +51,17 @@ type Model struct {
 
 	filtering   bool
 	filterInput string
+	filterBox   textinput.Model
+
+	help help.Model
+
+	optionsOpen   bool
+	optionsForm   *huh.Form
+	optionsFilter string
+	optionsSort   string
+	optionsDetail string
+	optionsHelp   bool
+	optionsType   string
 
 	showFullHelp bool
 	statusMsg    string
@@ -75,6 +89,20 @@ func New(grouped *data.GroupedEntries, typeLock string, initialGroup string) Mod
 	}
 
 	list := newListModel(groups, anim)
+	filterBox := textinput.New()
+	filterBox.Prompt = ""
+	filterBox.Placeholder = "name or id"
+	filterBox.CharLimit = 80
+	filterBox.Width = 32
+
+	helpModel := help.New()
+	helpModel.Styles.ShortKey = helpKeyStyle
+	helpModel.Styles.FullKey = helpKeyStyle
+	helpModel.Styles.ShortDesc = helpDescStyle
+	helpModel.Styles.FullDesc = helpDescStyle
+	helpModel.Styles.ShortSeparator = helpDescStyle
+	helpModel.Styles.FullSeparator = helpDescStyle
+	helpModel.Ellipsis = " ..."
 
 	// If initial group specified, move cursor to it
 	if initialGroup != "" {
@@ -92,6 +120,8 @@ func New(grouped *data.GroupedEntries, typeLock string, initialGroup string) Mod
 		focus:      focusEntries,
 		tab:        tab,
 		typeLock:   typeLock,
+		filterBox:  filterBox,
+		help:       helpModel,
 		lastTick:   time.Now(),
 	}
 }
@@ -108,6 +138,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.width = msg.Width
 		m.height = msg.Height
 		m.updateLayout()
+		if m.optionsOpen && m.optionsForm != nil {
+			m.optionsForm.WithWidth(m.optionsFormWidth()).WithHeight(m.optionsFormHeight())
+		}
 		if m.width >= wideThreshold {
 			m.detail.setEntry(m.list.selectedEntry())
 		}
@@ -151,9 +184,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, nil
 
 	case tea.KeyMsg:
+		if m.optionsOpen {
+			return m.updateOptions(msg)
+		}
 		return m.handleKey(msg)
 
 	case tea.MouseMsg:
+		if m.optionsOpen {
+			return m.updateOptions(msg)
+		}
 		return m.handleMouse(msg)
 	}
 
@@ -171,24 +210,22 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "esc":
 			m.filtering = false
+			m.filterBox.Blur()
 			m.filterInput = ""
+			m.filterBox.SetValue("")
 			m.list.setFilter("")
 			return m, nil
 		case "enter":
 			m.filtering = false
-			return m, nil
-		case "backspace":
-			if len(m.filterInput) > 0 {
-				m.filterInput = m.filterInput[:len(m.filterInput)-1]
-				m.list.setFilter(m.filterInput)
-			}
+			m.filterBox.Blur()
+			m.filterInput = m.filterBox.Value()
 			return m, nil
 		default:
-			if msg.Type == tea.KeyRunes && len(msg.Runes) == 1 {
-				m.filterInput += string(msg.Runes[0])
-				m.list.setFilter(m.filterInput)
-			}
-			return m, nil
+			var cmd tea.Cmd
+			m.filterBox, cmd = m.filterBox.Update(msg)
+			m.filterInput = m.filterBox.Value()
+			m.list.setFilter(m.filterInput)
+			return m, cmd
 		}
 	}
 
@@ -301,6 +338,10 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case matchKey(msg, keys.Verbose):
 		m.detail.toggleVerbose()
 
+	case matchKey(msg, keys.Options):
+		cmd := m.openOptions()
+		return m, cmd
+
 	case matchKey(msg, keys.Tab):
 		if m.typeLock == "" {
 			if m.tab == tabSpinners {
@@ -315,7 +356,9 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case matchKey(msg, keys.Search):
 		m.filtering = true
-		m.filterInput = ""
+		m.filterBox.SetValue(m.filterInput)
+		m.filterBox.CursorEnd()
+		return m, m.filterBox.Focus()
 
 	case matchKey(msg, keys.Copy):
 		if entry := m.list.selectedEntry(); entry != nil {
@@ -372,6 +415,160 @@ func (m *Model) syncListFocus() {
 	} else {
 		m.list.setFocusPane(listPaneEntries)
 	}
+}
+
+func (m *Model) openOptions() tea.Cmd {
+	m.optionsFilter = m.filterInput
+	m.optionsSort = m.list.groupSortLabel()
+	if m.detail.verbose {
+		m.optionsDetail = "verbose"
+	} else {
+		m.optionsDetail = "concise"
+	}
+	m.optionsHelp = m.showFullHelp
+	if m.tab == tabProgressBars {
+		m.optionsType = "progress bars"
+	} else {
+		m.optionsType = "spinners"
+	}
+
+	fields := []huh.Field{
+		huh.NewInput().
+			Title("Filter").
+			Description("Search by name or id").
+			Placeholder("braille, ascii, dots, loader").
+			Value(&m.optionsFilter),
+		huh.NewSelect[string]().
+			Title("Group order").
+			Options(
+				huh.NewOption("Alphabetical", "alpha"),
+				huh.NewOption("By group size", "size"),
+			).
+			Value(&m.optionsSort),
+		huh.NewSelect[string]().
+			Title("Detail panel").
+			Options(
+				huh.NewOption("Concise", "concise"),
+				huh.NewOption("Verbose", "verbose"),
+			).
+			Value(&m.optionsDetail),
+		huh.NewConfirm().
+			Title("Show expanded key help").
+			Affirmative("yes").
+			Negative("no").
+			Value(&m.optionsHelp),
+	}
+
+	if m.typeLock == "" {
+		fields = append(fields,
+			huh.NewSelect[string]().
+				Title("Indicator type").
+				Options(
+					huh.NewOption("Spinners", "spinners"),
+					huh.NewOption("Progress Bars", "progress bars"),
+				).
+				Value(&m.optionsType),
+		)
+	}
+
+	m.optionsForm = huh.NewForm(
+		huh.NewGroup(fields...).
+			Title("Display and Navigation"),
+	).WithTheme(huh.ThemeCharm()).
+		WithWidth(m.optionsFormWidth()).
+		WithHeight(m.optionsFormHeight())
+
+	m.optionsOpen = true
+	return m.optionsForm.Init()
+}
+
+func (m *Model) updateOptions(msg tea.Msg) (tea.Model, tea.Cmd) {
+	if km, ok := msg.(tea.KeyMsg); ok && km.String() == "ctrl+c" {
+		return m, tea.Quit
+	}
+	if m.optionsForm == nil {
+		m.optionsOpen = false
+		return m, nil
+	}
+
+	updated, cmd := m.optionsForm.Update(msg)
+	if f, ok := updated.(*huh.Form); ok {
+		m.optionsForm = f
+	}
+
+	switch m.optionsForm.State {
+	case huh.StateCompleted:
+		m.applyOptionsFromForm()
+		m.optionsOpen = false
+		m.optionsForm = nil
+		m.statusMsg = "Options applied"
+		m.statusExpiry = time.Now().Add(2 * time.Second)
+		return m, nil
+	case huh.StateAborted:
+		m.optionsOpen = false
+		m.optionsForm = nil
+		return m, nil
+	default:
+		return m, cmd
+	}
+}
+
+func (m *Model) applyOptionsFromForm() {
+	m.filterInput = strings.TrimSpace(m.optionsFilter)
+	m.filterBox.SetValue(m.filterInput)
+	m.list.setFilter(m.filterInput)
+
+	if m.optionsSort == "size" {
+		m.list.setGroupSort(groupSortBySize)
+	} else {
+		m.list.setGroupSort(groupSortAlphabetical)
+	}
+
+	m.detail.setVerbose(m.optionsDetail == "verbose")
+	m.showFullHelp = m.optionsHelp
+
+	if m.typeLock == "" {
+		if m.optionsType == "progress bars" {
+			m.tab = tabProgressBars
+			m.list.setGroups(m.grouped.ProgressBarGroups)
+		} else {
+			m.tab = tabSpinners
+			m.list.setGroups(m.grouped.SpinnerGroups)
+		}
+	}
+
+	if m.width >= wideThreshold {
+		m.detail.setEntry(m.list.selectedEntry())
+	}
+	m.syncListFocus()
+}
+
+func (m Model) optionsFormWidth() int {
+	if m.width <= 0 {
+		return 64
+	}
+	w := m.width - 10
+	if w > 76 {
+		w = 76
+	}
+	if w < 36 {
+		w = 36
+	}
+	return w
+}
+
+func (m Model) optionsFormHeight() int {
+	if m.height <= 0 {
+		return 16
+	}
+	h := m.height - 8
+	if h > 20 {
+		h = 20
+	}
+	if h < 10 {
+		h = 10
+	}
+	return h
 }
 
 func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
@@ -552,16 +749,25 @@ func (m Model) View() string {
 
 	// Status / filter bar
 	if m.filtering {
-		b.WriteString(helpStyle.Render("/ ") + m.filterInput + helpStyle.Render("_"))
+		b.WriteString(filterPromptStyle.Render("Filter ") + m.filterBox.View())
 	} else if m.statusMsg != "" {
 		b.WriteString(statusStyle.Render(m.statusMsg))
-	} else if m.showFullHelp {
-		b.WriteString(keys.fullHelp())
 	} else {
-		b.WriteString(keys.shortHelp())
+		helpModel := m.help
+		helpModel.ShowAll = m.showFullHelp
+		helpModel.Width = m.width
+		b.WriteString(helpModel.View(keys))
 	}
 
-	return b.String()
+	content := b.String()
+	if m.optionsOpen && m.optionsForm != nil {
+		modal := optionsModalStyle.
+			Width(m.optionsFormWidth()).
+			Render(m.optionsForm.View())
+		return lipgloss.Place(m.width, m.height, lipgloss.Center, lipgloss.Center, modal)
+	}
+
+	return content
 }
 
 func isMouseWheel(msg tea.MouseMsg) bool {

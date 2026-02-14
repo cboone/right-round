@@ -15,6 +15,7 @@ type keyMap struct {
 	Back      key.Binding
 	Tab       key.Binding
 	Search    key.Binding
+	Options   key.Binding
 	PrevGroup key.Binding
 	NextGroup key.Binding
 	Sort      key.Binding
@@ -73,6 +74,10 @@ var keys = keyMap{
 		key.WithKeys("/"),
 		key.WithHelp("/", "filter"),
 	),
+	Options: key.NewBinding(
+		key.WithKeys("o"),
+		key.WithHelp("o", "options"),
+	),
 	PrevGroup: key.NewBinding(
 		key.WithKeys("["),
 		key.WithHelp("[", "previous group"),
@@ -103,40 +108,22 @@ var keys = keyMap{
 	),
 }
 
-func (k keyMap) shortHelp() string {
-	return helpStyle.Render(
-		k.Up.Help().Key + " " + k.Up.Help().Desc +
-			"  " + k.Left.Help().Key + "/" + k.Right.Help().Key + " panes" +
-			"  " + k.PrevGroup.Help().Key + "/" + k.NextGroup.Help().Key + " groups" +
-			"  " + k.Search.Help().Key + " " + k.Search.Help().Desc +
-			"  " + k.Enter.Help().Key + " " + k.Enter.Help().Desc +
-			"  " + k.Tab.Help().Key + " " + k.Tab.Help().Desc +
-			"  " + k.Copy.Help().Key + " " + k.Copy.Help().Desc +
-			"  " + k.Help.Help().Key + " more" +
-			"  " + k.Quit.Help().Key + " " + k.Quit.Help().Desc,
-	)
+func (k keyMap) ShortHelp() []key.Binding {
+	return []key.Binding{
+		k.Up,
+		k.Left,
+		k.PrevGroup,
+		k.Search,
+		k.Options,
+		k.Help,
+		k.Quit,
+	}
 }
 
-func (k keyMap) fullHelp() string {
-	return helpStyle.Render(
-		k.Up.Help().Key + " " + k.Up.Help().Desc +
-			"  " + k.Down.Help().Key + " " + k.Down.Help().Desc +
-			"  " + k.Left.Help().Key + " " + k.Left.Help().Desc +
-			"  " + k.Right.Help().Key + " " + k.Right.Help().Desc +
-			"  " + k.PrevGroup.Help().Key + " " + k.PrevGroup.Help().Desc +
-			"  " + k.NextGroup.Help().Key + " " + k.NextGroup.Help().Desc +
-			"  " + k.PageUp.Help().Key + " " + k.PageUp.Help().Desc +
-			"  " + k.PageDown.Help().Key + " " + k.PageDown.Help().Desc +
-			"  " + k.Home.Help().Key + " " + k.Home.Help().Desc +
-			"  " + k.End.Help().Key + " " + k.End.Help().Desc +
-			"\n" +
-			k.Enter.Help().Key + " " + k.Enter.Help().Desc +
-			"  " + k.Back.Help().Key + " " + k.Back.Help().Desc +
-			"  " + k.Sort.Help().Key + " " + k.Sort.Help().Desc +
-			"  " + k.Verbose.Help().Key + " " + k.Verbose.Help().Desc +
-			"  " + k.Tab.Help().Key + " " + k.Tab.Help().Desc +
-			"  " + k.Search.Help().Key + " " + k.Search.Help().Desc +
-			"  " + k.Copy.Help().Key + " " + k.Copy.Help().Desc +
-			"  " + k.Quit.Help().Key + " " + k.Quit.Help().Desc,
-	)
+func (k keyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{
+		{k.Up, k.Down, k.PageUp, k.PageDown, k.Home, k.End},
+		{k.Left, k.Right, k.PrevGroup, k.NextGroup, k.Enter, k.Back},
+		{k.Search, k.Options, k.Sort, k.Verbose, k.Tab, k.Copy, k.Help, k.Quit},
+	}
 }

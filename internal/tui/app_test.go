@@ -263,6 +263,42 @@ func TestModel_VerboseToggleKey(t *testing.T) {
 	assert.Equal(t, "verbose", m.detail.verboseLabel())
 }
 
+func TestModel_OptionsKeyOpensPanel(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+	m.width = 120
+	m.height = 40
+	m.updateLayout()
+
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'o'}})
+	m = updated.(Model)
+
+	assert.True(t, m.optionsOpen)
+	assert.NotNil(t, m.optionsForm)
+}
+
+func TestModel_ApplyOptionsFromForm(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+	m.width = 120
+	m.height = 40
+	m.updateLayout()
+
+	m.optionsFilter = "bar"
+	m.optionsSort = "size"
+	m.optionsDetail = "verbose"
+	m.optionsHelp = true
+	m.optionsType = "progress bars"
+	m.applyOptionsFromForm()
+
+	assert.Equal(t, "bar", m.filterInput)
+	assert.Equal(t, "size", m.list.groupSortLabel())
+	assert.Equal(t, "verbose", m.detail.verboseLabel())
+	assert.True(t, m.showFullHelp)
+	assert.Equal(t, tabProgressBars, m.tab)
+	assert.Equal(t, "b/1", m.list.selectedID())
+}
+
 func TestModel_AnimTickMsg(t *testing.T) {
 	grouped := makeTestGroupedEntries()
 	m := New(grouped, "", "")
