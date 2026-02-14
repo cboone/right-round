@@ -22,9 +22,7 @@ var (
 				Padding(0, 2)
 
 	tabBarStyle = lipgloss.NewStyle().
-			BorderStyle(lipgloss.NormalBorder()).
-			BorderBottom(true).
-			BorderForeground(subtleColor)
+			Foreground(subtleColor)
 
 	// List styles
 	groupHeaderStyle = lipgloss.NewStyle().
@@ -37,9 +35,6 @@ var (
 				Foreground(interactiveColor)
 
 	normalItemStyle = lipgloss.NewStyle()
-
-	listDividerStyle = lipgloss.NewStyle().
-				Foreground(subtleColor)
 
 	listPaneTitleStyle = lipgloss.NewStyle().
 				Bold(true).

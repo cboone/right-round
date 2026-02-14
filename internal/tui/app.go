@@ -14,7 +14,7 @@ import (
 )
 
 const wideThreshold = 100
-const tabBarHeight = 2
+const tabBarHeight = 1
 
 // focus tracks which panel has focus.
 type focus int

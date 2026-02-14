@@ -432,7 +432,7 @@ func (m *listModel) view() string {
 	entriesTitle := listPaneTitleStyle.Render("Entries")
 	entriesHeader := lipgloss.NewStyle().Width(entryWidth).MaxWidth(entryWidth).Render(entriesTitle)
 	if rows < 1 {
-		return groupsHeader + listDividerStyle.Render("|") + entriesHeader
+		return groupsHeader + "  " + entriesHeader
 	}
 
 	var groupLines []string
@@ -521,7 +521,7 @@ func (m *listModel) view() string {
 	}
 
 	var b strings.Builder
-	sep := listDividerStyle.Render("|")
+	sep := "  "
 	b.WriteString(groupsHeader + sep + entriesHeader)
 	for i := 0; i < rows; i++ {
 		b.WriteString("\n")
