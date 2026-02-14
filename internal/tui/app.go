@@ -596,13 +596,11 @@ func (m Model) optionsFormHeight() int {
 
 func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 	if msg.Y < tabBarHeight && isMouseClick(msg) && m.typeLock == "" {
-		if msg.X < m.width/2 {
-			if m.tab != tabSpinners {
+		if tab, ok := m.tabAtX(msg.X); ok {
+			if tab == tabSpinners && m.tab != tabSpinners {
 				m.tab = tabSpinners
 				m.list.setGroups(m.grouped.SpinnerGroups)
-			}
-		} else {
-			if m.tab != tabProgressBars {
+			} else if tab == tabProgressBars && m.tab != tabProgressBars {
 				m.tab = tabProgressBars
 				m.list.setGroups(m.grouped.ProgressBarGroups)
 			}
@@ -623,13 +621,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 	if m.width >= wideThreshold {
 		if msg.X < m.list.width {
 			localX := msg.X
-			if isMouseWheel(msg) {
-				delta := 0
-				if msg.Button == tea.MouseButtonWheelDown {
-					delta = 1
-				} else if msg.Button == tea.MouseButtonWheelUp {
-					delta = -1
-				}
+			if delta := mouseWheelDelta(msg); delta != 0 {
 				if delta != 0 {
 					if m.list.isGroupColumn(localX) {
 						m.list.scrollGroup(delta)
@@ -655,10 +647,10 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 			return m, nil
 		}
 
-		if isMouseWheel(msg) {
-			if msg.Button == tea.MouseButtonWheelDown {
+		if delta := mouseWheelDelta(msg); delta != 0 {
+			if delta > 0 {
 				m.detail.viewport.ScrollDown(2)
-			} else if msg.Button == tea.MouseButtonWheelUp {
+			} else {
 				m.detail.viewport.ScrollUp(2)
 			}
 		}
@@ -670,23 +662,17 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 	}
 
 	if m.focus == focusDetail {
-		if isMouseWheel(msg) {
-			if msg.Button == tea.MouseButtonWheelDown {
+		if delta := mouseWheelDelta(msg); delta != 0 {
+			if delta > 0 {
 				m.detail.viewport.ScrollDown(2)
-			} else if msg.Button == tea.MouseButtonWheelUp {
+			} else {
 				m.detail.viewport.ScrollUp(2)
 			}
 		}
 		return m, nil
 	}
 
-	if isMouseWheel(msg) {
-		delta := 0
-		if msg.Button == tea.MouseButtonWheelDown {
-			delta = 1
-		} else if msg.Button == tea.MouseButtonWheelUp {
-			delta = -1
-		}
+	if delta := mouseWheelDelta(msg); delta != 0 {
 		if m.list.isGroupColumn(msg.X) {
 			m.list.scrollGroup(delta)
 			m.focus = focusGroups
@@ -798,6 +784,35 @@ func isMouseWheel(msg tea.MouseMsg) bool {
 	return msg.Button == tea.MouseButtonWheelUp || msg.Button == tea.MouseButtonWheelDown
 }
 
+func mouseWheelDelta(msg tea.MouseMsg) int {
+	if msg.Button == tea.MouseButtonWheelDown {
+		return 1
+	}
+	if msg.Button == tea.MouseButtonWheelUp {
+		return -1
+	}
+	ev := tea.MouseEvent(msg)
+	if ev.Type == tea.MouseWheelDown {
+		return 1
+	}
+	if ev.Type == tea.MouseWheelUp {
+		return -1
+	}
+	return 0
+}
+
 func isMouseClick(msg tea.MouseMsg) bool {
 	return msg.Action == tea.MouseActionPress || msg.Action == tea.MouseActionRelease
+}
+
+func (m Model) tabAtX(x int) (activeTab, bool) {
+	spinnerWidth := lipgloss.Width(inactiveTabStyle.Render("Spinners"))
+	barWidth := lipgloss.Width(inactiveTabStyle.Render("Progress Bars"))
+	if x >= 0 && x < spinnerWidth {
+		return tabSpinners, true
+	}
+	if x >= spinnerWidth && x < spinnerWidth+barWidth {
+		return tabProgressBars, true
+	}
+	return tabSpinners, false
 }

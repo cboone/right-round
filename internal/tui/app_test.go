@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"strings"
 	"testing"
 	"time"
 
@@ -437,12 +438,14 @@ func TestModel_MouseTabSwitching(t *testing.T) {
 	m.width = 120
 	m.height = 40
 	m.updateLayout()
+	spinnerWidth := lipgloss.Width(inactiveTabStyle.Render("Spinners"))
+	barX := spinnerWidth + 1
 
-	updated, _ := m.Update(tea.MouseMsg{X: 100, Y: 0, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	updated, _ := m.Update(tea.MouseMsg{X: barX, Y: 0, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
 	m = updated.(Model)
 	assert.Equal(t, tabProgressBars, m.tab)
 
-	updated, _ = m.Update(tea.MouseMsg{X: 5, Y: 0, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	updated, _ = m.Update(tea.MouseMsg{X: 1, Y: 0, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
 	m = updated.(Model)
 	assert.Equal(t, tabSpinners, m.tab)
 }
@@ -487,14 +490,32 @@ func TestModel_MouseReleaseTriggersTabSwitch(t *testing.T) {
 	m.width = 120
 	m.height = 40
 	m.updateLayout()
+	spinnerWidth := lipgloss.Width(inactiveTabStyle.Render("Spinners"))
+	barX := spinnerWidth + 1
 
-	updated, _ := m.Update(tea.MouseMsg{X: 100, Y: 1, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
+	updated, _ := m.Update(tea.MouseMsg{X: barX, Y: 1, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
 	m = updated.(Model)
 	assert.Equal(t, tabProgressBars, m.tab)
 
-	updated, _ = m.Update(tea.MouseMsg{X: 5, Y: 1, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
+	updated, _ = m.Update(tea.MouseMsg{X: 1, Y: 1, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
 	m = updated.(Model)
 	assert.Equal(t, tabSpinners, m.tab)
+}
+
+func TestModel_MouseWheelDeprecatedTypeScrollsDetail(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+	updated, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 30})
+	m = updated.(Model)
+
+	m.focus = focusDetail
+	m.detail.viewport.SetContent(strings.Repeat("line\n", 200))
+	before := m.detail.viewport.YOffset
+
+	updated, _ = m.Update(tea.MouseMsg{X: m.list.width + 2, Y: 5, Type: tea.MouseWheelDown})
+	m = updated.(Model)
+
+	assert.Greater(t, m.detail.viewport.YOffset, before)
 }
 
 func TestModel_ViewHeightStableAfterHelpToggle(t *testing.T) {
