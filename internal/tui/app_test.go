@@ -406,11 +406,11 @@ func TestModel_MouseTabSwitching(t *testing.T) {
 	spinnerWidth := lipgloss.Width(inactiveTabStyle.Render("Spinners"))
 	barX := spinnerWidth + 1
 
-	updated, _ := m.Update(mouseClick(barX, 0, tea.MouseLeft))
+	updated, _ := m.Update(mouseClick(barX, 1, tea.MouseLeft))
 	m = updated.(Model)
 	assert.Equal(t, tabProgressBars, m.tab)
 
-	updated, _ = m.Update(mouseClick(1, 0, tea.MouseLeft))
+	updated, _ = m.Update(mouseClick(1, 1, tea.MouseLeft))
 	m = updated.(Model)
 	assert.Equal(t, tabSpinners, m.tab)
 }
@@ -425,7 +425,7 @@ func TestModel_MouseSelectsGroup(t *testing.T) {
 	groupWidth, _ := m.list.columnWidths()
 	assert.Equal(t, "alpha", m.list.selectedGroupName())
 
-	updated, _ := m.Update(mouseClick(groupWidth-2, 3, tea.MouseLeft))
+	updated, _ := m.Update(mouseClick(groupWidth-2, 4, tea.MouseLeft))
 	m = updated.(Model)
 
 	assert.Equal(t, "beta", m.list.selectedGroupName())
@@ -458,11 +458,11 @@ func TestModel_MouseReleaseTriggersTabSwitch(t *testing.T) {
 	spinnerWidth := lipgloss.Width(inactiveTabStyle.Render("Spinners"))
 	barX := spinnerWidth + 1
 
-	updated, _ := m.Update(mouseRelease(barX, 0, tea.MouseLeft))
+	updated, _ := m.Update(mouseRelease(barX, 1, tea.MouseLeft))
 	m = updated.(Model)
 	assert.Equal(t, tabProgressBars, m.tab)
 
-	updated, _ = m.Update(mouseRelease(1, 0, tea.MouseLeft))
+	updated, _ = m.Update(mouseRelease(1, 1, tea.MouseLeft))
 	m = updated.(Model)
 	assert.Equal(t, tabSpinners, m.tab)
 }
@@ -524,11 +524,11 @@ func TestModel_ViewHeightStableAcrossMouseClick(t *testing.T) {
 	assert.Equal(t, 30, lipgloss.Height(viewString(m)))
 
 	groupWidth, _ := m.list.columnWidths()
-	updated, _ = m.Update(mouseClick(groupWidth-2, 3, tea.MouseLeft))
+	updated, _ = m.Update(mouseClick(groupWidth-2, 4, tea.MouseLeft))
 	m = updated.(Model)
 	assert.Equal(t, 30, lipgloss.Height(viewString(m)))
 
-	updated, _ = m.Update(mouseRelease(groupWidth-2, 3, tea.MouseLeft))
+	updated, _ = m.Update(mouseRelease(groupWidth-2, 4, tea.MouseLeft))
 	m = updated.(Model)
 	assert.Equal(t, 30, lipgloss.Height(viewString(m)))
 }
@@ -543,11 +543,11 @@ func TestModel_ViewHeightStableAcrossRepeatedGroupClicks(t *testing.T) {
 
 	groupWidth, _ := m.list.columnWidths()
 	for i := 0; i < 20; i++ {
-		updated, _ = m.Update(mouseClick(groupWidth-2, 3, tea.MouseLeft))
+		updated, _ = m.Update(mouseClick(groupWidth-2, 4, tea.MouseLeft))
 		m = updated.(Model)
 		assert.Equal(t, 24, lipgloss.Height(viewString(m)))
 
-		updated, _ = m.Update(mouseRelease(groupWidth-2, 3, tea.MouseLeft))
+		updated, _ = m.Update(mouseRelease(groupWidth-2, 4, tea.MouseLeft))
 		m = updated.(Model)
 		assert.Equal(t, 24, lipgloss.Height(viewString(m)))
 	}

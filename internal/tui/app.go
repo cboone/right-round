@@ -14,6 +14,7 @@ import (
 )
 
 const wideThreshold = 100
+const topGapHeight = 1
 const tabBarHeight = 1
 const contentGapHeight = 1
 const helpGapHeight = 1
@@ -371,7 +372,7 @@ func matchKey(msg tea.KeyMsg, binding key.Binding) bool {
 }
 
 func (m *Model) updateLayout() {
-	contentHeight := m.height - tabBarHeight - contentGapHeight - helpGapHeight - m.bottomBarHeight()
+	contentHeight := m.height - topGapHeight - tabBarHeight - contentGapHeight - helpGapHeight - m.bottomBarHeight()
 	if contentHeight < 1 {
 		contentHeight = 1
 	}
@@ -418,7 +419,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 	x := mouse.X
 	y := mouse.Y
 
-	if y < tabBarHeight && isMouseClick(msg) && m.typeLock == "" {
+	if y >= topGapHeight && y < topGapHeight+tabBarHeight && isMouseClick(msg) && m.typeLock == "" {
 		if tab, ok := m.tabAtX(x); ok {
 			if tab == tabSpinners && m.tab != tabSpinners {
 				m.tab = tabSpinners
@@ -436,7 +437,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
-	contentY := y - tabBarHeight - contentGapHeight
+	contentY := y - topGapHeight - tabBarHeight - contentGapHeight
 	if contentY < 0 || contentY >= m.list.height {
 		return m, nil
 	}
@@ -549,7 +550,7 @@ func (m Model) render() string {
 	if bottomHeight < 1 {
 		bottomHeight = 1
 	}
-	contentHeight := m.height - tabBarHeight - contentGapHeight - helpGapHeight - bottomHeight
+	contentHeight := m.height - topGapHeight - tabBarHeight - contentGapHeight - helpGapHeight - bottomHeight
 	if contentHeight < 1 {
 		contentHeight = 1
 	}
@@ -587,7 +588,8 @@ func (m Model) render() string {
 			tabLine += lockMeta
 		}
 	}
-	b.WriteString(tabBarStyle.Width(m.width).Render(tabLine))
+	b.WriteString("\n")
+	b.WriteString(tabBarStyle.Width(m.width).Render(" " + tabLine))
 	b.WriteString("\n\n")
 
 	// Content area
