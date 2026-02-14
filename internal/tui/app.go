@@ -17,7 +17,8 @@ const wideThreshold = 100
 type focus int
 
 const (
-	focusList focus = iota
+	focusGroups focus = iota
+	focusEntries
 	focusDetail
 )
 
@@ -77,14 +78,7 @@ func New(grouped *data.GroupedEntries, typeLock string, initialGroup string) Mod
 
 	// If initial group specified, move cursor to it
 	if initialGroup != "" {
-		for i, row := range list.rows {
-			if row.isHeader && strings.EqualFold(row.header, initialGroup) {
-				list.cursor = i
-				list.moveToNextEntry(1)
-				list.ensureVisible()
-				break
-			}
-		}
+		list.selectGroupByName(initialGroup)
 	}
 
 	detail := newDetailModel(anim)
@@ -95,6 +89,7 @@ func New(grouped *data.GroupedEntries, typeLock string, initialGroup string) Mod
 		list:       list,
 		detail:     detail,
 		anim:       anim,
+		focus:      focusEntries,
 		tab:        tab,
 		typeLock:   typeLock,
 		lastTick:   time.Now(),
@@ -157,6 +152,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.KeyMsg:
 		return m.handleKey(msg)
+
+	case tea.MouseMsg:
+		return m.handleMouse(msg)
 	}
 
 	return m, nil
@@ -199,49 +197,69 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.Quit
 
 	case matchKey(msg, keys.Up):
-		if m.focus == focusList {
-			m.list.moveUp()
-		} else {
+		switch m.focus {
+		case focusGroups:
+			m.list.moveGroupUp()
+		case focusEntries:
+			m.list.moveEntryUp()
+		default:
 			m.detail.viewport.ScrollUp(1)
 		}
 
 	case matchKey(msg, keys.Down):
-		if m.focus == focusList {
-			m.list.moveDown()
-		} else {
+		switch m.focus {
+		case focusGroups:
+			m.list.moveGroupDown()
+		case focusEntries:
+			m.list.moveEntryDown()
+		default:
 			m.detail.viewport.ScrollDown(1)
 		}
 
 	case matchKey(msg, keys.PageUp):
-		if m.focus == focusList {
-			m.list.pageUp()
-		} else {
+		switch m.focus {
+		case focusGroups:
+			m.list.pageGroupUp()
+		case focusEntries:
+			m.list.pageEntryUp()
+		default:
 			m.detail.viewport.HalfPageUp()
 		}
 
 	case matchKey(msg, keys.PageDown):
-		if m.focus == focusList {
-			m.list.pageDown()
-		} else {
+		switch m.focus {
+		case focusGroups:
+			m.list.pageGroupDown()
+		case focusEntries:
+			m.list.pageEntryDown()
+		default:
 			m.detail.viewport.HalfPageDown()
 		}
 
 	case matchKey(msg, keys.Home):
-		if m.focus == focusList {
-			m.list.goToTop()
-		} else {
+		switch m.focus {
+		case focusGroups:
+			m.list.goGroupTop()
+		case focusEntries:
+			m.list.goEntryTop()
+		default:
 			m.detail.viewport.GotoTop()
 		}
 
 	case matchKey(msg, keys.End):
-		if m.focus == focusList {
-			m.list.goToBottom()
-		} else {
+		switch m.focus {
+		case focusGroups:
+			m.list.goGroupBottom()
+		case focusEntries:
+			m.list.goEntryBottom()
+		default:
 			m.detail.viewport.GotoBottom()
 		}
 
 	case matchKey(msg, keys.Enter):
-		if m.focus == focusList {
+		if m.focus == focusGroups {
+			m.focus = focusEntries
+		} else if m.focus == focusEntries {
 			if m.width < wideThreshold {
 				m.focus = focusDetail
 				m.detail.setEntry(m.list.selectedEntry())
@@ -250,8 +268,38 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case matchKey(msg, keys.Back):
 		if m.focus == focusDetail {
-			m.focus = focusList
+			m.focus = focusEntries
+		} else if m.focus == focusEntries {
+			m.focus = focusGroups
 		}
+
+	case matchKey(msg, keys.Left):
+		if m.focus == focusEntries {
+			m.focus = focusGroups
+		} else if m.focus == focusDetail {
+			m.focus = focusEntries
+		}
+
+	case matchKey(msg, keys.Right):
+		if m.focus == focusGroups {
+			m.focus = focusEntries
+		} else if m.focus == focusEntries && m.width >= wideThreshold {
+			m.focus = focusDetail
+		}
+
+	case matchKey(msg, keys.PrevGroup):
+		m.list.moveGroupUp()
+		m.focus = focusGroups
+
+	case matchKey(msg, keys.NextGroup):
+		m.list.moveGroupDown()
+		m.focus = focusGroups
+
+	case matchKey(msg, keys.Sort):
+		m.list.toggleGroupSort()
+
+	case matchKey(msg, keys.Verbose):
+		m.detail.toggleVerbose()
 
 	case matchKey(msg, keys.Tab):
 		if m.typeLock == "" {
@@ -262,6 +310,7 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 				m.tab = tabSpinners
 				m.list.setGroups(m.grouped.SpinnerGroups)
 			}
+			m.focus = focusEntries
 		}
 
 	case matchKey(msg, keys.Search):
@@ -281,6 +330,7 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	if m.width >= wideThreshold {
 		m.detail.setEntry(m.list.selectedEntry())
 	}
+	m.syncListFocus()
 
 	return m, nil
 }
@@ -306,16 +356,138 @@ func (m *Model) updateLayout() {
 	}
 
 	if m.width >= wideThreshold {
-		listWidth := m.width * 40 / 100
+		listWidth := m.width * 55 / 100
 		detailWidth := m.width - listWidth
-		m.list.width = listWidth
-		m.list.height = contentHeight
+		m.list.setSize(listWidth, contentHeight)
 		m.detail.setSize(detailWidth, contentHeight)
 	} else {
-		m.list.width = m.width
-		m.list.height = contentHeight
+		m.list.setSize(m.width, contentHeight)
 		m.detail.setSize(m.width, contentHeight)
 	}
+}
+
+func (m *Model) syncListFocus() {
+	if m.focus == focusGroups {
+		m.list.setFocusPane(listPaneGroups)
+	} else {
+		m.list.setFocusPane(listPaneEntries)
+	}
+}
+
+func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
+	if msg.Y == 0 && msg.Action == tea.MouseActionPress && m.typeLock == "" {
+		if msg.X < m.width/2 {
+			if m.tab != tabSpinners {
+				m.tab = tabSpinners
+				m.list.setGroups(m.grouped.SpinnerGroups)
+			}
+		} else {
+			if m.tab != tabProgressBars {
+				m.tab = tabProgressBars
+				m.list.setGroups(m.grouped.ProgressBarGroups)
+			}
+		}
+		m.focus = focusEntries
+		m.syncListFocus()
+		if m.width >= wideThreshold {
+			m.detail.setEntry(m.list.selectedEntry())
+		}
+		return m, nil
+	}
+
+	contentY := msg.Y - 1
+	if contentY < 0 || contentY >= m.list.height {
+		return m, nil
+	}
+
+	if m.width >= wideThreshold {
+		if msg.X < m.list.width {
+			localX := msg.X
+			if isMouseWheel(msg) {
+				delta := 0
+				if msg.Button == tea.MouseButtonWheelDown {
+					delta = 1
+				} else if msg.Button == tea.MouseButtonWheelUp {
+					delta = -1
+				}
+				if delta != 0 {
+					if m.list.isGroupColumn(localX) {
+						m.list.scrollGroup(delta)
+						m.focus = focusGroups
+					} else {
+						m.list.scrollEntry(delta)
+						m.focus = focusEntries
+					}
+				}
+			} else if msg.Action == tea.MouseActionPress {
+				if m.list.isGroupColumn(localX) {
+					if m.list.clickGroupRow(contentY) {
+						m.focus = focusGroups
+					}
+				} else {
+					if m.list.clickEntryRow(contentY) {
+						m.focus = focusEntries
+					}
+				}
+			}
+			m.syncListFocus()
+			m.detail.setEntry(m.list.selectedEntry())
+			return m, nil
+		}
+
+		if isMouseWheel(msg) {
+			if msg.Button == tea.MouseButtonWheelDown {
+				m.detail.viewport.ScrollDown(2)
+			} else if msg.Button == tea.MouseButtonWheelUp {
+				m.detail.viewport.ScrollUp(2)
+			}
+		}
+		if msg.Action == tea.MouseActionPress {
+			m.focus = focusDetail
+		}
+		m.syncListFocus()
+		return m, nil
+	}
+
+	if m.focus == focusDetail {
+		if isMouseWheel(msg) {
+			if msg.Button == tea.MouseButtonWheelDown {
+				m.detail.viewport.ScrollDown(2)
+			} else if msg.Button == tea.MouseButtonWheelUp {
+				m.detail.viewport.ScrollUp(2)
+			}
+		}
+		return m, nil
+	}
+
+	if isMouseWheel(msg) {
+		delta := 0
+		if msg.Button == tea.MouseButtonWheelDown {
+			delta = 1
+		} else if msg.Button == tea.MouseButtonWheelUp {
+			delta = -1
+		}
+		if m.list.isGroupColumn(msg.X) {
+			m.list.scrollGroup(delta)
+			m.focus = focusGroups
+		} else {
+			m.list.scrollEntry(delta)
+			m.focus = focusEntries
+		}
+	}
+	if msg.Action == tea.MouseActionPress {
+		if m.list.isGroupColumn(msg.X) {
+			if m.list.clickGroupRow(contentY) {
+				m.focus = focusGroups
+			}
+		} else {
+			if m.list.clickEntryRow(contentY) {
+				m.focus = focusEntries
+			}
+		}
+	}
+	m.syncListFocus()
+	return m, nil
 }
 
 // View renders the full TUI.
@@ -331,6 +503,8 @@ func (m Model) View() string {
 	} else {
 		tabLine = inactiveTabStyle.Render(spinnerLabel) + activeTabStyle.Render(barLabel)
 	}
+	tabLine += helpStyle.Render("  groups: " + m.list.groupSortLabel())
+	tabLine += helpStyle.Render("  detail: " + m.detail.verboseLabel())
 	if m.typeLock != "" {
 		tabLine += helpStyle.Render(" (locked)")
 	}
@@ -364,4 +538,8 @@ func (m Model) View() string {
 	}
 
 	return b.String()
+}
+
+func isMouseWheel(msg tea.MouseMsg) bool {
+	return msg.Button == tea.MouseButtonWheelUp || msg.Button == tea.MouseButtonWheelDown
 }

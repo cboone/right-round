@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
 	"github.com/cboone/right-round/internal/data"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -191,7 +191,7 @@ func TestModel_NarrowLayoutEnterExpands(t *testing.T) {
 	m.height = 40
 	m.updateLayout()
 
-	assert.Equal(t, focusList, m.focus)
+	assert.Equal(t, focusEntries, m.focus)
 
 	// Enter expands detail
 	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
@@ -201,7 +201,7 @@ func TestModel_NarrowLayoutEnterExpands(t *testing.T) {
 	// Esc goes back
 	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyEsc})
 	m = updated.(Model)
-	assert.Equal(t, focusList, m.focus)
+	assert.Equal(t, focusEntries, m.focus)
 }
 
 func TestModel_WideLayoutNoFocusSwitch(t *testing.T) {
@@ -214,7 +214,7 @@ func TestModel_WideLayoutNoFocusSwitch(t *testing.T) {
 	// In wide mode, enter shouldn't switch focus
 	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
 	m = updated.(Model)
-	assert.Equal(t, focusList, m.focus)
+	assert.Equal(t, focusEntries, m.focus)
 }
 
 func TestModel_HelpToggle(t *testing.T) {
@@ -329,4 +329,86 @@ func TestModel_Init(t *testing.T) {
 	m := New(grouped, "", "")
 	cmd := m.Init()
 	assert.NotNil(t, cmd)
+}
+
+func makeMouseTestGroupedEntries() *data.GroupedEntries {
+	spinnerGroups := []data.Group{
+		{
+			Name:    "alpha",
+			Type:    "spinner",
+			Entries: []data.EntryEnvelope{{Entry: data.Entry{ID: "s/a", Name: "alpha spin", Type: "spinner", Group: "alpha", Frames: []string{"a", "b"}}}},
+		},
+		{
+			Name:    "beta",
+			Type:    "spinner",
+			Entries: []data.EntryEnvelope{{Entry: data.Entry{ID: "s/b", Name: "beta spin", Type: "spinner", Group: "beta", Frames: []string{"c", "d"}}}},
+		},
+	}
+	barGroups := []data.Group{
+		{
+			Name:    "ascii",
+			Type:    "progress_bar",
+			Entries: []data.EntryEnvelope{{Entry: data.Entry{ID: "b/1", Name: "bar one", Type: "progress_bar", Group: "ascii", Characters: &data.BarCharacters{Fill: "#", Empty: "-"}}}},
+		},
+	}
+
+	all := append([]data.EntryEnvelope{}, spinnerGroups[0].Entries...)
+	all = append(all, spinnerGroups[1].Entries...)
+	all = append(all, barGroups[0].Entries...)
+
+	return &data.GroupedEntries{
+		SpinnerGroups:     spinnerGroups,
+		ProgressBarGroups: barGroups,
+		AllEntries:        all,
+	}
+}
+
+func TestModel_MouseTabSwitching(t *testing.T) {
+	grouped := makeMouseTestGroupedEntries()
+	m := New(grouped, "", "")
+	m.width = 120
+	m.height = 40
+	m.updateLayout()
+
+	updated, _ := m.Update(tea.MouseMsg{X: 100, Y: 0, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	m = updated.(Model)
+	assert.Equal(t, tabProgressBars, m.tab)
+
+	updated, _ = m.Update(tea.MouseMsg{X: 5, Y: 0, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	m = updated.(Model)
+	assert.Equal(t, tabSpinners, m.tab)
+}
+
+func TestModel_MouseSelectsGroup(t *testing.T) {
+	grouped := makeMouseTestGroupedEntries()
+	m := New(grouped, "", "")
+	m.width = 120
+	m.height = 40
+	m.updateLayout()
+
+	groupWidth, _ := m.list.columnWidths()
+	assert.Equal(t, "alpha", m.list.selectedGroupName())
+
+	updated, _ := m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 2, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	m = updated.(Model)
+
+	assert.Equal(t, "beta", m.list.selectedGroupName())
+	assert.Equal(t, focusGroups, m.focus)
+}
+
+func TestModel_MouseWheelScrollsEntriesWithoutChangingGroup(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+	m.width = 120
+	m.height = 8
+	m.updateLayout()
+
+	_, entryWidth := m.list.columnWidths()
+	entryX := m.list.width - entryWidth + 1
+	groupBefore := m.list.selectedGroupName()
+
+	updated, _ := m.Update(tea.MouseMsg{X: entryX, Y: 2, Action: tea.MouseActionPress, Button: tea.MouseButtonWheelDown})
+	m = updated.(Model)
+
+	assert.Equal(t, groupBefore, m.list.selectedGroupName())
 }

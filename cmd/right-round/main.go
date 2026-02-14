@@ -48,7 +48,7 @@ Navigate, preview live animations, and copy entries as JSON.`,
 			}
 
 			model := tui.New(grouped, typeFlag, groupFlag)
-			p := tea.NewProgram(model, tea.WithAltScreen())
+			p := tea.NewProgram(model, tea.WithAltScreen(), tea.WithMouseCellMotion())
 			if _, err := p.Run(); err != nil {
 				return fmt.Errorf("running TUI: %w", err)
 			}

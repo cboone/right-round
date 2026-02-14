@@ -53,6 +53,11 @@ right-round --group braille
 | `pgup`         | Page up                                 |
 | `home`         | Go to top                               |
 | `end`          | Go to bottom                            |
+| `left`         | Focus groups pane                       |
+| `right`        | Focus entries/detail pane               |
+| `[` / `]`      | Jump to previous/next group             |
+| `s`            | Toggle group sort (alpha/size)          |
+| `v`            | Toggle detail view (concise/verbose)    |
 | `enter` / `l`  | Expand detail view (narrow mode)        |
 | `esc` / `h`    | Collapse back to list                   |
 | `tab`          | Switch between Spinners / Progress Bars |
@@ -63,17 +68,24 @@ right-round --group braille
 
 ## Layout
 
-- **Wide terminals** (100+ columns): list panel and detail panel side by side
-- **Narrow terminals** (under 100 columns): list and detail panels switch between each other
+- **Wide terminals** (100+ columns): browser pane (groups + entries) and detail panel side by side
+- **Narrow terminals** (under 100 columns): browser and detail switch views
+- **Browser pane**: groups scroll independently from entries, so you can browse deep within one group without losing group context
+
+## Mouse
+
+- Click tabs to switch indicator type
+- Click group or entry rows to select
+- Use wheel scrolling inside groups, entries, or detail panel
 
 ## Data
 
-All 433 entries are embedded in the binary from `progress-indicators.json`, a consolidated catalog of terminal progress indicators collected from 26 open-source libraries, reference documents, gists, and blog posts.
+All 497 entries are embedded in the binary from `progress-indicators.json`, a consolidated catalog of terminal progress indicators collected from 26 open-source libraries, reference documents, gists, and blog posts.
 
 ### Entry types
 
-- **Spinners** (333): animated frame sequences grouped into braille, line, dot, block, geometric, arrow, toggle, bounce, scroll, emoji, novelty, text, and symbol
-- **Progress bars** (100): character sets for bar rendering grouped into ascii, block, geometric, decorative, phased, and emoji
+- **Spinners** (378): animated frame sequences grouped into braille, line, dot, block, geometric, arrow, toggle, bounce, scroll, emoji, novelty, text, and symbol
+- **Progress bars** (119): character sets for bar rendering grouped into ascii, block, geometric, decorative, phased, and emoji
 
 ## License
 

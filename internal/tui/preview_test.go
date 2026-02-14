@@ -127,8 +127,9 @@ func TestAnimEngine_NonSpinnerSkipped(t *testing.T) {
 		},
 	}
 
-	// Should not panic
+	// Should advance determinate bar animation state
 	engine.advance(100*time.Millisecond, []string{"bar"}, entries)
+	assert.Greater(t, engine.currentOffset("bar"), 0)
 }
 
 func TestAnimEngine_IndeterminateProgressBarAdvance(t *testing.T) {
@@ -150,19 +151,29 @@ func TestAnimEngine_IndeterminateProgressBarAdvance(t *testing.T) {
 	assert.Equal(t, 3, engine.currentOffset("bar"))
 }
 
-func TestAnimEngine_IndeterminateProgressBarEmptyPatternSkipped(t *testing.T) {
+func TestAnimEngine_DeterminateProgressBarAdvancesWithoutPattern(t *testing.T) {
 	engine := newAnimEngine()
-	pattern := ""
 	entries := map[string]*data.Entry{
 		"bar": {
-			ID:            "bar",
-			Type:          "progress_bar",
-			Indeterminate: &pattern,
+			ID:   "bar",
+			Type: "progress_bar",
 		},
 	}
 
 	engine.advance(500*time.Millisecond, []string{"bar"}, entries)
-	assert.Equal(t, 0, engine.currentOffset("bar"))
+	assert.Greater(t, engine.currentOffset("bar"), 0)
+}
+
+func TestAnimEngine_CurrentProgressPctPingPong(t *testing.T) {
+	engine := newAnimEngine()
+	engine.states["bar"] = &animState{frameIndex: 0}
+	assert.Equal(t, 0.0, engine.currentProgressPct("bar"))
+
+	engine.states["bar"].frameIndex = 100
+	assert.Equal(t, 1.0, engine.currentProgressPct("bar"))
+
+	engine.states["bar"].frameIndex = 150
+	assert.Equal(t, 0.5, engine.currentProgressPct("bar"))
 }
 
 func TestEntryInterval(t *testing.T) {

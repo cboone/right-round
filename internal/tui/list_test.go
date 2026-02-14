@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/cboone/right-round/internal/data"
@@ -11,7 +12,7 @@ import (
 func makeTestGroups() []data.Group {
 	return []data.Group{
 		{
-			Name: "alpha",
+			Name: "beta",
 			Type: "spinner",
 			Entries: []data.EntryEnvelope{
 				{Entry: data.Entry{ID: "a/1", Name: "alpha one", Type: "spinner", Frames: []string{"a"}}},
@@ -19,7 +20,7 @@ func makeTestGroups() []data.Group {
 			},
 		},
 		{
-			Name: "beta",
+			Name: "alpha",
 			Type: "spinner",
 			Entries: []data.EntryEnvelope{
 				{Entry: data.Entry{ID: "b/1", Name: "beta one", Type: "spinner", Frames: []string{"c"}}},
@@ -31,76 +32,59 @@ func makeTestGroups() []data.Group {
 func TestListModel_CursorNavigation(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 20
+	m.setSize(60, 20)
 
-	// Initial position should be on first entry (past header)
-	require.NotEmpty(t, m.rows)
-	assert.False(t, m.rows[m.cursor].isHeader)
-	assert.Equal(t, "a/1", m.selectedID())
-
-	// Move down
-	m.moveDown()
-	assert.Equal(t, "a/2", m.selectedID())
-
-	// Move down past group boundary (should skip header)
-	m.moveDown()
+	require.NotEmpty(t, m.visibleGroups)
 	assert.Equal(t, "b/1", m.selectedID())
+	assert.Equal(t, "alpha", m.selectedGroupName())
 
-	// Move up past group boundary
-	m.moveUp()
+	// Move down in current group
+	m.moveGroupDown()
+	assert.Equal(t, "a/1", m.selectedID())
+	assert.Equal(t, "beta", m.selectedGroupName())
+
+	m.moveEntryDown()
 	assert.Equal(t, "a/2", m.selectedID())
+
+	// Previous group's entry cursor is preserved
+	m.moveGroupUp()
+	assert.Equal(t, "b/1", m.selectedID())
 }
 
 func TestListModel_GoToTopBottom(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 20
+	m.setSize(60, 20)
 
-	m.goToBottom()
-	assert.Equal(t, "b/1", m.selectedID())
-
-	m.goToTop()
+	m.goGroupBottom()
 	assert.Equal(t, "a/1", m.selectedID())
+
+	m.goGroupTop()
+	assert.Equal(t, "b/1", m.selectedID())
 }
 
 func TestListModel_Filter(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 20
+	m.setSize(60, 20)
 
 	// Filter by "beta"
 	m.setFilter("beta")
 	require.NotNil(t, m.selectedEntry())
 	assert.Equal(t, "b/1", m.selectedID())
 
-	// Only beta group should be visible
-	entryCount := 0
-	for _, row := range m.rows {
-		if !row.isHeader {
-			entryCount++
-		}
-	}
-	assert.Equal(t, 1, entryCount)
+	assert.Len(t, m.visibleGroups, 1)
+	assert.Equal(t, "alpha", m.visibleGroups[0].name)
 
 	// Clear filter
 	m.setFilter("")
-	entryCount = 0
-	for _, row := range m.rows {
-		if !row.isHeader {
-			entryCount++
-		}
-	}
-	assert.Equal(t, 3, entryCount)
+	assert.Len(t, m.visibleGroups, 2)
 }
 
 func TestListModel_FilterByID(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 20
+	m.setSize(60, 20)
 
 	m.setFilter("a/2")
 	require.NotNil(t, m.selectedEntry())
@@ -110,10 +94,10 @@ func TestListModel_FilterByID(t *testing.T) {
 func TestListModel_FilterPreservesSelection(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 20
+	m.setSize(60, 20)
 
-	m.moveDown()
+	m.moveGroupDown()
+	m.moveEntryDown()
 	assert.Equal(t, "a/2", m.selectedID())
 
 	// Filter that still includes the selected entry
@@ -121,14 +105,35 @@ func TestListModel_FilterPreservesSelection(t *testing.T) {
 	assert.Equal(t, "a/2", m.selectedID())
 }
 
+func TestListModel_DefaultSortIsAlphabetical(t *testing.T) {
+	anim := newAnimEngine()
+	m := newListModel(makeTestGroups(), anim)
+	m.setSize(60, 20)
+
+	require.Len(t, m.visibleGroups, 2)
+	assert.Equal(t, "alpha", m.visibleGroups[0].name)
+	assert.Equal(t, "beta", m.visibleGroups[1].name)
+}
+
+func TestListModel_ToggleSortBySize(t *testing.T) {
+	anim := newAnimEngine()
+	m := newListModel(makeTestGroups(), anim)
+	m.setSize(60, 20)
+
+	m.toggleGroupSort()
+	assert.Equal(t, "size", m.groupSortLabel())
+	require.Len(t, m.visibleGroups, 2)
+	assert.Equal(t, "beta", m.visibleGroups[0].name)
+	assert.Equal(t, "alpha", m.visibleGroups[1].name)
+}
+
 func TestListModel_FilterNoMatches(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 20
+	m.setSize(60, 20)
 
 	m.setFilter("zzz_no_match")
-	assert.Empty(t, m.rows)
+	assert.Empty(t, m.visibleGroups)
 	assert.Nil(t, m.selectedEntry())
 
 	// View should show "No matches"
@@ -139,8 +144,7 @@ func TestListModel_FilterNoMatches(t *testing.T) {
 func TestListModel_SetGroups(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 20
+	m.setSize(60, 20)
 
 	newGroups := []data.Group{
 		{
@@ -160,47 +164,82 @@ func TestListModel_SetGroups(t *testing.T) {
 func TestListModel_VisibleEntryIDs(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 20
+	m.setSize(60, 20)
 
 	ids := m.visibleEntryIDs()
-	assert.Contains(t, ids, "a/1")
-	assert.Contains(t, ids, "a/2")
 	assert.Contains(t, ids, "b/1")
+	assert.NotContains(t, ids, "a/1")
 }
 
-func TestListModel_ScrollOffset(t *testing.T) {
-	anim := newAnimEngine()
-	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 2 // Very small to force scrolling
+func TestListModel_GroupScrollOffset(t *testing.T) {
+	groups := make([]data.Group, 0, 12)
+	for i := 0; i < 12; i++ {
+		groups = append(groups, data.Group{
+			Name:    fmt.Sprintf("group-%02d", i),
+			Type:    "spinner",
+			Entries: []data.EntryEnvelope{{Entry: data.Entry{ID: fmt.Sprintf("g/%d", i), Name: "item", Type: "spinner", Frames: []string{"x"}}}},
+		})
+	}
 
-	m.goToBottom()
-	assert.Greater(t, m.offset, 0)
+	anim := newAnimEngine()
+	m := newListModel(groups, anim)
+	m.setSize(60, 3)
+
+	m.goGroupBottom()
+	assert.Greater(t, m.groupOffset, 0)
+}
+
+func TestListModel_EntryScrollOffsetIndependentFromGroups(t *testing.T) {
+	groups := []data.Group{
+		{
+			Name: "alpha",
+			Type: "spinner",
+			Entries: []data.EntryEnvelope{
+				{Entry: data.Entry{ID: "a/1", Name: "a1", Type: "spinner", Frames: []string{"x"}}},
+				{Entry: data.Entry{ID: "a/2", Name: "a2", Type: "spinner", Frames: []string{"x"}}},
+				{Entry: data.Entry{ID: "a/3", Name: "a3", Type: "spinner", Frames: []string{"x"}}},
+				{Entry: data.Entry{ID: "a/4", Name: "a4", Type: "spinner", Frames: []string{"x"}}},
+			},
+		},
+		{
+			Name:    "beta",
+			Type:    "spinner",
+			Entries: []data.EntryEnvelope{{Entry: data.Entry{ID: "b/1", Name: "b1", Type: "spinner", Frames: []string{"x"}}}},
+		},
+	}
+
+	anim := newAnimEngine()
+	m := newListModel(groups, anim)
+	m.setSize(60, 2)
+
+	m.goEntryBottom()
+	assert.Greater(t, m.entryOffset["alpha"], 0)
+
+	groupOffsetBefore := m.groupOffset
+	m.moveEntryUp()
+	assert.Equal(t, groupOffsetBefore, m.groupOffset)
 }
 
 func TestListModel_PageNavigation(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 2
+	m.setSize(60, 2)
+	m.moveGroupDown()
 
-	m.pageDown()
-	// Should move cursor forward by height
-	assert.NotEqual(t, 0, m.cursor)
+	m.pageEntryDown()
+	assert.NotEqual(t, 0, m.entryCursor["beta"])
 
-	m.pageUp()
+	m.pageEntryUp()
 	assert.Equal(t, "a/1", m.selectedID())
 }
 
 func TestListModel_View(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)
-	m.width = 60
-	m.height = 20
+	m.setSize(60, 20)
 
 	view := m.view()
-	assert.Contains(t, view, "ALPHA")
-	assert.Contains(t, view, "BETA")
-	assert.Contains(t, view, "alpha one")
+	assert.Contains(t, view, "alpha")
+	assert.Contains(t, view, "beta")
+	assert.Contains(t, view, "beta one")
 }

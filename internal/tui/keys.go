@@ -3,19 +3,25 @@ package tui
 import "github.com/charmbracelet/bubbles/key"
 
 type keyMap struct {
-	Up       key.Binding
-	Down     key.Binding
-	PageUp   key.Binding
-	PageDown key.Binding
-	Home     key.Binding
-	End      key.Binding
-	Enter    key.Binding
-	Back     key.Binding
-	Tab      key.Binding
-	Search   key.Binding
-	Copy     key.Binding
-	Help     key.Binding
-	Quit     key.Binding
+	Up        key.Binding
+	Down      key.Binding
+	PageUp    key.Binding
+	PageDown  key.Binding
+	Home      key.Binding
+	End       key.Binding
+	Left      key.Binding
+	Right     key.Binding
+	Enter     key.Binding
+	Back      key.Binding
+	Tab       key.Binding
+	Search    key.Binding
+	PrevGroup key.Binding
+	NextGroup key.Binding
+	Sort      key.Binding
+	Verbose   key.Binding
+	Copy      key.Binding
+	Help      key.Binding
+	Quit      key.Binding
 }
 
 var keys = keyMap{
@@ -43,6 +49,14 @@ var keys = keyMap{
 		key.WithKeys("end"),
 		key.WithHelp("end", "go to bottom"),
 	),
+	Left: key.NewBinding(
+		key.WithKeys("left"),
+		key.WithHelp("left", "focus left pane"),
+	),
+	Right: key.NewBinding(
+		key.WithKeys("right"),
+		key.WithHelp("right", "focus right pane"),
+	),
 	Enter: key.NewBinding(
 		key.WithKeys("enter", "l"),
 		key.WithHelp("enter/l", "expand"),
@@ -58,6 +72,22 @@ var keys = keyMap{
 	Search: key.NewBinding(
 		key.WithKeys("/"),
 		key.WithHelp("/", "search"),
+	),
+	PrevGroup: key.NewBinding(
+		key.WithKeys("["),
+		key.WithHelp("[", "previous group"),
+	),
+	NextGroup: key.NewBinding(
+		key.WithKeys("]"),
+		key.WithHelp("]", "next group"),
+	),
+	Sort: key.NewBinding(
+		key.WithKeys("s"),
+		key.WithHelp("s", "toggle group sort"),
+	),
+	Verbose: key.NewBinding(
+		key.WithKeys("v"),
+		key.WithHelp("v", "toggle detail view"),
 	),
 	Copy: key.NewBinding(
 		key.WithKeys("c"),
@@ -76,7 +106,12 @@ var keys = keyMap{
 func (k keyMap) shortHelp() string {
 	return helpStyle.Render(
 		key.NewBinding(key.WithHelp("up/down", "navigate")).Help().Key + " " + key.NewBinding(key.WithHelp("up/down", "navigate")).Help().Desc +
+			"  " + k.Left.Help().Key + " " + k.Left.Help().Desc +
+			"  " + k.Right.Help().Key + " " + k.Right.Help().Desc +
 			"  " + k.Enter.Help().Key + " " + k.Enter.Help().Desc +
+			"  " + k.PrevGroup.Help().Key + "/" + k.NextGroup.Help().Key + " groups" +
+			"  " + k.Sort.Help().Key + " " + k.Sort.Help().Desc +
+			"  " + k.Verbose.Help().Key + " " + k.Verbose.Help().Desc +
 			"  " + k.Tab.Help().Key + " " + k.Tab.Help().Desc +
 			"  " + k.Search.Help().Key + " " + k.Search.Help().Desc +
 			"  " + k.Copy.Help().Key + " " + k.Copy.Help().Desc +
@@ -89,6 +124,10 @@ func (k keyMap) fullHelp() string {
 	return helpStyle.Render(
 		k.Up.Help().Key + " " + k.Up.Help().Desc +
 			"  " + k.Down.Help().Key + " " + k.Down.Help().Desc +
+			"  " + k.Left.Help().Key + " " + k.Left.Help().Desc +
+			"  " + k.Right.Help().Key + " " + k.Right.Help().Desc +
+			"  " + k.PrevGroup.Help().Key + " " + k.PrevGroup.Help().Desc +
+			"  " + k.NextGroup.Help().Key + " " + k.NextGroup.Help().Desc +
 			"  " + k.PageUp.Help().Key + " " + k.PageUp.Help().Desc +
 			"  " + k.PageDown.Help().Key + " " + k.PageDown.Help().Desc +
 			"  " + k.Home.Help().Key + " " + k.Home.Help().Desc +
@@ -96,6 +135,8 @@ func (k keyMap) fullHelp() string {
 			"\n" +
 			k.Enter.Help().Key + " " + k.Enter.Help().Desc +
 			"  " + k.Back.Help().Key + " " + k.Back.Help().Desc +
+			"  " + k.Sort.Help().Key + " " + k.Sort.Help().Desc +
+			"  " + k.Verbose.Help().Key + " " + k.Verbose.Help().Desc +
 			"  " + k.Tab.Help().Key + " " + k.Tab.Help().Desc +
 			"  " + k.Search.Help().Key + " " + k.Search.Help().Desc +
 			"  " + k.Copy.Help().Key + " " + k.Copy.Help().Desc +

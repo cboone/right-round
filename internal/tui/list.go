@@ -2,51 +2,70 @@ package tui
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/cboone/right-round/internal/data"
 	"github.com/charmbracelet/lipgloss"
 )
 
-// listRow represents a single renderable row in the list panel.
-type listRow struct {
-	isHeader bool
-	header   string              // non-empty for group headers
-	count    int                 // entry count for group headers
-	entry    *data.EntryEnvelope // non-nil for entry rows
+type listPaneFocus int
+
+const (
+	listPaneGroups listPaneFocus = iota
+	listPaneEntries
+)
+
+type visibleGroup struct {
+	name    string
+	entries []data.EntryEnvelope
 }
+
+type groupSortMode int
+
+const (
+	groupSortAlphabetical groupSortMode = iota
+	groupSortBySize
+)
 
 // listModel manages the grouped list panel.
 type listModel struct {
-	groups []data.Group
-	rows   []listRow
-	cursor int
-	offset int
-	height int
-	width  int
-	filter string
+	groups        []data.Group
+	visibleGroups []visibleGroup
+	groupCursor   int
+	groupOffset   int
+	entryCursor   map[string]int
+	entryOffset   map[string]int
+	height        int
+	width         int
+	filter        string
+	focusPane     listPaneFocus
+	groupSort     groupSortMode
 
 	anim *animEngine
 }
 
 func newListModel(groups []data.Group, anim *animEngine) listModel {
 	m := listModel{
-		groups: groups,
-		anim:   anim,
+		groups:      groups,
+		entryCursor: make(map[string]int),
+		entryOffset: make(map[string]int),
+		focusPane:   listPaneEntries,
+		groupSort:   groupSortAlphabetical,
+		anim:        anim,
 	}
-	m.rows = m.buildRows(groups, "")
-	m.moveToNextEntry(1)
+	m.rebuildVisibleGroups("")
 	return m
 }
 
-func (m *listModel) buildRows(groups []data.Group, filter string) []listRow {
+func (m *listModel) buildVisibleGroups(groups []data.Group, filter string) []visibleGroup {
 	filter = strings.ToLower(filter)
-	var rows []listRow
+	var visible []visibleGroup
 	for i := range groups {
 		g := &groups[i]
-		var matching []*data.EntryEnvelope
+		var matching []data.EntryEnvelope
 		for j := range g.Entries {
-			e := &g.Entries[j]
+			e := g.Entries[j]
 			if filter == "" || strings.Contains(strings.ToLower(e.Entry.Name), filter) || strings.Contains(strings.ToLower(e.Entry.ID), filter) {
 				matching = append(matching, e)
 			}
@@ -54,56 +73,113 @@ func (m *listModel) buildRows(groups []data.Group, filter string) []listRow {
 		if len(matching) == 0 {
 			continue
 		}
-		rows = append(rows, listRow{
-			isHeader: true,
-			header:   g.Name,
-			count:    len(matching),
-		})
-		for _, e := range matching {
-			rows = append(rows, listRow{entry: e})
-		}
+		visible = append(visible, visibleGroup{name: g.Name, entries: matching})
 	}
-	return rows
+
+	if m.groupSort == groupSortBySize {
+		sort.SliceStable(visible, func(i, j int) bool {
+			if len(visible[i].entries) != len(visible[j].entries) {
+				return len(visible[i].entries) > len(visible[j].entries)
+			}
+			return strings.ToLower(visible[i].name) < strings.ToLower(visible[j].name)
+		})
+	} else {
+		sort.SliceStable(visible, func(i, j int) bool {
+			return strings.ToLower(visible[i].name) < strings.ToLower(visible[j].name)
+		})
+	}
+
+	return visible
 }
 
-func (m *listModel) setFilter(filter string) {
+func (m *listModel) rebuildVisibleGroups(filter string) {
 	oldID := m.selectedID()
-	m.filter = filter
-	m.rows = m.buildRows(m.groups, filter)
+	oldGroup := m.selectedGroupName()
 
-	// Try to keep selection on same entry
-	if oldID != "" {
-		for i, row := range m.rows {
-			if !row.isHeader && row.entry != nil && row.entry.Entry.ID == oldID {
-				m.cursor = i
-				m.ensureVisible()
-				return
+	m.filter = filter
+	m.visibleGroups = m.buildVisibleGroups(m.groups, filter)
+
+	if len(m.visibleGroups) == 0 {
+		m.groupCursor = 0
+		m.groupOffset = 0
+		return
+	}
+
+	m.groupCursor = 0
+	if oldGroup != "" {
+		for i := range m.visibleGroups {
+			if strings.EqualFold(m.visibleGroups[i].name, oldGroup) {
+				m.groupCursor = i
+				break
 			}
 		}
 	}
-	// Move to first entry row
-	m.cursor = 0
-	m.moveToNextEntry(1)
-	m.ensureVisible()
+
+	if oldID != "" {
+		for gi := range m.visibleGroups {
+			for ei := range m.visibleGroups[gi].entries {
+				if m.visibleGroups[gi].entries[ei].Entry.ID == oldID {
+					m.groupCursor = gi
+					m.entryCursor[m.visibleGroups[gi].name] = ei
+					break
+				}
+			}
+		}
+	}
+
+	m.ensureCurrentGroupState()
+	m.ensureGroupVisible()
+	m.ensureEntryVisible()
+}
+
+func (m *listModel) setFilter(filter string) {
+	m.rebuildVisibleGroups(filter)
 }
 
 func (m *listModel) setGroups(groups []data.Group) {
 	m.groups = groups
-	m.rows = m.buildRows(groups, m.filter)
-	m.cursor = 0
-	m.offset = 0
-	m.moveToNextEntry(1)
+	m.rebuildVisibleGroups(m.filter)
+}
+
+func (m *listModel) toggleGroupSort() {
+	if m.groupSort == groupSortAlphabetical {
+		m.groupSort = groupSortBySize
+	} else {
+		m.groupSort = groupSortAlphabetical
+	}
+	m.rebuildVisibleGroups(m.filter)
+}
+
+func (m *listModel) groupSortLabel() string {
+	if m.groupSort == groupSortBySize {
+		return "size"
+	}
+	return "alpha"
+}
+
+func (m *listModel) selectGroupByName(name string) bool {
+	for i := range m.visibleGroups {
+		if strings.EqualFold(m.visibleGroups[i].name, name) {
+			m.groupCursor = i
+			m.ensureCurrentGroupState()
+			m.ensureGroupVisible()
+			m.ensureEntryVisible()
+			return true
+		}
+	}
+	return false
 }
 
 func (m *listModel) selectedEntry() *data.EntryEnvelope {
-	if m.cursor < 0 || m.cursor >= len(m.rows) {
+	g := m.currentGroup()
+	if g == nil || len(g.entries) == 0 {
 		return nil
 	}
-	row := m.rows[m.cursor]
-	if row.isHeader {
+	idx := m.entryCursor[g.name]
+	if idx < 0 || idx >= len(g.entries) {
 		return nil
 	}
-	return row.entry
+	return &g.entries[idx]
 }
 
 func (m *listModel) selectedID() string {
@@ -113,179 +189,433 @@ func (m *listModel) selectedID() string {
 	return ""
 }
 
-func (m *listModel) moveUp() {
-	if m.cursor > 0 {
-		m.cursor--
-		if m.rows[m.cursor].isHeader {
-			if m.cursor > 0 {
-				m.cursor--
-			} else {
-				m.cursor++
-			}
-		}
-		m.ensureVisible()
+func (m *listModel) selectedGroupName() string {
+	g := m.currentGroup()
+	if g == nil {
+		return ""
 	}
+	return g.name
+}
+
+func (m *listModel) currentGroup() *visibleGroup {
+	if m.groupCursor < 0 || m.groupCursor >= len(m.visibleGroups) {
+		return nil
+	}
+	return &m.visibleGroups[m.groupCursor]
+}
+
+func (m *listModel) setFocusPane(p listPaneFocus) {
+	m.focusPane = p
+}
+
+func (m *listModel) setSize(width, height int) {
+	m.width = width
+	m.height = height
+	m.ensureGroupVisible()
+	m.ensureEntryVisible()
+}
+
+func (m *listModel) moveUp() {
+	m.moveEntryUp()
 }
 
 func (m *listModel) moveDown() {
-	if m.cursor < len(m.rows)-1 {
-		m.cursor++
-		if m.rows[m.cursor].isHeader {
-			if m.cursor < len(m.rows)-1 {
-				m.cursor++
-			} else {
-				m.cursor--
-			}
-		}
-		m.ensureVisible()
-	}
+	m.moveEntryDown()
 }
 
 func (m *listModel) pageUp() {
-	m.cursor -= m.height
-	if m.cursor < 0 {
-		m.cursor = 0
-	}
-	m.moveToNextEntry(1)
-	m.ensureVisible()
+	m.pageEntryUp()
 }
 
 func (m *listModel) pageDown() {
-	m.cursor += m.height
-	if m.cursor >= len(m.rows) {
-		m.cursor = len(m.rows) - 1
-	}
-	m.moveToNextEntry(-1)
-	m.ensureVisible()
+	m.pageEntryDown()
 }
 
 func (m *listModel) goToTop() {
-	m.cursor = 0
-	m.moveToNextEntry(1)
-	m.ensureVisible()
+	m.goEntryTop()
 }
 
 func (m *listModel) goToBottom() {
-	m.cursor = len(m.rows) - 1
-	m.moveToNextEntry(-1)
-	m.ensureVisible()
+	m.goEntryBottom()
 }
 
-func (m *listModel) moveToNextEntry(dir int) {
-	if len(m.rows) == 0 {
-		m.cursor = 0
+func (m *listModel) moveGroupUp() {
+	if m.groupCursor > 0 {
+		m.groupCursor--
+		m.ensureCurrentGroupState()
+		m.ensureGroupVisible()
+		m.ensureEntryVisible()
+	}
+}
+
+func (m *listModel) moveGroupDown() {
+	if m.groupCursor < len(m.visibleGroups)-1 {
+		m.groupCursor++
+		m.ensureCurrentGroupState()
+		m.ensureGroupVisible()
+		m.ensureEntryVisible()
+	}
+}
+
+func (m *listModel) pageGroupUp() {
+	m.groupCursor -= m.height
+	if m.groupCursor < 0 {
+		m.groupCursor = 0
+	}
+	m.ensureCurrentGroupState()
+	m.ensureGroupVisible()
+	m.ensureEntryVisible()
+}
+
+func (m *listModel) pageGroupDown() {
+	m.groupCursor += m.height
+	if m.groupCursor >= len(m.visibleGroups) {
+		m.groupCursor = len(m.visibleGroups) - 1
+	}
+	m.ensureCurrentGroupState()
+	m.ensureGroupVisible()
+	m.ensureEntryVisible()
+}
+
+func (m *listModel) goGroupTop() {
+	m.groupCursor = 0
+	m.ensureCurrentGroupState()
+	m.ensureGroupVisible()
+	m.ensureEntryVisible()
+}
+
+func (m *listModel) goGroupBottom() {
+	m.groupCursor = len(m.visibleGroups) - 1
+	m.ensureCurrentGroupState()
+	m.ensureGroupVisible()
+	m.ensureEntryVisible()
+}
+
+func (m *listModel) moveEntryUp() {
+	g := m.currentGroup()
+	if g == nil {
 		return
 	}
-	// Skip headers in the given direction
-	for m.cursor >= 0 && m.cursor < len(m.rows) && m.rows[m.cursor].isHeader {
-		m.cursor += dir
-	}
-	if m.cursor < 0 {
-		m.cursor = 0
-	}
-	if m.cursor >= len(m.rows) {
-		m.cursor = len(m.rows) - 1
-	}
-	// If still on a header after clamping (hit boundary), try opposite direction
-	if m.rows[m.cursor].isHeader {
-		for m.cursor >= 0 && m.cursor < len(m.rows) && m.rows[m.cursor].isHeader {
-			m.cursor -= dir
-		}
-		if m.cursor < 0 {
-			m.cursor = 0
-		}
-		if m.cursor >= len(m.rows) {
-			m.cursor = len(m.rows) - 1
-		}
+	name := g.name
+	if m.entryCursor[name] > 0 {
+		m.entryCursor[name]--
+		m.ensureEntryVisible()
 	}
 }
 
-func (m *listModel) ensureVisible() {
-	if m.cursor < m.offset {
-		m.offset = m.cursor
+func (m *listModel) moveEntryDown() {
+	g := m.currentGroup()
+	if g == nil {
+		return
 	}
-	if m.cursor >= m.offset+m.height {
-		m.offset = m.cursor - m.height + 1
+	name := g.name
+	if m.entryCursor[name] < len(g.entries)-1 {
+		m.entryCursor[name]++
+		m.ensureEntryVisible()
 	}
-	if m.offset < 0 {
-		m.offset = 0
+}
+
+func (m *listModel) pageEntryUp() {
+	g := m.currentGroup()
+	if g == nil {
+		return
+	}
+	name := g.name
+	m.entryCursor[name] -= m.height
+	if m.entryCursor[name] < 0 {
+		m.entryCursor[name] = 0
+	}
+	m.ensureEntryVisible()
+}
+
+func (m *listModel) pageEntryDown() {
+	g := m.currentGroup()
+	if g == nil {
+		return
+	}
+	name := g.name
+	m.entryCursor[name] += m.height
+	if m.entryCursor[name] >= len(g.entries) {
+		m.entryCursor[name] = len(g.entries) - 1
+	}
+	m.ensureEntryVisible()
+}
+
+func (m *listModel) goEntryTop() {
+	g := m.currentGroup()
+	if g == nil {
+		return
+	}
+	m.entryCursor[g.name] = 0
+	m.ensureEntryVisible()
+}
+
+func (m *listModel) goEntryBottom() {
+	g := m.currentGroup()
+	if g == nil {
+		return
+	}
+	m.entryCursor[g.name] = len(g.entries) - 1
+	m.ensureEntryVisible()
+}
+
+func (m *listModel) ensureCurrentGroupState() {
+	g := m.currentGroup()
+	if g == nil {
+		return
+	}
+	if len(g.entries) == 0 {
+		m.entryCursor[g.name] = 0
+		m.entryOffset[g.name] = 0
+		return
+	}
+	c := m.entryCursor[g.name]
+	if c < 0 {
+		m.entryCursor[g.name] = 0
+	}
+	if c >= len(g.entries) {
+		m.entryCursor[g.name] = len(g.entries) - 1
+	}
+	o := m.entryOffset[g.name]
+	if o < 0 {
+		m.entryOffset[g.name] = 0
+	}
+}
+
+func (m *listModel) ensureGroupVisible() {
+	if m.groupCursor < m.groupOffset {
+		m.groupOffset = m.groupCursor
+	}
+	if m.groupCursor >= m.groupOffset+m.height {
+		m.groupOffset = m.groupCursor - m.height + 1
+	}
+	if m.groupOffset < 0 {
+		m.groupOffset = 0
+	}
+}
+
+func (m *listModel) ensureEntryVisible() {
+	g := m.currentGroup()
+	if g == nil {
+		return
+	}
+	name := g.name
+	if m.entryCursor[name] < m.entryOffset[name] {
+		m.entryOffset[name] = m.entryCursor[name]
+	}
+	if m.entryCursor[name] >= m.entryOffset[name]+m.height {
+		m.entryOffset[name] = m.entryCursor[name] - m.height + 1
+	}
+	if m.entryOffset[name] < 0 {
+		m.entryOffset[name] = 0
 	}
 }
 
 // visibleEntryIDs returns the IDs of entries currently visible for animation.
 func (m *listModel) visibleEntryIDs() []string {
 	var ids []string
-	end := m.offset + m.height
-	if end > len(m.rows) {
-		end = len(m.rows)
+	g := m.currentGroup()
+	if g == nil {
+		return ids
 	}
-	for i := m.offset; i < end; i++ {
-		if !m.rows[i].isHeader && m.rows[i].entry != nil {
-			ids = append(ids, m.rows[i].entry.Entry.ID)
-		}
+	start := m.entryOffset[g.name]
+	end := start + m.height
+	if end > len(g.entries) {
+		end = len(g.entries)
+	}
+	for i := start; i < end; i++ {
+		ids = append(ids, g.entries[i].Entry.ID)
 	}
 	return ids
 }
 
 func (m *listModel) view() string {
-	if len(m.rows) == 0 {
+	if len(m.visibleGroups) == 0 {
 		return helpStyle.Render("  No matches")
+	}
+	groupWidth, entryWidth := m.columnWidths()
+
+	var groupLines []string
+	for i := 0; i < m.height; i++ {
+		idx := m.groupOffset + i
+		if idx >= len(m.visibleGroups) {
+			groupLines = append(groupLines, strings.Repeat(" ", groupWidth))
+			continue
+		}
+		g := m.visibleGroups[idx]
+		label := truncateWithEllipsis(fmt.Sprintf("%s (%d)", g.name, len(g.entries)), groupWidth-2)
+		style := normalItemStyle
+		prefix := "  "
+		if idx == m.groupCursor {
+			style = selectedItemStyle
+			if m.focusPane == listPaneGroups {
+				prefix = "> "
+			} else {
+				prefix = "* "
+			}
+		}
+		line := prefix + style.Render(label)
+		line = lipgloss.NewStyle().Width(groupWidth).MaxWidth(groupWidth).Render(line)
+		groupLines = append(groupLines, line)
 	}
 
 	previewColWidth := 8
-	nameWidth := m.width - previewColWidth - 4 // 4 for cursor + padding
+	nameWidth := entryWidth - previewColWidth - 3
 	if nameWidth < 1 {
 		nameWidth = 1
 	}
 
-	var b strings.Builder
-	end := m.offset + m.height
-	if end > len(m.rows) {
-		end = len(m.rows)
+	var entryLines []string
+	g := m.currentGroup()
+	if g == nil {
+		for i := 0; i < m.height; i++ {
+			entryLines = append(entryLines, strings.Repeat(" ", entryWidth))
+		}
+	} else {
+		start := m.entryOffset[g.name]
+		end := start + m.height
+		if end > len(g.entries) {
+			end = len(g.entries)
+		}
+		for i := 0; i < m.height; i++ {
+			idx := start + i
+			if idx >= end {
+				entryLines = append(entryLines, strings.Repeat(" ", entryWidth))
+				continue
+			}
+			entry := g.entries[idx]
+			name := truncateWithEllipsis(entry.Entry.Name, nameWidth)
+
+			var preview string
+			if entry.Entry.Type == "spinner" {
+				frame := m.anim.currentFrame(entry.Entry.ID, entry.Entry.Frames)
+				preview = truncateToWidth(frame, previewColWidth)
+			} else if entry.Entry.Indeterminate != nil && *entry.Entry.Indeterminate != "" {
+				preview = renderIndeterminate(*entry.Entry.Indeterminate, previewColWidth, m.anim.currentOffset(entry.Entry.ID))
+			} else {
+				preview = renderProgressBar(entry.Entry.Characters, entry.Entry.Phases, m.anim.currentProgressPct(entry.Entry.ID), previewColWidth)
+			}
+
+			selected := idx == m.entryCursor[g.name]
+			prefix := "  "
+			style := normalItemStyle
+			if selected {
+				style = selectedItemStyle
+				if m.focusPane == listPaneEntries {
+					prefix = "> "
+				} else {
+					prefix = "* "
+				}
+			}
+
+			nameStr := style.Render(name)
+			padding := entryWidth - lipgloss.Width(prefix) - lipgloss.Width(nameStr) - lipgloss.Width(preview)
+			if padding < 1 {
+				padding = 1
+			}
+
+			line := prefix + nameStr + strings.Repeat(" ", padding) + preview
+			line = lipgloss.NewStyle().Width(entryWidth).MaxWidth(entryWidth).Render(line)
+			entryLines = append(entryLines, line)
+		}
 	}
 
-	for i := m.offset; i < end; i++ {
-		row := m.rows[i]
-		if row.isHeader {
-			header := fmt.Sprintf("%s (%d)", strings.ToUpper(row.header), row.count)
-			b.WriteString(groupHeaderStyle.Render(header))
+	var b strings.Builder
+	sep := listDividerStyle.Render("|")
+	for i := 0; i < m.height; i++ {
+		b.WriteString(groupLines[i] + sep + entryLines[i])
+		if i < m.height-1 {
 			b.WriteString("\n")
-			continue
 		}
-
-		entry := row.entry
-		selected := i == m.cursor
-		name := entry.Entry.Name
-		name = truncateWithEllipsis(name, nameWidth)
-
-		var preview string
-		if entry.Entry.Type == "spinner" {
-			frame := m.anim.currentFrame(entry.Entry.ID, entry.Entry.Frames)
-			frame = truncateToWidth(frame, previewColWidth)
-			preview = frame
-		} else if entry.Entry.Indeterminate != nil && *entry.Entry.Indeterminate != "" {
-			preview = renderIndeterminate(*entry.Entry.Indeterminate, previewColWidth, m.anim.currentOffset(entry.Entry.ID))
-		} else {
-			preview = renderStaticBar(entry.Entry.Characters, entry.Entry.Phases, previewColWidth)
-		}
-
-		cursor := "  "
-		style := normalItemStyle
-		if selected {
-			cursor = "> "
-			style = selectedItemStyle
-		}
-
-		nameStr := style.Render(name)
-		padding := m.width - lipgloss.Width(cursor) - lipgloss.Width(nameStr) - lipgloss.Width(preview)
-		if padding < 1 {
-			padding = 1
-		}
-
-		b.WriteString(cursor + nameStr + strings.Repeat(" ", padding) + preview + "\n")
 	}
 
 	return b.String()
+}
+
+func (m *listModel) columnWidths() (int, int) {
+	if m.width <= 2 {
+		return 1, 1
+	}
+	groupWidth := m.width * 36 / 100
+	if groupWidth < 18 {
+		groupWidth = 18
+	}
+	if groupWidth > m.width-20 {
+		groupWidth = m.width - 20
+	}
+	if groupWidth < 1 {
+		groupWidth = 1
+	}
+	entryWidth := m.width - groupWidth - 1
+	if entryWidth < 1 {
+		entryWidth = 1
+	}
+	return groupWidth, entryWidth
+}
+
+func (m *listModel) isGroupColumn(x int) bool {
+	groupWidth, _ := m.columnWidths()
+	return x >= 0 && x < groupWidth
+}
+
+func (m *listModel) clickGroupRow(y int) bool {
+	idx := m.groupOffset + y
+	if idx < 0 || idx >= len(m.visibleGroups) {
+		return false
+	}
+	m.groupCursor = idx
+	m.ensureCurrentGroupState()
+	m.ensureGroupVisible()
+	m.ensureEntryVisible()
+	return true
+}
+
+func (m *listModel) clickEntryRow(y int) bool {
+	g := m.currentGroup()
+	if g == nil {
+		return false
+	}
+	idx := m.entryOffset[g.name] + y
+	if idx < 0 || idx >= len(g.entries) {
+		return false
+	}
+	m.entryCursor[g.name] = idx
+	m.ensureEntryVisible()
+	return true
+}
+
+func (m *listModel) scrollGroup(delta int) {
+	steps := delta
+	if steps < 0 {
+		steps = -steps
+	}
+	if steps > 3 {
+		steps = 3
+	}
+	for i := 0; i < steps; i++ {
+		if delta > 0 {
+			m.moveGroupDown()
+		} else if delta < 0 {
+			m.moveGroupUp()
+		}
+	}
+}
+
+func (m *listModel) scrollEntry(delta int) {
+	steps := delta
+	if steps < 0 {
+		steps = -steps
+	}
+	if steps > 3 {
+		steps = 3
+	}
+	for i := 0; i < steps; i++ {
+		if delta > 0 {
+			m.moveEntryDown()
+		} else if delta < 0 {
+			m.moveEntryUp()
+		}
+	}
 }
 
 func truncateWithEllipsis(s string, maxWidth int) string {

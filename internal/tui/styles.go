@@ -34,6 +34,9 @@ var (
 
 	normalItemStyle = lipgloss.NewStyle()
 
+	listDividerStyle = lipgloss.NewStyle().
+				Foreground(subtleColor)
+
 	// Detail panel styles
 	detailBorderStyle = lipgloss.NewStyle().
 				BorderStyle(lipgloss.RoundedBorder()).

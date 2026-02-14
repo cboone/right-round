@@ -13,6 +13,7 @@ type detailModel struct {
 	viewport viewport.Model
 	entry    *data.EntryEnvelope
 	anim     *animEngine
+	verbose  bool
 	width    int
 	height   int
 }
@@ -56,6 +57,18 @@ func (m *detailModel) setSize(width, height int) {
 	m.viewport.Height = vpHeight
 }
 
+func (m *detailModel) toggleVerbose() {
+	m.verbose = !m.verbose
+	m.viewport.GotoTop()
+}
+
+func (m *detailModel) verboseLabel() string {
+	if m.verbose {
+		return "verbose"
+	}
+	return "concise"
+}
+
 func (m *detailModel) updateContent() {
 	if m.entry == nil {
 		m.viewport.SetContent(helpStyle.Render("No entry selected"))
@@ -64,111 +77,140 @@ func (m *detailModel) updateContent() {
 
 	e := &m.entry.Entry
 	contentWidth := m.width - 4
+	if contentWidth < 20 {
+		contentWidth = 20
+	}
 
 	var b strings.Builder
+	truncate := func(s string) string {
+		return truncateWithEllipsis(s, contentWidth)
+	}
+	section := func(title string) {
+		b.WriteString("\n" + detailLabelStyle.Render(title) + "\n")
+	}
 
-	// Name and ID
 	b.WriteString(detailLabelStyle.Render(e.Name) + "\n")
-	b.WriteString(helpStyle.Render(e.ID) + "\n\n")
+	b.WriteString(helpStyle.Render(e.ID) + "  " + helpStyle.Render("view: "+m.verboseLabel()) + "\n")
 
-	// Type and Group
-	b.WriteString(detailLabelStyle.Render("Type: ") + e.Type + "  ")
-	b.WriteString(detailLabelStyle.Render("Group: ") + e.Group + "\n\n")
-
-	// Live preview
+	section("Preview")
 	if e.Type == "spinner" {
 		frame := m.anim.currentFrame(e.ID, e.Frames)
-		b.WriteString(detailLabelStyle.Render("Preview: ") + frame + "\n")
-		b.WriteString(detailLabelStyle.Render("Frames: ") + fmt.Sprintf("%d", len(e.Frames)) + "\n")
+		b.WriteString(fmt.Sprintf("  live: %s\n", truncate(frame)))
 		interval := data.DefaultIntervalMS
 		if e.IntervalMS != nil {
 			interval = *e.IntervalMS
 		}
-		b.WriteString(detailLabelStyle.Render("Interval: ") + fmt.Sprintf("%dms", interval) + "\n")
-
-		// Show all frames
-		b.WriteString(detailLabelStyle.Render("All frames: ") + strings.Join(e.Frames, " ") + "\n")
-	} else {
-		// Progress bar preview
-		barWidth := contentWidth
-		if barWidth > 50 {
-			barWidth = 50
+		b.WriteString(fmt.Sprintf("  frames: %d  interval: %dms\n", len(e.Frames), interval))
+		if m.verbose {
+			b.WriteString("  all: " + truncate(strings.Join(e.Frames, " ")) + "\n")
+		} else {
+			limit := len(e.Frames)
+			if limit > 8 {
+				limit = 8
+			}
+			b.WriteString("  sample: " + truncate(strings.Join(e.Frames[:limit], " ")) + "\n")
 		}
-		b.WriteString(detailLabelStyle.Render("Preview:") + "\n")
-		for _, pct := range []float64{0.0, 0.25, 0.5, 0.75, 1.0} {
+	} else {
+		barWidth := contentWidth - 8
+		if barWidth > 40 {
+			barWidth = 40
+		}
+		if barWidth < 8 {
+			barWidth = 8
+		}
+		livePct := m.anim.currentProgressPct(e.ID)
+		live := renderProgressBar(e.Characters, e.Phases, livePct, barWidth)
+		b.WriteString(fmt.Sprintf("  live %3.0f%% %s\n", livePct*100, live))
+		for _, pct := range []float64{0.0, 0.5, 1.0} {
 			bar := renderProgressBar(e.Characters, e.Phases, pct, barWidth)
 			b.WriteString(fmt.Sprintf("  %3.0f%% %s\n", pct*100, bar))
 		}
 
 		if e.Indeterminate != nil && *e.Indeterminate != "" {
 			preview := renderIndeterminate(*e.Indeterminate, barWidth, m.anim.currentOffset(e.ID))
-			b.WriteString("\n" + detailLabelStyle.Render("Indeterminate preview: ") + preview + "\n")
+			b.WriteString("  indeterminate: " + truncate(preview) + "\n")
 		}
+	}
 
+	section("Essentials")
+	b.WriteString(fmt.Sprintf("  type: %s\n", e.Type))
+	b.WriteString(fmt.Sprintf("  group: %s\n", e.Group))
+	b.WriteString(fmt.Sprintf("  source: %s\n", e.Source.Collection))
+	b.WriteString(fmt.Sprintf("  license: %s\n", e.Source.License))
+
+	section("Rendering")
+	if e.Type == "progress_bar" {
 		if e.Characters != nil {
-			b.WriteString("\n" + detailLabelStyle.Render("Characters:") + "\n")
-			b.WriteString(fmt.Sprintf("  fill: %q  empty: %q", e.Characters.Fill, e.Characters.Empty))
+			line := fmt.Sprintf("  chars: fill=%q empty=%q", e.Characters.Fill, e.Characters.Empty)
 			if e.Characters.Head != nil {
-				b.WriteString(fmt.Sprintf("  head: %q", *e.Characters.Head))
+				line += fmt.Sprintf(" head=%q", *e.Characters.Head)
 			}
 			if e.Characters.Start != nil {
-				b.WriteString(fmt.Sprintf("  start: %q", *e.Characters.Start))
+				line += fmt.Sprintf(" start=%q", *e.Characters.Start)
 			}
 			if e.Characters.End != nil {
-				b.WriteString(fmt.Sprintf("  end: %q", *e.Characters.End))
+				line += fmt.Sprintf(" end=%q", *e.Characters.End)
 			}
-			b.WriteString("\n")
+			b.WriteString(truncate(line) + "\n")
+		} else {
+			b.WriteString("  chars: none\n")
 		}
-
 		if len(e.Phases) > 0 {
-			b.WriteString(detailLabelStyle.Render("Phases: ") + strings.Join(e.Phases, " ") + "\n")
+			b.WriteString("  phases: " + truncate(strings.Join(e.Phases, " ")) + "\n")
 		}
-
-		if e.Indeterminate != nil {
-			b.WriteString(detailLabelStyle.Render("Indeterminate pattern: ") + *e.Indeterminate + "\n")
+		if e.Indeterminate != nil && *e.Indeterminate != "" {
+			b.WriteString("  pattern: " + truncate(*e.Indeterminate) + "\n")
 		}
+	} else {
+		interval := data.DefaultIntervalMS
+		if e.IntervalMS != nil {
+			interval = *e.IntervalMS
+		}
+		b.WriteString(fmt.Sprintf("  interval_ms: %d\n", interval))
 	}
 
-	if len(e.CompletionStates) > 0 {
-		b.WriteString("\n" + detailLabelStyle.Render("Completion states:") + "\n")
-		csKeys := make([]string, 0, len(e.CompletionStates))
-		for k := range e.CompletionStates {
-			csKeys = append(csKeys, k)
-		}
-		sort.Strings(csKeys)
-		for _, k := range csKeys {
-			b.WriteString(fmt.Sprintf("  %s: %q\n", k, e.CompletionStates[k]))
-		}
-	}
-
-	// Source
-	b.WriteString("\n" + detailLabelStyle.Render("Source:") + "\n")
-	b.WriteString("  " + detailLabelStyle.Render("Collection: ") + e.Source.Collection + "\n")
+	section("Source")
+	b.WriteString("  key: " + truncate(e.Source.OriginalKey) + "\n")
 	if e.Source.URL != "" {
-		b.WriteString("  " + detailLabelStyle.Render("URL: ") + e.Source.URL + "\n")
-	}
-	if len(e.Source.References) > 0 {
-		b.WriteString("  " + detailLabelStyle.Render("References:") + "\n")
-		for _, ref := range e.Source.References {
-			b.WriteString("    " + ref + "\n")
-		}
-	}
-	b.WriteString("  " + detailLabelStyle.Render("Original key: ") + e.Source.OriginalKey + "\n")
-	b.WriteString("  " + detailLabelStyle.Render("License: ") + e.Source.License + "\n")
-	if e.Source.Copyright != "" {
-		b.WriteString("  " + detailLabelStyle.Render("Copyright: ") + e.Source.Copyright + "\n")
+		b.WriteString("  url: " + truncate(e.Source.URL) + "\n")
 	}
 
-	// Notes
 	if e.Notes != nil {
-		b.WriteString("\n" + detailLabelStyle.Render("Notes: ") + *e.Notes + "\n")
+		section("Notes")
+		b.WriteString("  " + truncate(*e.Notes) + "\n")
 	}
 
-	// Also found in
-	if len(e.AlsoFoundIn) > 0 {
-		b.WriteString("\n" + detailLabelStyle.Render("Also found in:") + "\n")
-		for _, afi := range e.AlsoFoundIn {
-			b.WriteString(fmt.Sprintf("  %s (%s) — key: %s\n", afi.Collection, afi.License, afi.OriginalKey))
+	if m.verbose {
+		if len(e.CompletionStates) > 0 {
+			section("Completion States")
+			csKeys := make([]string, 0, len(e.CompletionStates))
+			for k := range e.CompletionStates {
+				csKeys = append(csKeys, k)
+			}
+			sort.Strings(csKeys)
+			for _, k := range csKeys {
+				b.WriteString(fmt.Sprintf("  %s: %q\n", k, e.CompletionStates[k]))
+			}
+		}
+
+		if len(e.Source.References) > 0 {
+			section("References")
+			for _, ref := range e.Source.References {
+				b.WriteString("  " + truncate(ref) + "\n")
+			}
+		}
+
+		if e.Source.Copyright != "" {
+			section("Copyright")
+			b.WriteString("  " + truncate(e.Source.Copyright) + "\n")
+		}
+
+		if len(e.AlsoFoundIn) > 0 {
+			section("Also Found In")
+			for _, afi := range e.AlsoFoundIn {
+				line := fmt.Sprintf("  %s (%s) key=%s", afi.Collection, afi.License, afi.OriginalKey)
+				b.WriteString(truncate(line) + "\n")
+			}
 		}
 	}
 

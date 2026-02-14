@@ -59,9 +59,6 @@ func (a *animEngine) advance(elapsed time.Duration, visibleIDs []string, entries
 				state.accumulator -= interval
 			}
 		case "progress_bar":
-			if entry.Indeterminate == nil || *entry.Indeterminate == "" {
-				continue
-			}
 			for state.accumulator >= indeterminateInterval {
 				state.frameIndex = (state.frameIndex + 1) % 10000
 				state.accumulator -= indeterminateInterval
@@ -81,6 +78,14 @@ func (a *animEngine) currentFrame(id string, frames []string) string {
 
 func (a *animEngine) currentOffset(id string) int {
 	return a.getOrCreate(id).frameIndex
+}
+
+func (a *animEngine) currentProgressPct(id string) float64 {
+	cycle := a.getOrCreate(id).frameIndex % 200
+	if cycle > 100 {
+		cycle = 200 - cycle
+	}
+	return float64(cycle) / 100.0
 }
 
 func (a *animEngine) getOrCreate(id string) *animState {

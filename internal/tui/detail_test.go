@@ -64,7 +64,8 @@ func TestDetailModel_SpinnerContent(t *testing.T) {
 	assert.Contains(t, content, "test/spinner")
 	assert.Contains(t, content, "spinner")
 	assert.Contains(t, content, "braille")
-	assert.Contains(t, content, "Frames:")
+	assert.Contains(t, content, "Preview")
+	assert.Contains(t, content, "frames:")
 	assert.Contains(t, content, "MIT")
 	assert.Contains(t, content, "test-collection")
 }
@@ -79,9 +80,22 @@ func TestDetailModel_ProgressBarContent(t *testing.T) {
 	content := m.viewport.View()
 	assert.Contains(t, content, "test bar")
 	assert.Contains(t, content, "progress_bar")
-	assert.Contains(t, content, "Characters:")
+	assert.Contains(t, content, "Rendering")
+	assert.Contains(t, content, "chars:")
 	assert.Contains(t, content, "Test notes")
-	assert.Contains(t, content, "Also found in:")
+	assert.NotContains(t, content, "Also Found In")
+}
+
+func TestDetailModel_VerboseShowsExpandedSections(t *testing.T) {
+	anim := newAnimEngine()
+	m := newDetailModel(anim)
+	m.setSize(80, 30)
+	m.setEntry(makeTestBarEnvelope())
+	m.toggleVerbose()
+	m.updateContent()
+
+	content := m.viewport.View()
+	assert.Contains(t, content, "Also Found In")
 	assert.Contains(t, content, "other")
 }
 
