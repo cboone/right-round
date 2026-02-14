@@ -418,6 +418,10 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 	mouse := msg.Mouse()
 	x := mouse.X
 	y := mouse.Y
+	contentYMouse := y
+	if isMouseClick(msg) && contentYMouse > 0 {
+		contentYMouse--
+	}
 
 	if y >= topGapHeight && y < topGapHeight+tabBarHeight && isMouseClick(msg) && m.typeLock == "" {
 		if tab, ok := m.tabAtX(x); ok {
@@ -437,7 +441,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
-	contentY := y - topGapHeight - tabBarHeight - contentGapHeight
+	contentY := contentYMouse - topGapHeight - tabBarHeight - contentGapHeight
 	if contentY < 0 || contentY >= m.list.height {
 		return m, nil
 	}
