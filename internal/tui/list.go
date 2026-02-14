@@ -426,30 +426,12 @@ func (m *listModel) view() string {
 	}
 	groupWidth, entryWidth := m.columnWidths()
 	rows := m.visibleRows()
-	groupMeta := m.groupPager.View()
-	if groupMeta == "" {
-		groupMeta = "1/1"
-	}
-	entryMeta := m.entryPager.View()
-	if entryMeta == "" {
-		entryMeta = "1/1"
-	}
 
 	groupsTitle := listPaneTitleStyle.Render("Groups")
-	groupsCount := listPaneMetaStyle.Render(fmt.Sprintf("%d", len(m.visibleGroups)))
-	groupsPager := listPaneMetaStyle.Render(groupMeta)
-	groupsHeader := lipgloss.JoinHorizontal(lipgloss.Left, groupsTitle, " ", groupsCount, " ", groupsPager)
-	groupsHeader = lipgloss.NewStyle().Width(groupWidth).MaxWidth(groupWidth).Render(groupsHeader)
+	groupsHeader := lipgloss.NewStyle().Width(groupWidth).MaxWidth(groupWidth).Render(groupsTitle)
 
-	entryCount := 0
-	if g := m.currentGroup(); g != nil {
-		entryCount = len(g.entries)
-	}
 	entriesTitle := listPaneTitleStyle.Render("Entries")
-	entriesCount := listPaneMetaStyle.Render(fmt.Sprintf("%d", entryCount))
-	entriesPager := listPaneMetaStyle.Render(entryMeta)
-	entriesHeader := lipgloss.JoinHorizontal(lipgloss.Left, entriesTitle, " ", entriesCount, " ", entriesPager)
-	entriesHeader = lipgloss.NewStyle().Width(entryWidth).MaxWidth(entryWidth).Render(entriesHeader)
+	entriesHeader := lipgloss.NewStyle().Width(entryWidth).MaxWidth(entryWidth).Render(entriesTitle)
 	if rows < 1 {
 		return groupsHeader + listDividerStyle.Render("|") + entriesHeader
 	}
