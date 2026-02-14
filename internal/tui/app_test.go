@@ -312,6 +312,8 @@ func TestModel_View(t *testing.T) {
 	view := m.View()
 	assert.Contains(t, view, "Spinners")
 	assert.Contains(t, view, "Progress Bars")
+	assert.Contains(t, view, "g:alpha")
+	assert.Contains(t, view, "d:conc")
 }
 
 func TestModel_ViewNarrow(t *testing.T) {

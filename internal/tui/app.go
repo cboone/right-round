@@ -503,10 +503,34 @@ func (m Model) View() string {
 	} else {
 		tabLine = inactiveTabStyle.Render(spinnerLabel) + activeTabStyle.Render(barLabel)
 	}
-	tabLine += helpStyle.Render("  groups: " + m.list.groupSortLabel())
-	tabLine += helpStyle.Render("  detail: " + m.detail.verboseLabel())
+
+	availableWidth := m.width - 2
+	if availableWidth < 0 {
+		availableWidth = 0
+	}
+	usedWidth := lipgloss.Width(tabLine)
+
+	groupMeta := helpStyle.Render(" g:" + m.list.groupSortLabel())
+	if usedWidth+lipgloss.Width(groupMeta) <= availableWidth {
+		tabLine += groupMeta
+		usedWidth += lipgloss.Width(groupMeta)
+	}
+
+	detailMode := "conc"
+	if m.detail.verbose {
+		detailMode = "verb"
+	}
+	detailMeta := helpStyle.Render(" d:" + detailMode)
+	if usedWidth+lipgloss.Width(detailMeta) <= availableWidth {
+		tabLine += detailMeta
+		usedWidth += lipgloss.Width(detailMeta)
+	}
+
 	if m.typeLock != "" {
-		tabLine += helpStyle.Render(" (locked)")
+		lockMeta := helpStyle.Render(" lock")
+		if usedWidth+lipgloss.Width(lockMeta) <= availableWidth {
+			tabLine += lockMeta
+		}
 	}
 	b.WriteString(tabBarStyle.Width(m.width).Render(tabLine))
 	b.WriteString("\n")
