@@ -427,10 +427,10 @@ func (m *listModel) view() string {
 	rows := m.visibleRows()
 
 	groupsTitle := listPaneTitleStyle.Render("Categories")
-	groupsHeader := lipgloss.NewStyle().Width(groupWidth).MaxWidth(groupWidth).Render(" " + groupsTitle)
+	groupsHeader := lipgloss.NewStyle().Width(groupWidth).MaxWidth(groupWidth).Render("   " + groupsTitle)
 
 	entriesTitle := listPaneTitleStyle.Render("Entries")
-	entriesHeader := lipgloss.NewStyle().Width(entryWidth).MaxWidth(entryWidth).Render(entriesTitle)
+	entriesHeader := lipgloss.NewStyle().Width(entryWidth).MaxWidth(entryWidth).Render("  " + entriesTitle)
 	if rows < 1 {
 		return groupsHeader + "  " + entriesHeader
 	}
