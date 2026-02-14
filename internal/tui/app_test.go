@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	rightround "github.com/cboone/right-round"
 	"github.com/cboone/right-round/internal/data"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -529,4 +530,21 @@ func TestModel_ViewHeightStableAcrossMouseClick(t *testing.T) {
 	updated, _ = m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
 	m = updated.(Model)
 	assert.Equal(t, 30, lipgloss.Height(m.View()))
+}
+
+func TestModel_ViewHeightStableForSymbolGroupAnimation(t *testing.T) {
+	grouped, err := data.LoadCatalog(rightround.EmbeddedCatalogJSON())
+	assert.NoError(t, err)
+
+	m := New(grouped, "spinner", "symbol")
+	updated, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 30})
+	m = updated.(Model)
+	assert.Equal(t, 30, lipgloss.Height(m.View()))
+
+	for i := 0; i < 60; i++ {
+		next := m.lastTick.Add(16 * time.Millisecond)
+		updated, _ = m.Update(animTickMsg(next))
+		m = updated.(Model)
+		assert.Equal(t, 30, lipgloss.Height(m.View()))
+	}
 }

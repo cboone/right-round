@@ -7,6 +7,7 @@ import (
 
 	"github.com/cboone/right-round/internal/data"
 	"github.com/charmbracelet/bubbles/viewport"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type detailModel struct {
@@ -90,8 +91,15 @@ func (m *detailModel) updateContent() {
 	}
 
 	var b strings.Builder
-	truncate := func(s string) string {
-		return truncateWithEllipsis(s, contentWidth)
+	truncateForPrefix := func(prefix string, s string) string {
+		maxWidth := contentWidth - lipgloss.Width(prefix)
+		if maxWidth < 1 {
+			maxWidth = 1
+		}
+		return truncateWithEllipsis(s, maxWidth)
+	}
+	writePrefixed := func(prefix string, s string) {
+		b.WriteString(prefix + truncateForPrefix(prefix, s) + "\n")
 	}
 	section := func(title string) {
 		b.WriteString("\n" + detailLabelStyle.Render(title) + "\n")
@@ -103,20 +111,20 @@ func (m *detailModel) updateContent() {
 	section("Preview")
 	if e.Type == "spinner" {
 		frame := m.anim.currentFrame(e.ID, e.Frames)
-		b.WriteString(fmt.Sprintf("  live: %s\n", truncate(frame)))
+		writePrefixed("  live: ", frame)
 		interval := data.DefaultIntervalMS
 		if e.IntervalMS != nil {
 			interval = *e.IntervalMS
 		}
 		b.WriteString(fmt.Sprintf("  frames: %d  interval: %dms\n", len(e.Frames), interval))
 		if m.verbose {
-			b.WriteString("  all: " + truncate(strings.Join(e.Frames, " ")) + "\n")
+			writePrefixed("  all: ", strings.Join(e.Frames, " "))
 		} else {
 			limit := len(e.Frames)
 			if limit > 8 {
 				limit = 8
 			}
-			b.WriteString("  sample: " + truncate(strings.Join(e.Frames[:limit], " ")) + "\n")
+			writePrefixed("  sample: ", strings.Join(e.Frames[:limit], " "))
 		}
 	} else {
 		barWidth := contentWidth - 8
@@ -136,15 +144,15 @@ func (m *detailModel) updateContent() {
 
 		if e.Indeterminate != nil && *e.Indeterminate != "" {
 			preview := renderIndeterminate(*e.Indeterminate, barWidth, m.anim.currentOffset(e.ID))
-			b.WriteString("  indeterminate: " + truncate(preview) + "\n")
+			writePrefixed("  indeterminate: ", preview)
 		}
 	}
 
 	section("Essentials")
-	b.WriteString(fmt.Sprintf("  type: %s\n", e.Type))
-	b.WriteString(fmt.Sprintf("  group: %s\n", e.Group))
-	b.WriteString(fmt.Sprintf("  source: %s\n", e.Source.Collection))
-	b.WriteString(fmt.Sprintf("  license: %s\n", e.Source.License))
+	writePrefixed("  type: ", e.Type)
+	writePrefixed("  group: ", e.Group)
+	writePrefixed("  source: ", e.Source.Collection)
+	writePrefixed("  license: ", e.Source.License)
 
 	section("Rendering")
 	if e.Type == "progress_bar" {
@@ -159,15 +167,15 @@ func (m *detailModel) updateContent() {
 			if e.Characters.End != nil {
 				line += fmt.Sprintf(" end=%q", *e.Characters.End)
 			}
-			b.WriteString(truncate(line) + "\n")
+			writePrefixed("", line)
 		} else {
 			b.WriteString("  chars: none\n")
 		}
 		if len(e.Phases) > 0 {
-			b.WriteString("  phases: " + truncate(strings.Join(e.Phases, " ")) + "\n")
+			writePrefixed("  phases: ", strings.Join(e.Phases, " "))
 		}
 		if e.Indeterminate != nil && *e.Indeterminate != "" {
-			b.WriteString("  pattern: " + truncate(*e.Indeterminate) + "\n")
+			writePrefixed("  pattern: ", *e.Indeterminate)
 		}
 	} else {
 		interval := data.DefaultIntervalMS
@@ -178,14 +186,14 @@ func (m *detailModel) updateContent() {
 	}
 
 	section("Source")
-	b.WriteString("  key: " + truncate(e.Source.OriginalKey) + "\n")
+	writePrefixed("  key: ", e.Source.OriginalKey)
 	if e.Source.URL != "" {
-		b.WriteString("  url: " + truncate(e.Source.URL) + "\n")
+		writePrefixed("  url: ", e.Source.URL)
 	}
 
 	if e.Notes != nil {
 		section("Notes")
-		b.WriteString("  " + truncate(*e.Notes) + "\n")
+		writePrefixed("  ", *e.Notes)
 	}
 
 	if m.verbose {
@@ -204,20 +212,20 @@ func (m *detailModel) updateContent() {
 		if len(e.Source.References) > 0 {
 			section("References")
 			for _, ref := range e.Source.References {
-				b.WriteString("  " + truncate(ref) + "\n")
+				writePrefixed("  ", ref)
 			}
 		}
 
 		if e.Source.Copyright != "" {
 			section("Copyright")
-			b.WriteString("  " + truncate(e.Source.Copyright) + "\n")
+			writePrefixed("  ", e.Source.Copyright)
 		}
 
 		if len(e.AlsoFoundIn) > 0 {
 			section("Also Found In")
 			for _, afi := range e.AlsoFoundIn {
 				line := fmt.Sprintf("  %s (%s) key=%s", afi.Collection, afi.License, afi.OriginalKey)
-				b.WriteString(truncate(line) + "\n")
+				writePrefixed("", line)
 			}
 		}
 	}
