@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
+	"charm.land/bubbles/v2/viewport"
+	"charm.land/lipgloss/v2"
 	"github.com/cboone/right-round/internal/data"
-	"github.com/charmbracelet/bubbles/viewport"
-	"github.com/charmbracelet/lipgloss"
 )
 
 type detailModel struct {
@@ -18,7 +18,7 @@ type detailModel struct {
 }
 
 func newDetailModel(anim *animEngine) detailModel {
-	vp := viewport.New(0, 0)
+	vp := viewport.New(viewport.WithWidth(0), viewport.WithHeight(0))
 	vp.MouseWheelEnabled = true
 	vp.MouseWheelDelta = 2
 	return detailModel{
@@ -54,8 +54,8 @@ func (m *detailModel) setSize(width, height int) {
 	if vpHeight < 0 {
 		vpHeight = 0
 	}
-	m.viewport.Width = vpWidth
-	m.viewport.Height = vpHeight
+	m.viewport.SetWidth(vpWidth)
+	m.viewport.SetHeight(vpHeight)
 }
 
 func (m *detailModel) updateContent() {

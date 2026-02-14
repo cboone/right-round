@@ -3,8 +3,8 @@ package tui
 import (
 	"encoding/json"
 
+	tea "charm.land/bubbletea/v2"
 	"github.com/atotto/clipboard"
-	tea "github.com/charmbracelet/bubbletea"
 	"github.com/cboone/right-round/internal/data"
 )
 

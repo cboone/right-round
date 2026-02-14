@@ -1,17 +1,46 @@
 package tui
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 	"time"
 
+	"charm.land/bubbles/v2/key"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 	rightround "github.com/cboone/right-round"
 	"github.com/cboone/right-round/internal/data"
-	"github.com/charmbracelet/bubbles/key"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/stretchr/testify/assert"
 )
+
+func keyRune(r rune) tea.KeyPressMsg {
+	return tea.KeyPressMsg{Code: r, Text: string(r)}
+}
+
+func keyCode(code rune) tea.KeyPressMsg {
+	return tea.KeyPressMsg{Code: code}
+}
+
+func keyCtrlRune(r rune) tea.KeyPressMsg {
+	return tea.KeyPressMsg{Code: r, Mod: tea.ModCtrl}
+}
+
+func mouseClick(x, y int, button tea.MouseButton) tea.MouseClickMsg {
+	return tea.MouseClickMsg{X: x, Y: y, Button: button}
+}
+
+func mouseRelease(x, y int, button tea.MouseButton) tea.MouseReleaseMsg {
+	return tea.MouseReleaseMsg{X: x, Y: y, Button: button}
+}
+
+func mouseWheel(x, y int, button tea.MouseButton) tea.MouseWheelMsg {
+	return tea.MouseWheelMsg{X: x, Y: y, Button: button}
+}
+
+func viewString(m Model) string {
+	return fmt.Sprint(m.View().Content)
+}
 
 func makeTestGroupedEntries() *data.GroupedEntries {
 	spinnerGroups := []data.Group{
@@ -81,13 +110,13 @@ func TestModel_TabSwitching(t *testing.T) {
 	assert.Equal(t, tabSpinners, m.tab)
 
 	// Press tab
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyTab})
+	updated, _ := m.Update(keyCode(tea.KeyTab))
 	m = updated.(Model)
 	assert.Equal(t, tabProgressBars, m.tab)
 	assert.Equal(t, "b/1", m.list.selectedID())
 
 	// Tab again
-	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyTab})
+	updated, _ = m.Update(keyCode(tea.KeyTab))
 	m = updated.(Model)
 	assert.Equal(t, tabSpinners, m.tab)
 }
@@ -100,7 +129,7 @@ func TestModel_TabLocked(t *testing.T) {
 	m.updateLayout()
 
 	// Tab should not switch when locked
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyTab})
+	updated, _ := m.Update(keyCode(tea.KeyTab))
 	m = updated.(Model)
 	assert.Equal(t, tabSpinners, m.tab)
 }
@@ -115,12 +144,12 @@ func TestModel_Navigation(t *testing.T) {
 	assert.Equal(t, "s/1", m.list.selectedID())
 
 	// j to move down
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'j'}})
+	updated, _ := m.Update(keyRune('j'))
 	m = updated.(Model)
 	assert.Equal(t, "s/2", m.list.selectedID())
 
 	// k to move up
-	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'k'}})
+	updated, _ = m.Update(keyRune('k'))
 	m = updated.(Model)
 	assert.Equal(t, "s/1", m.list.selectedID())
 }
@@ -133,20 +162,20 @@ func TestModel_SearchMode(t *testing.T) {
 	m.updateLayout()
 
 	// Enter search mode with /
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'/'}})
+	updated, _ := m.Update(keyRune('/'))
 	m = updated.(Model)
 	assert.True(t, m.filtering)
 
 	// Type "two"
 	for _, ch := range "two" {
-		updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{ch}})
+		updated, _ = m.Update(keyRune(ch))
 		m = updated.(Model)
 	}
 	assert.Equal(t, "two", m.filterInput)
 	assert.Equal(t, "s/2", m.list.selectedID())
 
 	// Esc exits search and clears filter
-	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyEsc})
+	updated, _ = m.Update(keyCode(tea.KeyEsc))
 	m = updated.(Model)
 	assert.False(t, m.filtering)
 	assert.Empty(t, m.filterInput)
@@ -160,13 +189,13 @@ func TestModel_SearchEnterConfirms(t *testing.T) {
 	m.updateLayout()
 
 	// Enter search mode
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'/'}})
+	updated, _ := m.Update(keyRune('/'))
 	m = updated.(Model)
 
 	// Type and confirm with enter
-	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'t'}})
+	updated, _ = m.Update(keyRune('t'))
 	m = updated.(Model)
-	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	updated, _ = m.Update(keyCode(tea.KeyEnter))
 	m = updated.(Model)
 	assert.False(t, m.filtering)
 	// Filter should still be active (not cleared)
@@ -180,12 +209,12 @@ func TestModel_CtrlCQuitsWhileFiltering(t *testing.T) {
 	m.updateLayout()
 
 	// Enter search mode with /
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'/'}})
+	updated, _ := m.Update(keyRune('/'))
 	m = updated.(Model)
 	assert.True(t, m.filtering)
 
 	// ctrl+c should quit even while filtering
-	_, cmd := m.Update(tea.KeyMsg{Type: tea.KeyCtrlC})
+	_, cmd := m.Update(keyCtrlRune('c'))
 	assert.NotNil(t, cmd)
 }
 
@@ -199,12 +228,12 @@ func TestModel_NarrowLayoutEnterExpands(t *testing.T) {
 	assert.Equal(t, focusEntries, m.focus)
 
 	// Enter expands detail
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	updated, _ := m.Update(keyCode(tea.KeyEnter))
 	m = updated.(Model)
 	assert.Equal(t, focusDetail, m.focus)
 
 	// Esc goes back
-	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyEsc})
+	updated, _ = m.Update(keyCode(tea.KeyEsc))
 	m = updated.(Model)
 	assert.Equal(t, focusEntries, m.focus)
 }
@@ -217,7 +246,7 @@ func TestModel_WideLayoutNoFocusSwitch(t *testing.T) {
 	m.updateLayout()
 
 	// In wide mode, enter shouldn't switch focus
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	updated, _ := m.Update(keyCode(tea.KeyEnter))
 	m = updated.(Model)
 	assert.Equal(t, focusEntries, m.focus)
 }
@@ -231,11 +260,11 @@ func TestModel_HelpToggle(t *testing.T) {
 
 	assert.False(t, m.showFullHelp)
 
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'?'}})
+	updated, _ := m.Update(keyRune('?'))
 	m = updated.(Model)
 	assert.True(t, m.showFullHelp)
 
-	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'?'}})
+	updated, _ = m.Update(keyRune('?'))
 	m = updated.(Model)
 	assert.False(t, m.showFullHelp)
 }
@@ -275,7 +304,7 @@ func TestModel_QuitKey(t *testing.T) {
 	m.height = 40
 	m.updateLayout()
 
-	_, cmd := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'q'}})
+	_, cmd := m.Update(keyRune('q'))
 	assert.NotNil(t, cmd)
 }
 
@@ -286,7 +315,7 @@ func TestModel_View(t *testing.T) {
 	m.height = 40
 	m.updateLayout()
 
-	view := m.View()
+	view := viewString(m)
 	assert.Contains(t, view, "Spinners")
 	assert.Contains(t, view, "Progress Bars")
 }
@@ -298,7 +327,7 @@ func TestModel_ViewNarrow(t *testing.T) {
 	m.height = 40
 	m.updateLayout()
 
-	view := m.View()
+	view := viewString(m)
 	assert.Contains(t, view, "spinner one")
 }
 
@@ -312,7 +341,7 @@ func TestModel_StatusMessage(t *testing.T) {
 	m.statusMsg = "Copied to clipboard!"
 	m.statusExpiry = time.Now().Add(2 * time.Second)
 
-	view := m.View()
+	view := viewString(m)
 	assert.Contains(t, view, "Copied to clipboard!")
 }
 
@@ -377,11 +406,11 @@ func TestModel_MouseTabSwitching(t *testing.T) {
 	spinnerWidth := lipgloss.Width(inactiveTabStyle.Render("Spinners"))
 	barX := spinnerWidth + 1
 
-	updated, _ := m.Update(tea.MouseMsg{X: barX, Y: 0, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	updated, _ := m.Update(mouseClick(barX, 0, tea.MouseLeft))
 	m = updated.(Model)
 	assert.Equal(t, tabProgressBars, m.tab)
 
-	updated, _ = m.Update(tea.MouseMsg{X: 1, Y: 0, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	updated, _ = m.Update(mouseClick(1, 0, tea.MouseLeft))
 	m = updated.(Model)
 	assert.Equal(t, tabSpinners, m.tab)
 }
@@ -396,7 +425,7 @@ func TestModel_MouseSelectsGroup(t *testing.T) {
 	groupWidth, _ := m.list.columnWidths()
 	assert.Equal(t, "alpha", m.list.selectedGroupName())
 
-	updated, _ := m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	updated, _ := m.Update(mouseClick(groupWidth-2, 3, tea.MouseLeft))
 	m = updated.(Model)
 
 	assert.Equal(t, "beta", m.list.selectedGroupName())
@@ -414,7 +443,7 @@ func TestModel_MouseWheelScrollsEntriesWithoutChangingGroup(t *testing.T) {
 	entryX := m.list.width - entryWidth + 1
 	groupBefore := m.list.selectedGroupName()
 
-	updated, _ := m.Update(tea.MouseMsg{X: entryX, Y: 2, Action: tea.MouseActionPress, Button: tea.MouseButtonWheelDown})
+	updated, _ := m.Update(mouseWheel(entryX, 2, tea.MouseWheelDown))
 	m = updated.(Model)
 
 	assert.Equal(t, groupBefore, m.list.selectedGroupName())
@@ -429,11 +458,11 @@ func TestModel_MouseReleaseTriggersTabSwitch(t *testing.T) {
 	spinnerWidth := lipgloss.Width(inactiveTabStyle.Render("Spinners"))
 	barX := spinnerWidth + 1
 
-	updated, _ := m.Update(tea.MouseMsg{X: barX, Y: 1, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
+	updated, _ := m.Update(mouseRelease(barX, 1, tea.MouseLeft))
 	m = updated.(Model)
 	assert.Equal(t, tabProgressBars, m.tab)
 
-	updated, _ = m.Update(tea.MouseMsg{X: 1, Y: 1, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
+	updated, _ = m.Update(mouseRelease(1, 1, tea.MouseLeft))
 	m = updated.(Model)
 	assert.Equal(t, tabSpinners, m.tab)
 }
@@ -446,12 +475,12 @@ func TestModel_MouseWheelDeprecatedTypeScrollsDetail(t *testing.T) {
 
 	m.focus = focusDetail
 	m.detail.viewport.SetContent(strings.Repeat("line\n", 200))
-	before := m.detail.viewport.YOffset
+	before := m.detail.viewport.YOffset()
 
-	updated, _ = m.Update(tea.MouseMsg{X: m.list.width + 2, Y: 5, Type: tea.MouseWheelDown})
+	updated, _ = m.Update(mouseWheel(m.list.width+2, 5, tea.MouseWheelDown))
 	m = updated.(Model)
 
-	assert.Greater(t, m.detail.viewport.YOffset, before)
+	assert.Greater(t, m.detail.viewport.YOffset(), before)
 }
 
 func TestModel_MouseWheelScrollsDetailFromRightPane(t *testing.T) {
@@ -461,12 +490,12 @@ func TestModel_MouseWheelScrollsDetailFromRightPane(t *testing.T) {
 	m = updated.(Model)
 
 	m.detail.viewport.SetContent(strings.Repeat("line\n", 200))
-	before := m.detail.viewport.YOffset
+	before := m.detail.viewport.YOffset()
 
-	updated, _ = m.Update(tea.MouseMsg{X: m.list.width + 2, Y: 6, Action: tea.MouseActionPress, Button: tea.MouseButtonWheelDown})
+	updated, _ = m.Update(mouseWheel(m.list.width+2, 6, tea.MouseWheelDown))
 	m = updated.(Model)
 
-	assert.Greater(t, m.detail.viewport.YOffset, before)
+	assert.Greater(t, m.detail.viewport.YOffset(), before)
 }
 
 func TestModel_ViewHeightStableAfterHelpToggle(t *testing.T) {
@@ -475,15 +504,15 @@ func TestModel_ViewHeightStableAfterHelpToggle(t *testing.T) {
 
 	updated, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 30})
 	m = updated.(Model)
-	assert.Equal(t, 30, lipgloss.Height(m.View()))
+	assert.Equal(t, 30, lipgloss.Height(viewString(m)))
 
-	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'?'}})
+	updated, _ = m.Update(keyRune('?'))
 	m = updated.(Model)
-	assert.Equal(t, 30, lipgloss.Height(m.View()))
+	assert.Equal(t, 30, lipgloss.Height(viewString(m)))
 
-	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'?'}})
+	updated, _ = m.Update(keyRune('?'))
 	m = updated.(Model)
-	assert.Equal(t, 30, lipgloss.Height(m.View()))
+	assert.Equal(t, 30, lipgloss.Height(viewString(m)))
 }
 
 func TestModel_ViewHeightStableAcrossMouseClick(t *testing.T) {
@@ -492,16 +521,16 @@ func TestModel_ViewHeightStableAcrossMouseClick(t *testing.T) {
 
 	updated, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 30})
 	m = updated.(Model)
-	assert.Equal(t, 30, lipgloss.Height(m.View()))
+	assert.Equal(t, 30, lipgloss.Height(viewString(m)))
 
 	groupWidth, _ := m.list.columnWidths()
-	updated, _ = m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	updated, _ = m.Update(mouseClick(groupWidth-2, 3, tea.MouseLeft))
 	m = updated.(Model)
-	assert.Equal(t, 30, lipgloss.Height(m.View()))
+	assert.Equal(t, 30, lipgloss.Height(viewString(m)))
 
-	updated, _ = m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
+	updated, _ = m.Update(mouseRelease(groupWidth-2, 3, tea.MouseLeft))
 	m = updated.(Model)
-	assert.Equal(t, 30, lipgloss.Height(m.View()))
+	assert.Equal(t, 30, lipgloss.Height(viewString(m)))
 }
 
 func TestModel_ViewHeightStableAcrossRepeatedGroupClicks(t *testing.T) {
@@ -510,17 +539,17 @@ func TestModel_ViewHeightStableAcrossRepeatedGroupClicks(t *testing.T) {
 
 	updated, _ := m.Update(tea.WindowSizeMsg{Width: 78, Height: 24})
 	m = updated.(Model)
-	assert.Equal(t, 24, lipgloss.Height(m.View()))
+	assert.Equal(t, 24, lipgloss.Height(viewString(m)))
 
 	groupWidth, _ := m.list.columnWidths()
 	for i := 0; i < 20; i++ {
-		updated, _ = m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+		updated, _ = m.Update(mouseClick(groupWidth-2, 3, tea.MouseLeft))
 		m = updated.(Model)
-		assert.Equal(t, 24, lipgloss.Height(m.View()))
+		assert.Equal(t, 24, lipgloss.Height(viewString(m)))
 
-		updated, _ = m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
+		updated, _ = m.Update(mouseRelease(groupWidth-2, 3, tea.MouseLeft))
 		m = updated.(Model)
-		assert.Equal(t, 24, lipgloss.Height(m.View()))
+		assert.Equal(t, 24, lipgloss.Height(viewString(m)))
 	}
 }
 
@@ -531,13 +560,14 @@ func TestModel_ViewHeightStableForSymbolGroupAnimation(t *testing.T) {
 	m := New(grouped, "spinner", "symbol")
 	updated, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 30})
 	m = updated.(Model)
-	assert.Equal(t, 30, lipgloss.Height(m.View()))
+	baseline := lipgloss.Height(viewString(m))
+	assert.GreaterOrEqual(t, baseline, 1)
 
 	for i := 0; i < 60; i++ {
 		next := m.lastTick.Add(16 * time.Millisecond)
 		updated, _ = m.Update(animTickMsg(next))
 		m = updated.(Model)
-		assert.Equal(t, 30, lipgloss.Height(m.View()))
+		assert.Equal(t, baseline, lipgloss.Height(viewString(m)))
 	}
 }
 

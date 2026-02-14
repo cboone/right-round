@@ -3,8 +3,8 @@ package tui
 import (
 	"time"
 
+	tea "charm.land/bubbletea/v2"
 	"github.com/cboone/right-round/internal/data"
-	tea "github.com/charmbracelet/bubbletea"
 )
 
 const tickInterval = 16 * time.Millisecond // ~60 FPS

@@ -5,9 +5,9 @@ import (
 	"sort"
 	"strings"
 
+	"charm.land/bubbles/v2/paginator"
+	"charm.land/lipgloss/v2"
 	"github.com/cboone/right-round/internal/data"
-	"github.com/charmbracelet/bubbles/paginator"
-	"github.com/charmbracelet/lipgloss"
 )
 
 type listPaneFocus int

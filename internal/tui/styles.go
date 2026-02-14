@@ -1,11 +1,14 @@
 package tui
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	"charm.land/lipgloss/v2"
+	"charm.land/lipgloss/v2/compat"
+)
 
 var (
-	accentColor = lipgloss.AdaptiveColor{Light: "#874BFD", Dark: "#7D56F4"}
-	subtleColor = lipgloss.AdaptiveColor{Light: "#666666", Dark: "#999999"}
-	warnColor   = lipgloss.AdaptiveColor{Light: "#FF6600", Dark: "#FF9933"}
+	accentColor = compat.AdaptiveColor{Light: lipgloss.Color("#874BFD"), Dark: lipgloss.Color("#7D56F4")}
+	subtleColor = compat.AdaptiveColor{Light: lipgloss.Color("#666666"), Dark: lipgloss.Color("#999999")}
+	warnColor   = compat.AdaptiveColor{Light: lipgloss.Color("#FF6600"), Dark: lipgloss.Color("#FF9933")}
 
 	// Tab styles
 	activeTabStyle = lipgloss.NewStyle().

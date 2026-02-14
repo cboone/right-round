@@ -5,12 +5,12 @@ import (
 	"strings"
 	"time"
 
+	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/key"
+	"charm.land/bubbles/v2/textinput"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 	"github.com/cboone/right-round/internal/data"
-	"github.com/charmbracelet/bubbles/help"
-	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/textinput"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 )
 
 const wideThreshold = 100
@@ -85,7 +85,7 @@ func New(grouped *data.GroupedEntries, typeLock string, initialGroup string) Mod
 	filterBox.Prompt = ""
 	filterBox.Placeholder = "name or id"
 	filterBox.CharLimit = 80
-	filterBox.Width = 32
+	filterBox.SetWidth(32)
 	filterBox.ShowSuggestions = true
 
 	helpModel := help.New()
@@ -394,7 +394,7 @@ func (m Model) bottomBarHeight() int {
 	}
 	helpModel := m.help
 	helpModel.ShowAll = m.showFullHelp
-	helpModel.Width = m.width
+	helpModel.SetWidth(m.width)
 	h := lipgloss.Height(helpModel.View(m.currentHelpKeyMap()))
 	if h < 1 {
 		return 1
@@ -412,9 +412,12 @@ func (m *Model) syncListFocus() {
 
 func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 	defer m.updateLayout()
+	mouse := msg.Mouse()
+	x := mouse.X
+	y := mouse.Y
 
-	if msg.Y < tabBarHeight && isMouseClick(msg) && m.typeLock == "" {
-		if tab, ok := m.tabAtX(msg.X); ok {
+	if y < tabBarHeight && isMouseClick(msg) && m.typeLock == "" {
+		if tab, ok := m.tabAtX(x); ok {
 			if tab == tabSpinners && m.tab != tabSpinners {
 				m.tab = tabSpinners
 				m.list.setGroups(m.grouped.SpinnerGroups)
@@ -431,14 +434,14 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
-	contentY := msg.Y - tabBarHeight
+	contentY := y - tabBarHeight
 	if contentY < 0 || contentY >= m.list.height {
 		return m, nil
 	}
 
 	if m.width >= wideThreshold {
-		if msg.X < m.list.width {
-			localX := msg.X
+		if x < m.list.width {
+			localX := x
 			if delta := mouseWheelDelta(msg); delta != 0 {
 				if delta != 0 {
 					if m.list.isGroupColumn(localX) {
@@ -495,7 +498,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 	}
 
 	if delta := mouseWheelDelta(msg); delta != 0 {
-		if m.list.isGroupColumn(msg.X) {
+		if m.list.isGroupColumn(x) {
 			m.list.scrollGroup(delta)
 			m.focus = focusGroups
 		} else {
@@ -504,7 +507,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 		}
 	}
 	if isMouseClick(msg) {
-		if m.list.isGroupColumn(msg.X) {
+		if m.list.isGroupColumn(x) {
 			if m.list.clickGroupRow(contentY) {
 				m.focus = focusGroups
 			}
@@ -519,7 +522,14 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 }
 
 // View renders the full TUI.
-func (m Model) View() string {
+func (m Model) View() tea.View {
+	v := tea.NewView(m.render())
+	v.AltScreen = true
+	v.MouseMode = tea.MouseModeCellMotion
+	return v
+}
+
+func (m Model) render() string {
 	// Recompute layout from the exact footer we're about to render.
 	bottom := ""
 	if m.filtering {
@@ -529,7 +539,7 @@ func (m Model) View() string {
 	} else {
 		helpModel := m.help
 		helpModel.ShowAll = m.showFullHelp
-		helpModel.Width = m.width
+		helpModel.SetWidth(m.width)
 		bottom = helpModel.View(m.currentHelpKeyMap())
 	}
 
@@ -601,24 +611,23 @@ func (m Model) View() string {
 }
 
 func mouseWheelDelta(msg tea.MouseMsg) int {
-	if msg.Button == tea.MouseButtonWheelDown {
+	m := msg.Mouse()
+	if m.Button == tea.MouseWheelDown {
 		return 1
 	}
-	if msg.Button == tea.MouseButtonWheelUp {
-		return -1
-	}
-	ev := tea.MouseEvent(msg)
-	if ev.Type == tea.MouseWheelDown {
-		return 1
-	}
-	if ev.Type == tea.MouseWheelUp {
+	if m.Button == tea.MouseWheelUp {
 		return -1
 	}
 	return 0
 }
 
 func isMouseClick(msg tea.MouseMsg) bool {
-	return msg.Action == tea.MouseActionPress || msg.Action == tea.MouseActionRelease
+	switch msg.(type) {
+	case tea.MouseClickMsg, tea.MouseReleaseMsg:
+		return true
+	default:
+		return false
+	}
 }
 
 func (m *Model) refreshFilterSuggestions() {
