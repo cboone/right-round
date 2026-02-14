@@ -455,7 +455,7 @@ func TestModel_MouseSelectsGroup(t *testing.T) {
 	groupWidth, _ := m.list.columnWidths()
 	assert.Equal(t, "alpha", m.list.selectedGroupName())
 
-	updated, _ := m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 2, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	updated, _ := m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
 	m = updated.(Model)
 
 	assert.Equal(t, "beta", m.list.selectedGroupName())

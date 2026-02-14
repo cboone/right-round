@@ -15,6 +15,7 @@ import (
 )
 
 const wideThreshold = 100
+const tabBarHeight = 2
 
 // focus tracks which panel has focus.
 type focus int
@@ -388,12 +389,12 @@ func matchKey(msg tea.KeyMsg, binding key.Binding) bool {
 }
 
 func (m *Model) updateLayout() {
-	// Reserve space for tab bar (1) + border (1) + help bar (1-2)
+	// Reserve space for tab bar and help bar.
 	helpHeight := 1
 	if m.showFullHelp {
 		helpHeight = 2
 	}
-	contentHeight := m.height - 2 - helpHeight
+	contentHeight := m.height - tabBarHeight - helpHeight
 	if contentHeight < 1 {
 		contentHeight = 1
 	}
@@ -572,7 +573,7 @@ func (m Model) optionsFormHeight() int {
 }
 
 func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
-	if msg.Y == 0 && msg.Action == tea.MouseActionPress && m.typeLock == "" {
+	if msg.Y < tabBarHeight && isMouseClick(msg) && m.typeLock == "" {
 		if msg.X < m.width/2 {
 			if m.tab != tabSpinners {
 				m.tab = tabSpinners
@@ -592,7 +593,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
-	contentY := msg.Y - 1
+	contentY := msg.Y - tabBarHeight
 	if contentY < 0 || contentY >= m.list.height {
 		return m, nil
 	}
@@ -616,7 +617,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 						m.focus = focusEntries
 					}
 				}
-			} else if msg.Action == tea.MouseActionPress {
+			} else if isMouseClick(msg) {
 				if m.list.isGroupColumn(localX) {
 					if m.list.clickGroupRow(contentY) {
 						m.focus = focusGroups
@@ -639,7 +640,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 				m.detail.viewport.ScrollUp(2)
 			}
 		}
-		if msg.Action == tea.MouseActionPress {
+		if isMouseClick(msg) {
 			m.focus = focusDetail
 		}
 		m.syncListFocus()
@@ -672,7 +673,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 			m.focus = focusEntries
 		}
 	}
-	if msg.Action == tea.MouseActionPress {
+	if isMouseClick(msg) {
 		if m.list.isGroupColumn(msg.X) {
 			if m.list.clickGroupRow(contentY) {
 				m.focus = focusGroups
@@ -730,18 +731,25 @@ func (m Model) View() string {
 		}
 	}
 	b.WriteString(tabBarStyle.Width(m.width).Render(tabLine))
-	b.WriteString("\n")
 
 	// Content area
-	if m.width >= wideThreshold {
-		// Side by side layout
+	if m.optionsOpen && m.optionsForm != nil {
+		modal := optionsModalStyle.
+			Width(m.optionsFormWidth()).
+			Render(m.optionsForm.View())
+		b.WriteString("\n")
+		b.WriteString(lipgloss.Place(m.width, m.list.height, lipgloss.Center, lipgloss.Center, modal))
+	} else if m.width >= wideThreshold {
 		listView := m.list.view()
 		detailView := m.detail.view()
 		content := lipgloss.JoinHorizontal(lipgloss.Top, listView, detailView)
+		b.WriteString("\n")
 		b.WriteString(content)
 	} else if m.focus == focusDetail {
+		b.WriteString("\n")
 		b.WriteString(m.detail.view())
 	} else {
+		b.WriteString("\n")
 		b.WriteString(m.list.view())
 	}
 
@@ -752,6 +760,8 @@ func (m Model) View() string {
 		b.WriteString(filterPromptStyle.Render("Filter ") + m.filterBox.View())
 	} else if m.statusMsg != "" {
 		b.WriteString(statusStyle.Render(m.statusMsg))
+	} else if m.optionsOpen {
+		b.WriteString(helpStyle.Render("Options: enter apply  esc cancel"))
 	} else {
 		helpModel := m.help
 		helpModel.ShowAll = m.showFullHelp
@@ -759,17 +769,13 @@ func (m Model) View() string {
 		b.WriteString(helpModel.View(keys))
 	}
 
-	content := b.String()
-	if m.optionsOpen && m.optionsForm != nil {
-		modal := optionsModalStyle.
-			Width(m.optionsFormWidth()).
-			Render(m.optionsForm.View())
-		return lipgloss.Place(m.width, m.height, lipgloss.Center, lipgloss.Center, modal)
-	}
-
-	return content
+	return b.String()
 }
 
 func isMouseWheel(msg tea.MouseMsg) bool {
 	return msg.Button == tea.MouseButtonWheelUp || msg.Button == tea.MouseButtonWheelDown
+}
+
+func isMouseClick(msg tea.MouseMsg) bool {
+	return msg.Action == tea.MouseActionPress || msg.Action == tea.MouseActionRelease
 }
