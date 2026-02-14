@@ -8,6 +8,12 @@ Navigate, preview live animations, and copy entries as JSON.
 
 ## Installation
 
+### Homebrew
+
+```sh
+brew install cboone/tap/right-round
+```
+
 ### From source
 
 ```sh
