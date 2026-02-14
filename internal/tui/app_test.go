@@ -54,6 +54,7 @@ func TestNew_DefaultsToSpinners(t *testing.T) {
 	m := New(grouped, "", "")
 	assert.Equal(t, tabSpinners, m.tab)
 	assert.Equal(t, "s/1", m.list.selectedID())
+	assert.Contains(t, m.filterBox.AvailableSuggestions(), "braille")
 }
 
 func TestNew_TypeLockProgressBar(t *testing.T) {

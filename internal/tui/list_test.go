@@ -239,6 +239,8 @@ func TestListModel_View(t *testing.T) {
 	m.setSize(60, 20)
 
 	view := m.view()
+	assert.Contains(t, view, "Groups")
+	assert.Contains(t, view, "Entries")
 	assert.Contains(t, view, "alpha")
 	assert.Contains(t, view, "beta")
 	assert.Contains(t, view, "beta one")

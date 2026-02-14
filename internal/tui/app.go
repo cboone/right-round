@@ -95,6 +95,7 @@ func New(grouped *data.GroupedEntries, typeLock string, initialGroup string) Mod
 	filterBox.Placeholder = "name or id"
 	filterBox.CharLimit = 80
 	filterBox.Width = 32
+	filterBox.ShowSuggestions = true
 
 	helpModel := help.New()
 	helpModel.Styles.ShortKey = helpKeyStyle
@@ -112,7 +113,7 @@ func New(grouped *data.GroupedEntries, typeLock string, initialGroup string) Mod
 
 	detail := newDetailModel(anim)
 
-	return Model{
+	m := Model{
 		grouped:    grouped,
 		entryIndex: idx,
 		list:       list,
@@ -125,6 +126,8 @@ func New(grouped *data.GroupedEntries, typeLock string, initialGroup string) Mod
 		help:       helpModel,
 		lastTick:   time.Now(),
 	}
+	m.refreshFilterSuggestions()
+	return m
 }
 
 // Init starts the animation ticker.
@@ -356,6 +359,7 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 				m.tab = tabSpinners
 				m.list.setGroups(m.grouped.SpinnerGroups)
 			}
+			m.refreshFilterSuggestions()
 			m.focus = focusEntries
 		}
 
@@ -558,6 +562,7 @@ func (m *Model) applyOptionsFromForm() {
 			m.tab = tabSpinners
 			m.list.setGroups(m.grouped.SpinnerGroups)
 		}
+		m.refreshFilterSuggestions()
 	}
 
 	if m.width >= wideThreshold {
@@ -780,10 +785,6 @@ func (m Model) View() string {
 	return b.String()
 }
 
-func isMouseWheel(msg tea.MouseMsg) bool {
-	return msg.Button == tea.MouseButtonWheelUp || msg.Button == tea.MouseButtonWheelDown
-}
-
 func mouseWheelDelta(msg tea.MouseMsg) int {
 	if msg.Button == tea.MouseButtonWheelDown {
 		return 1
@@ -803,6 +804,41 @@ func mouseWheelDelta(msg tea.MouseMsg) int {
 
 func isMouseClick(msg tea.MouseMsg) bool {
 	return msg.Action == tea.MouseActionPress || msg.Action == tea.MouseActionRelease
+}
+
+func (m *Model) refreshFilterSuggestions() {
+	seen := make(map[string]struct{})
+	suggestions := make([]string, 0, 96)
+
+	appendSuggestion := func(v string) {
+		v = strings.TrimSpace(v)
+		if v == "" {
+			return
+		}
+		k := strings.ToLower(v)
+		if _, ok := seen[k]; ok {
+			return
+		}
+		seen[k] = struct{}{}
+		suggestions = append(suggestions, v)
+	}
+
+	for i := range m.list.groups {
+		g := m.list.groups[i]
+		appendSuggestion(g.Name)
+		for j := range g.Entries {
+			appendSuggestion(g.Entries[j].Entry.Name)
+			appendSuggestion(g.Entries[j].Entry.ID)
+			if len(suggestions) >= 96 {
+				break
+			}
+		}
+		if len(suggestions) >= 96 {
+			break
+		}
+	}
+
+	m.filterBox.SetSuggestions(suggestions)
 }
 
 func (m Model) tabAtX(x int) (activeTab, bool) {

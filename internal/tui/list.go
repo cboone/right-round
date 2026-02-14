@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/cboone/right-round/internal/data"
+	"github.com/charmbracelet/bubbles/paginator"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -41,6 +42,8 @@ type listModel struct {
 	filter        string
 	focusPane     listPaneFocus
 	groupSort     groupSortMode
+	groupPager    paginator.Model
+	entryPager    paginator.Model
 
 	anim *animEngine
 }
@@ -54,6 +57,12 @@ func newListModel(groups []data.Group, anim *animEngine) listModel {
 		groupSort:   groupSortAlphabetical,
 		anim:        anim,
 	}
+	m.groupPager = paginator.New()
+	m.groupPager.Type = paginator.Arabic
+	m.groupPager.ArabicFormat = "%d/%d"
+	m.entryPager = paginator.New()
+	m.entryPager.Type = paginator.Arabic
+	m.entryPager.ArabicFormat = "%d/%d"
 	m.rebuildVisibleGroups("")
 	return m
 }
@@ -221,6 +230,7 @@ func (m *listModel) setSize(width, height int) {
 	m.height = height
 	m.ensureGroupVisible()
 	m.ensureEntryVisible()
+	m.updatePagers()
 }
 
 func (m *listModel) moveUp() {
@@ -266,7 +276,7 @@ func (m *listModel) moveGroupDown() {
 }
 
 func (m *listModel) pageGroupUp() {
-	m.groupCursor -= m.height
+	m.groupCursor -= m.scrollRows()
 	if m.groupCursor < 0 {
 		m.groupCursor = 0
 	}
@@ -276,7 +286,7 @@ func (m *listModel) pageGroupUp() {
 }
 
 func (m *listModel) pageGroupDown() {
-	m.groupCursor += m.height
+	m.groupCursor += m.scrollRows()
 	if m.groupCursor >= len(m.visibleGroups) {
 		m.groupCursor = len(m.visibleGroups) - 1
 	}
@@ -329,7 +339,7 @@ func (m *listModel) pageEntryUp() {
 		return
 	}
 	name := g.name
-	m.entryCursor[name] -= m.height
+	m.entryCursor[name] -= m.scrollRows()
 	if m.entryCursor[name] < 0 {
 		m.entryCursor[name] = 0
 	}
@@ -342,7 +352,7 @@ func (m *listModel) pageEntryDown() {
 		return
 	}
 	name := g.name
-	m.entryCursor[name] += m.height
+	m.entryCursor[name] += m.scrollRows()
 	if m.entryCursor[name] >= len(g.entries) {
 		m.entryCursor[name] = len(g.entries) - 1
 	}
@@ -391,32 +401,43 @@ func (m *listModel) ensureCurrentGroupState() {
 }
 
 func (m *listModel) ensureGroupVisible() {
+	rows := m.visibleRows()
+	if rows < 1 {
+		rows = 1
+	}
 	if m.groupCursor < m.groupOffset {
 		m.groupOffset = m.groupCursor
 	}
-	if m.groupCursor >= m.groupOffset+m.height {
-		m.groupOffset = m.groupCursor - m.height + 1
+	if m.groupCursor >= m.groupOffset+rows {
+		m.groupOffset = m.groupCursor - rows + 1
 	}
 	if m.groupOffset < 0 {
 		m.groupOffset = 0
 	}
+	m.updatePagers()
 }
 
 func (m *listModel) ensureEntryVisible() {
 	g := m.currentGroup()
 	if g == nil {
+		m.updatePagers()
 		return
+	}
+	rows := m.visibleRows()
+	if rows < 1 {
+		rows = 1
 	}
 	name := g.name
 	if m.entryCursor[name] < m.entryOffset[name] {
 		m.entryOffset[name] = m.entryCursor[name]
 	}
-	if m.entryCursor[name] >= m.entryOffset[name]+m.height {
-		m.entryOffset[name] = m.entryCursor[name] - m.height + 1
+	if m.entryCursor[name] >= m.entryOffset[name]+rows {
+		m.entryOffset[name] = m.entryCursor[name] - rows + 1
 	}
 	if m.entryOffset[name] < 0 {
 		m.entryOffset[name] = 0
 	}
+	m.updatePagers()
 }
 
 // visibleEntryIDs returns the IDs of entries currently visible for animation.
@@ -427,7 +448,11 @@ func (m *listModel) visibleEntryIDs() []string {
 		return ids
 	}
 	start := m.entryOffset[g.name]
-	end := start + m.height
+	rows := m.visibleRows()
+	if rows < 1 {
+		rows = 1
+	}
+	end := start + rows
 	if end > len(g.entries) {
 		end = len(g.entries)
 	}
@@ -442,9 +467,37 @@ func (m *listModel) view() string {
 		return helpStyle.Render("  No matches")
 	}
 	groupWidth, entryWidth := m.columnWidths()
+	rows := m.visibleRows()
+	groupMeta := m.groupPager.View()
+	if groupMeta == "" {
+		groupMeta = "1/1"
+	}
+	entryMeta := m.entryPager.View()
+	if entryMeta == "" {
+		entryMeta = "1/1"
+	}
+
+	groupsTitle := listPaneTitleStyle.Render("Groups")
+	groupsCount := listPaneMetaStyle.Render(fmt.Sprintf("%d", len(m.visibleGroups)))
+	groupsPager := listPaneMetaStyle.Render(groupMeta)
+	groupsHeader := lipgloss.JoinHorizontal(lipgloss.Left, groupsTitle, " ", groupsCount, " ", groupsPager)
+	groupsHeader = lipgloss.NewStyle().Width(groupWidth).MaxWidth(groupWidth).Render(groupsHeader)
+
+	entryCount := 0
+	if g := m.currentGroup(); g != nil {
+		entryCount = len(g.entries)
+	}
+	entriesTitle := listPaneTitleStyle.Render("Entries")
+	entriesCount := listPaneMetaStyle.Render(fmt.Sprintf("%d", entryCount))
+	entriesPager := listPaneMetaStyle.Render(entryMeta)
+	entriesHeader := lipgloss.JoinHorizontal(lipgloss.Left, entriesTitle, " ", entriesCount, " ", entriesPager)
+	entriesHeader = lipgloss.NewStyle().Width(entryWidth).MaxWidth(entryWidth).Render(entriesHeader)
+	if rows < 1 {
+		return groupsHeader + listDividerStyle.Render("|") + entriesHeader
+	}
 
 	var groupLines []string
-	for i := 0; i < m.height; i++ {
+	for i := 0; i < rows; i++ {
 		idx := m.groupOffset + i
 		if idx >= len(m.visibleGroups) {
 			groupLines = append(groupLines, strings.Repeat(" ", groupWidth))
@@ -476,16 +529,16 @@ func (m *listModel) view() string {
 	var entryLines []string
 	g := m.currentGroup()
 	if g == nil {
-		for i := 0; i < m.height; i++ {
+		for i := 0; i < rows; i++ {
 			entryLines = append(entryLines, strings.Repeat(" ", entryWidth))
 		}
 	} else {
 		start := m.entryOffset[g.name]
-		end := start + m.height
+		end := start + rows
 		if end > len(g.entries) {
 			end = len(g.entries)
 		}
-		for i := 0; i < m.height; i++ {
+		for i := 0; i < rows; i++ {
 			idx := start + i
 			if idx >= end {
 				entryLines = append(entryLines, strings.Repeat(" ", entryWidth))
@@ -530,14 +583,51 @@ func (m *listModel) view() string {
 
 	var b strings.Builder
 	sep := listDividerStyle.Render("|")
-	for i := 0; i < m.height; i++ {
+	b.WriteString(groupsHeader + sep + entriesHeader)
+	for i := 0; i < rows; i++ {
+		b.WriteString("\n")
 		b.WriteString(groupLines[i] + sep + entryLines[i])
-		if i < m.height-1 {
-			b.WriteString("\n")
-		}
 	}
 
 	return b.String()
+}
+
+func (m *listModel) visibleRows() int {
+	rows := m.height - 1
+	if rows < 0 {
+		rows = 0
+	}
+	return rows
+}
+
+func (m *listModel) scrollRows() int {
+	rows := m.visibleRows()
+	if rows < 1 {
+		rows = 1
+	}
+	return rows
+}
+
+func (m *listModel) updatePagers() {
+	rows := m.scrollRows()
+	m.groupPager.PerPage = rows
+	m.groupPager.SetTotalPages(len(m.visibleGroups))
+	if rows > 0 {
+		m.groupPager.Page = m.groupOffset / rows
+	}
+
+	g := m.currentGroup()
+	entryTotal := 0
+	entryOffset := 0
+	if g != nil {
+		entryTotal = len(g.entries)
+		entryOffset = m.entryOffset[g.name]
+	}
+	m.entryPager.PerPage = rows
+	m.entryPager.SetTotalPages(entryTotal)
+	if rows > 0 {
+		m.entryPager.Page = entryOffset / rows
+	}
 }
 
 func (m *listModel) columnWidths() (int, int) {

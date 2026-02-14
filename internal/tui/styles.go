@@ -37,6 +37,13 @@ var (
 	listDividerStyle = lipgloss.NewStyle().
 				Foreground(subtleColor)
 
+	listPaneTitleStyle = lipgloss.NewStyle().
+				Bold(true).
+				Foreground(accentColor)
+
+	listPaneMetaStyle = lipgloss.NewStyle().
+				Foreground(subtleColor)
+
 	// Detail panel styles
 	detailBorderStyle = lipgloss.NewStyle().
 				BorderStyle(lipgloss.RoundedBorder()).
