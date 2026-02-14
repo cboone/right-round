@@ -235,6 +235,34 @@ func TestModel_HelpToggle(t *testing.T) {
 	assert.False(t, m.showFullHelp)
 }
 
+func TestModel_SortToggleKey(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+	m.width = 120
+	m.height = 40
+	m.updateLayout()
+
+	assert.Equal(t, "alpha", m.list.groupSortLabel())
+
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'s'}})
+	m = updated.(Model)
+	assert.Equal(t, "size", m.list.groupSortLabel())
+}
+
+func TestModel_VerboseToggleKey(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+	m.width = 120
+	m.height = 40
+	m.updateLayout()
+
+	assert.Equal(t, "concise", m.detail.verboseLabel())
+
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'v'}})
+	m = updated.(Model)
+	assert.Equal(t, "verbose", m.detail.verboseLabel())
+}
+
 func TestModel_AnimTickMsg(t *testing.T) {
 	grouped := makeTestGroupedEntries()
 	m := New(grouped, "", "")
