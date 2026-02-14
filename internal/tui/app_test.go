@@ -6,6 +6,7 @@ import (
 
 	"github.com/cboone/right-round/internal/data"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -493,4 +494,39 @@ func TestModel_MouseReleaseTriggersTabSwitch(t *testing.T) {
 	updated, _ = m.Update(tea.MouseMsg{X: 5, Y: 1, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
 	m = updated.(Model)
 	assert.Equal(t, tabSpinners, m.tab)
+}
+
+func TestModel_ViewHeightStableAfterHelpToggle(t *testing.T) {
+	grouped := makeTestGroupedEntries()
+	m := New(grouped, "", "")
+
+	updated, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 30})
+	m = updated.(Model)
+	assert.Equal(t, 30, lipgloss.Height(m.View()))
+
+	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'?'}})
+	m = updated.(Model)
+	assert.Equal(t, 30, lipgloss.Height(m.View()))
+
+	updated, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'?'}})
+	m = updated.(Model)
+	assert.Equal(t, 30, lipgloss.Height(m.View()))
+}
+
+func TestModel_ViewHeightStableAcrossMouseClick(t *testing.T) {
+	grouped := makeMouseTestGroupedEntries()
+	m := New(grouped, "", "")
+
+	updated, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 30})
+	m = updated.(Model)
+	assert.Equal(t, 30, lipgloss.Height(m.View()))
+
+	groupWidth, _ := m.list.columnWidths()
+	updated, _ = m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionPress, Button: tea.MouseButtonLeft})
+	m = updated.(Model)
+	assert.Equal(t, 30, lipgloss.Height(m.View()))
+
+	updated, _ = m.Update(tea.MouseMsg{X: groupWidth - 2, Y: 3, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
+	m = updated.(Model)
+	assert.Equal(t, 30, lipgloss.Height(m.View()))
 }

@@ -171,6 +171,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// Clear expired status message
 		if m.statusMsg != "" && now.After(m.statusExpiry) {
 			m.statusMsg = ""
+			m.updateLayout()
 		}
 
 		return m, tick()
@@ -182,6 +183,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.statusMsg = "Copied to clipboard!"
 		}
 		m.statusExpiry = time.Now().Add(2 * time.Second)
+		m.updateLayout()
 		return m, nil
 
 	case tea.KeyMsg:
@@ -215,11 +217,13 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.filterInput = ""
 			m.filterBox.SetValue("")
 			m.list.setFilter("")
+			m.updateLayout()
 			return m, nil
 		case "enter":
 			m.filtering = false
 			m.filterBox.Blur()
 			m.filterInput = m.filterBox.Value()
+			m.updateLayout()
 			return m, nil
 		default:
 			var cmd tea.Cmd
@@ -359,6 +363,7 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.filtering = true
 		m.filterBox.SetValue(m.filterInput)
 		m.filterBox.CursorEnd()
+		m.updateLayout()
 		return m, m.filterBox.Focus()
 
 	case matchKey(msg, keys.Copy):
@@ -368,6 +373,7 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case matchKey(msg, keys.Help):
 		m.showFullHelp = !m.showFullHelp
+		m.updateLayout()
 	}
 
 	// Update detail panel with current selection in wide mode
@@ -389,12 +395,7 @@ func matchKey(msg tea.KeyMsg, binding key.Binding) bool {
 }
 
 func (m *Model) updateLayout() {
-	// Reserve space for tab bar and help bar.
-	helpHeight := 1
-	if m.showFullHelp {
-		helpHeight = 2
-	}
-	contentHeight := m.height - tabBarHeight - helpHeight
+	contentHeight := m.height - tabBarHeight - m.bottomBarHeight()
 	if contentHeight < 1 {
 		contentHeight = 1
 	}
@@ -408,6 +409,23 @@ func (m *Model) updateLayout() {
 		m.list.setSize(m.width, contentHeight)
 		m.detail.setSize(m.width, contentHeight)
 	}
+}
+
+func (m Model) bottomBarHeight() int {
+	if m.width <= 0 {
+		return 1
+	}
+	if m.filtering || m.statusMsg != "" || m.optionsOpen {
+		return 1
+	}
+	helpModel := m.help
+	helpModel.ShowAll = m.showFullHelp
+	helpModel.Width = m.width
+	h := lipgloss.Height(helpModel.View(keys))
+	if h < 1 {
+		return 1
+	}
+	return h
 }
 
 func (m *Model) syncListFocus() {
@@ -480,6 +498,7 @@ func (m *Model) openOptions() tea.Cmd {
 		WithHeight(m.optionsFormHeight())
 
 	m.optionsOpen = true
+	m.updateLayout()
 	return m.optionsForm.Init()
 }
 
@@ -504,10 +523,12 @@ func (m *Model) updateOptions(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.optionsForm = nil
 		m.statusMsg = "Options applied"
 		m.statusExpiry = time.Now().Add(2 * time.Second)
+		m.updateLayout()
 		return m, nil
 	case huh.StateAborted:
 		m.optionsOpen = false
 		m.optionsForm = nil
+		m.updateLayout()
 		return m, nil
 	default:
 		return m, cmd
@@ -527,6 +548,7 @@ func (m *Model) applyOptionsFromForm() {
 
 	m.detail.setVerbose(m.optionsDetail == "verbose")
 	m.showFullHelp = m.optionsHelp
+	m.updateLayout()
 
 	if m.typeLock == "" {
 		if m.optionsType == "progress bars" {
