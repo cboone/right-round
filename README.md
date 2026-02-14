@@ -47,23 +47,21 @@ right-round --group braille
 
 | Key            | Action                                  |
 | -------------- | --------------------------------------- |
-| `j` / `down`   | Move cursor down                        |
-| `k` / `up`     | Move cursor up                          |
-| `pgdn`         | Page down                               |
-| `pgup`         | Page up                                 |
-| `home`         | Go to top                               |
-| `end`          | Go to bottom                            |
+| `j` / `down`   | Move down                               |
+| `k` / `up`     | Move up                                 |
+| `pgdn` / `pgup` | Page down/up                           |
+| `home` / `end` | Jump to first/last item                 |
 | `left`         | Focus groups pane                       |
-| `right`        | Focus entries/detail pane               |
-| `[` / `]`      | Jump to previous/next group             |
-| `s`            | Toggle group sort (alpha/size)          |
-| `v`            | Toggle detail view (concise/verbose)    |
-| `enter` / `l`  | Expand detail view (narrow mode)        |
-| `esc` / `h`    | Collapse back to list                   |
-| `tab`          | Switch between Spinners / Progress Bars |
-| `/`            | Search/filter by name                   |
+| `right`        | Focus entries (or detail) pane          |
+| `[` / `]`      | Select previous/next group              |
+| `s`            | Toggle group sort (`alpha` / `size`)    |
+| `v`            | Toggle detail mode (`concise` / `verbose`) |
+| `enter` / `l`  | Open detail (narrow mode)               |
+| `esc` / `h`    | Back                                    |
+| `tab`          | Switch Spinners / Progress Bars         |
+| `/`            | Filter by name or ID                    |
 | `c`            | Copy selected entry as JSON             |
-| `?`            | Toggle full help                        |
+| `?`            | Toggle expanded help                    |
 | `q` / `ctrl+c` | Quit                                    |
 
 ## Layout

@@ -27,11 +27,11 @@ type keyMap struct {
 var keys = keyMap{
 	Up: key.NewBinding(
 		key.WithKeys("up", "k"),
-		key.WithHelp("up/k", "up"),
+		key.WithHelp("up/k", "move up"),
 	),
 	Down: key.NewBinding(
 		key.WithKeys("down", "j"),
-		key.WithHelp("down/j", "down"),
+		key.WithHelp("down/j", "move down"),
 	),
 	PageUp: key.NewBinding(
 		key.WithKeys("pgup"),
@@ -51,15 +51,15 @@ var keys = keyMap{
 	),
 	Left: key.NewBinding(
 		key.WithKeys("left"),
-		key.WithHelp("left", "focus left pane"),
+		key.WithHelp("left", "focus groups"),
 	),
 	Right: key.NewBinding(
 		key.WithKeys("right"),
-		key.WithHelp("right", "focus right pane"),
+		key.WithHelp("right", "focus entries"),
 	),
 	Enter: key.NewBinding(
 		key.WithKeys("enter", "l"),
-		key.WithHelp("enter/l", "expand"),
+		key.WithHelp("enter/l", "open detail"),
 	),
 	Back: key.NewBinding(
 		key.WithKeys("esc", "h"),
@@ -71,7 +71,7 @@ var keys = keyMap{
 	),
 	Search: key.NewBinding(
 		key.WithKeys("/"),
-		key.WithHelp("/", "search"),
+		key.WithHelp("/", "filter"),
 	),
 	PrevGroup: key.NewBinding(
 		key.WithKeys("["),
@@ -83,11 +83,11 @@ var keys = keyMap{
 	),
 	Sort: key.NewBinding(
 		key.WithKeys("s"),
-		key.WithHelp("s", "toggle group sort"),
+		key.WithHelp("s", "group sort"),
 	),
 	Verbose: key.NewBinding(
 		key.WithKeys("v"),
-		key.WithHelp("v", "toggle detail view"),
+		key.WithHelp("v", "detail mode"),
 	),
 	Copy: key.NewBinding(
 		key.WithKeys("c"),
@@ -95,7 +95,7 @@ var keys = keyMap{
 	),
 	Help: key.NewBinding(
 		key.WithKeys("?"),
-		key.WithHelp("?", "help"),
+		key.WithHelp("?", "toggle help"),
 	),
 	Quit: key.NewBinding(
 		key.WithKeys("q", "ctrl+c"),
@@ -105,17 +105,14 @@ var keys = keyMap{
 
 func (k keyMap) shortHelp() string {
 	return helpStyle.Render(
-		key.NewBinding(key.WithHelp("up/down", "navigate")).Help().Key + " " + key.NewBinding(key.WithHelp("up/down", "navigate")).Help().Desc +
-			"  " + k.Left.Help().Key + " " + k.Left.Help().Desc +
-			"  " + k.Right.Help().Key + " " + k.Right.Help().Desc +
-			"  " + k.Enter.Help().Key + " " + k.Enter.Help().Desc +
+		k.Up.Help().Key + " " + k.Up.Help().Desc +
+			"  " + k.Left.Help().Key + "/" + k.Right.Help().Key + " panes" +
 			"  " + k.PrevGroup.Help().Key + "/" + k.NextGroup.Help().Key + " groups" +
-			"  " + k.Sort.Help().Key + " " + k.Sort.Help().Desc +
-			"  " + k.Verbose.Help().Key + " " + k.Verbose.Help().Desc +
-			"  " + k.Tab.Help().Key + " " + k.Tab.Help().Desc +
 			"  " + k.Search.Help().Key + " " + k.Search.Help().Desc +
+			"  " + k.Enter.Help().Key + " " + k.Enter.Help().Desc +
+			"  " + k.Tab.Help().Key + " " + k.Tab.Help().Desc +
 			"  " + k.Copy.Help().Key + " " + k.Copy.Help().Desc +
-			"  " + k.Help.Help().Key + " " + k.Help.Help().Desc +
+			"  " + k.Help.Help().Key + " more" +
 			"  " + k.Quit.Help().Key + " " + k.Quit.Help().Desc,
 	)
 }
