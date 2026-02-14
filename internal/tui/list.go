@@ -426,7 +426,7 @@ func (m *listModel) view() string {
 	groupWidth, entryWidth := m.columnWidths()
 	rows := m.visibleRows()
 
-	groupsTitle := listPaneTitleStyle.Render("Groups")
+	groupsTitle := listPaneTitleStyle.Render("Categories")
 	groupsHeader := lipgloss.NewStyle().Width(groupWidth).MaxWidth(groupWidth).Render(groupsTitle)
 
 	entriesTitle := listPaneTitleStyle.Render("Entries")

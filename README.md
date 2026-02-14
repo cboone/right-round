@@ -39,8 +39,8 @@ right-round --type spinner
 # Start locked to progress bars only
 right-round --type progress_bar
 
-# Start with a specific group selected
-right-round --group braille
+# Start with a specific category selected
+right-round --category braille
 ```
 
 ## Keybindings
@@ -51,9 +51,9 @@ right-round --group braille
 | `k` / `up`     | Move up                                 |
 | `pgdn` / `pgup` | Page down/up                           |
 | `home` / `end` | Jump to first/last item                 |
-| `left`         | Focus groups pane                       |
+| `left`         | Focus categories pane                   |
 | `right`        | Focus entries (or detail) pane          |
-| `[` / `]`      | Select previous/next group              |
+| `[` / `]`      | Select previous/next category           |
 | `enter` / `l`  | Open detail (narrow mode)               |
 | `esc` / `h`    | Back                                    |
 | `tab`          | Switch Spinners / Progress Bars         |
@@ -64,15 +64,15 @@ right-round --group braille
 
 ## Layout
 
-- **Wide terminals** (100+ columns): browser pane (groups + entries) and detail panel side by side
+- **Wide terminals** (100+ columns): browser pane (categories + entries) and detail panel side by side
 - **Narrow terminals** (under 100 columns): browser and detail switch views
-- **Browser pane**: groups scroll independently from entries, so you can browse deep within one group without losing group context
+- **Browser pane**: categories scroll independently from entries, so you can browse deep within one category without losing category context
 
 ## Mouse
 
 - Click tabs to switch indicator type
-- Click group or entry rows to select
-- Use wheel scrolling inside groups, entries, or detail panel
+- Click category or entry rows to select
+- Use wheel scrolling inside categories, entries, or detail panel
 
 ## Data
 

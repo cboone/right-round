@@ -22,8 +22,8 @@ func main() {
 
 func rootCmd() *cobra.Command {
 	var (
-		typeFlag  string
-		groupFlag string
+		typeFlag     string
+		categoryFlag string
 	)
 
 	cmd := &cobra.Command{
@@ -47,7 +47,7 @@ Navigate, preview live animations, and copy entries as JSON.`,
 				return fmt.Errorf("loading catalog: %w", err)
 			}
 
-			model := tui.New(grouped, typeFlag, groupFlag)
+			model := tui.New(grouped, typeFlag, categoryFlag)
 			p := tea.NewProgram(model)
 			if _, err := p.Run(); err != nil {
 				return fmt.Errorf("running TUI: %w", err)
@@ -57,7 +57,9 @@ Navigate, preview live animations, and copy entries as JSON.`,
 	}
 
 	cmd.Flags().StringVar(&typeFlag, "type", "", "lock to \"spinner\" or \"progress_bar\"")
-	cmd.Flags().StringVar(&groupFlag, "group", "", "start with a specific group selected")
+	cmd.Flags().StringVar(&categoryFlag, "category", "", "start with a specific category selected")
+	cmd.Flags().StringVar(&categoryFlag, "group", "", "alias for --category")
+	_ = cmd.Flags().MarkDeprecated("group", "use --category instead")
 
 	return cmd
 }

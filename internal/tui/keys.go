@@ -49,7 +49,7 @@ var keys = keyMap{
 	),
 	Left: key.NewBinding(
 		key.WithKeys("left"),
-		key.WithHelp("left", "focus groups"),
+		key.WithHelp("left", "focus categories"),
 	),
 	Right: key.NewBinding(
 		key.WithKeys("right"),
@@ -73,11 +73,11 @@ var keys = keyMap{
 	),
 	PrevGroup: key.NewBinding(
 		key.WithKeys("["),
-		key.WithHelp("[", "previous group"),
+		key.WithHelp("[", "previous category"),
 	),
 	NextGroup: key.NewBinding(
 		key.WithKeys("]"),
-		key.WithHelp("]", "next group"),
+		key.WithHelp("]", "next category"),
 	),
 	Copy: key.NewBinding(
 		key.WithKeys("c"),
