@@ -15,6 +15,8 @@ import (
 
 const wideThreshold = 100
 const tabBarHeight = 1
+const contentGapHeight = 1
+const helpGapHeight = 1
 
 // focus tracks which panel has focus.
 type focus int
@@ -369,7 +371,7 @@ func matchKey(msg tea.KeyMsg, binding key.Binding) bool {
 }
 
 func (m *Model) updateLayout() {
-	contentHeight := m.height - tabBarHeight - m.bottomBarHeight()
+	contentHeight := m.height - tabBarHeight - contentGapHeight - helpGapHeight - m.bottomBarHeight()
 	if contentHeight < 1 {
 		contentHeight = 1
 	}
@@ -434,7 +436,7 @@ func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
-	contentY := y - tabBarHeight
+	contentY := y - tabBarHeight - contentGapHeight
 	if contentY < 0 || contentY >= m.list.height {
 		return m, nil
 	}
@@ -547,7 +549,7 @@ func (m Model) render() string {
 	if bottomHeight < 1 {
 		bottomHeight = 1
 	}
-	contentHeight := m.height - tabBarHeight - bottomHeight
+	contentHeight := m.height - tabBarHeight - contentGapHeight - helpGapHeight - bottomHeight
 	if contentHeight < 1 {
 		contentHeight = 1
 	}
@@ -586,23 +588,21 @@ func (m Model) render() string {
 		}
 	}
 	b.WriteString(tabBarStyle.Width(m.width).Render(tabLine))
+	b.WriteString("\n\n")
 
 	// Content area
 	if m.width >= wideThreshold {
 		listView := m.list.view()
 		detailView := m.detail.view()
 		content := lipgloss.JoinHorizontal(lipgloss.Top, listView, detailView)
-		b.WriteString("\n")
 		b.WriteString(content)
 	} else if m.focus == focusDetail {
-		b.WriteString("\n")
 		b.WriteString(m.detail.view())
 	} else {
-		b.WriteString("\n")
 		b.WriteString(m.list.view())
 	}
 
-	b.WriteString("\n")
+	b.WriteString("\n\n")
 
 	// Status / filter bar
 	b.WriteString(bottom)

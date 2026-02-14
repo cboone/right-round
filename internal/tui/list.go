@@ -427,7 +427,7 @@ func (m *listModel) view() string {
 	rows := m.visibleRows()
 
 	groupsTitle := listPaneTitleStyle.Render("Categories")
-	groupsHeader := lipgloss.NewStyle().Width(groupWidth).MaxWidth(groupWidth).Render(groupsTitle)
+	groupsHeader := lipgloss.NewStyle().Width(groupWidth).MaxWidth(groupWidth).Render(" " + groupsTitle)
 
 	entriesTitle := listPaneTitleStyle.Render("Entries")
 	entriesHeader := lipgloss.NewStyle().Width(entryWidth).MaxWidth(entryWidth).Render(entriesTitle)
@@ -454,7 +454,7 @@ func (m *listModel) view() string {
 				prefix = "* "
 			}
 		}
-		line := prefix + style.Render(label)
+		line := " " + prefix + style.Render(label)
 		line = lipgloss.NewStyle().Width(groupWidth).MaxWidth(groupWidth).Render(line)
 		groupLines = append(groupLines, line)
 	}
