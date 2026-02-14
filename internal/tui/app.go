@@ -607,7 +607,7 @@ func (m Model) render() string {
 	b.WriteString("\n\n")
 
 	// Status / filter bar
-	b.WriteString(bottom)
+	b.WriteString(" " + bottom)
 
 	return b.String()
 }
