@@ -34,3 +34,15 @@ changelog:
       - "^docs:"
       - "^test:"
       - "^chore:"
+
+brews:
+  - repository:
+      owner: cboone
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    directory: Formula
+    homepage: "https://github.com/cboone/right-round"
+    description: "Browse and preview terminal progress indicators"
+    license: MIT
+    test: |
+      assert_match version.to_s, shell_output("#{bin}/right-round --version")
