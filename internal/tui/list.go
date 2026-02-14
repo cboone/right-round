@@ -1,7 +1,6 @@
 package tui
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 
@@ -444,7 +443,7 @@ func (m *listModel) view() string {
 			continue
 		}
 		g := m.visibleGroups[idx]
-		label := truncateWithEllipsis(fmt.Sprintf("%s (%d)", g.name, len(g.entries)), groupWidth-2)
+		label := truncateWithEllipsis(g.name, groupWidth-2)
 		style := normalItemStyle
 		prefix := "  "
 		if idx == m.groupCursor {
