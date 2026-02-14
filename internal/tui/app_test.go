@@ -478,3 +478,19 @@ func TestModel_MouseWheelScrollsEntriesWithoutChangingGroup(t *testing.T) {
 
 	assert.Equal(t, groupBefore, m.list.selectedGroupName())
 }
+
+func TestModel_MouseReleaseTriggersTabSwitch(t *testing.T) {
+	grouped := makeMouseTestGroupedEntries()
+	m := New(grouped, "", "")
+	m.width = 120
+	m.height = 40
+	m.updateLayout()
+
+	updated, _ := m.Update(tea.MouseMsg{X: 100, Y: 1, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
+	m = updated.(Model)
+	assert.Equal(t, tabProgressBars, m.tab)
+
+	updated, _ = m.Update(tea.MouseMsg{X: 5, Y: 1, Action: tea.MouseActionRelease, Button: tea.MouseButtonLeft})
+	m = updated.(Model)
+	assert.Equal(t, tabSpinners, m.tab)
+}
