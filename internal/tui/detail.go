@@ -2,7 +2,6 @@ package tui
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 
 	"github.com/cboone/right-round/internal/data"
@@ -14,7 +13,6 @@ type detailModel struct {
 	viewport viewport.Model
 	entry    *data.EntryEnvelope
 	anim     *animEngine
-	verbose  bool
 	width    int
 	height   int
 }
@@ -58,26 +56,6 @@ func (m *detailModel) setSize(width, height int) {
 	m.viewport.Height = vpHeight
 }
 
-func (m *detailModel) toggleVerbose() {
-	m.verbose = !m.verbose
-	m.viewport.GotoTop()
-}
-
-func (m *detailModel) setVerbose(v bool) {
-	if m.verbose == v {
-		return
-	}
-	m.verbose = v
-	m.viewport.GotoTop()
-}
-
-func (m *detailModel) verboseLabel() string {
-	if m.verbose {
-		return "verbose"
-	}
-	return "concise"
-}
-
 func (m *detailModel) updateContent() {
 	if m.entry == nil {
 		m.viewport.SetContent(helpStyle.Render("No entry selected"))
@@ -106,7 +84,7 @@ func (m *detailModel) updateContent() {
 	}
 
 	b.WriteString(detailLabelStyle.Render(e.Name) + "\n")
-	b.WriteString(helpStyle.Render(e.ID) + "  " + helpStyle.Render("view: "+m.verboseLabel()) + "\n")
+	b.WriteString(helpStyle.Render(e.ID) + "\n")
 
 	section("Preview")
 	if e.Type == "spinner" {
@@ -117,15 +95,11 @@ func (m *detailModel) updateContent() {
 			interval = *e.IntervalMS
 		}
 		b.WriteString(fmt.Sprintf("  frames: %d  interval: %dms\n", len(e.Frames), interval))
-		if m.verbose {
-			writePrefixed("  all: ", strings.Join(e.Frames, " "))
-		} else {
-			limit := len(e.Frames)
-			if limit > 8 {
-				limit = 8
-			}
-			writePrefixed("  sample: ", strings.Join(e.Frames[:limit], " "))
+		limit := len(e.Frames)
+		if limit > 8 {
+			limit = 8
 		}
+		writePrefixed("  sample: ", strings.Join(e.Frames[:limit], " "))
 	} else {
 		barWidth := contentWidth - 8
 		if barWidth > 40 {
@@ -194,40 +168,6 @@ func (m *detailModel) updateContent() {
 	if e.Notes != nil {
 		section("Notes")
 		writePrefixed("  ", *e.Notes)
-	}
-
-	if m.verbose {
-		if len(e.CompletionStates) > 0 {
-			section("Completion States")
-			csKeys := make([]string, 0, len(e.CompletionStates))
-			for k := range e.CompletionStates {
-				csKeys = append(csKeys, k)
-			}
-			sort.Strings(csKeys)
-			for _, k := range csKeys {
-				b.WriteString(fmt.Sprintf("  %s: %q\n", k, e.CompletionStates[k]))
-			}
-		}
-
-		if len(e.Source.References) > 0 {
-			section("References")
-			for _, ref := range e.Source.References {
-				writePrefixed("  ", ref)
-			}
-		}
-
-		if e.Source.Copyright != "" {
-			section("Copyright")
-			writePrefixed("  ", e.Source.Copyright)
-		}
-
-		if len(e.AlsoFoundIn) > 0 {
-			section("Also Found In")
-			for _, afi := range e.AlsoFoundIn {
-				line := fmt.Sprintf("  %s (%s) key=%s", afi.Collection, afi.License, afi.OriginalKey)
-				writePrefixed("", line)
-			}
-		}
 	}
 
 	m.viewport.SetContent(b.String())

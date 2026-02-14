@@ -115,18 +115,6 @@ func TestListModel_DefaultSortIsAlphabetical(t *testing.T) {
 	assert.Equal(t, "beta", m.visibleGroups[1].name)
 }
 
-func TestListModel_ToggleSortBySize(t *testing.T) {
-	anim := newAnimEngine()
-	m := newListModel(makeTestGroups(), anim)
-	m.setSize(60, 20)
-
-	m.toggleGroupSort()
-	assert.Equal(t, "size", m.groupSortLabel())
-	require.Len(t, m.visibleGroups, 2)
-	assert.Equal(t, "beta", m.visibleGroups[0].name)
-	assert.Equal(t, "alpha", m.visibleGroups[1].name)
-}
-
 func TestListModel_FilterNoMatches(t *testing.T) {
 	anim := newAnimEngine()
 	m := newListModel(makeTestGroups(), anim)

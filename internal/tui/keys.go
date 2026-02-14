@@ -15,11 +15,8 @@ type keyMap struct {
 	Back      key.Binding
 	Tab       key.Binding
 	Search    key.Binding
-	Options   key.Binding
 	PrevGroup key.Binding
 	NextGroup key.Binding
-	Sort      key.Binding
-	Verbose   key.Binding
 	Copy      key.Binding
 	Help      key.Binding
 	Quit      key.Binding
@@ -74,10 +71,6 @@ var keys = keyMap{
 		key.WithKeys("/"),
 		key.WithHelp("/", "filter"),
 	),
-	Options: key.NewBinding(
-		key.WithKeys("o"),
-		key.WithHelp("o", "options"),
-	),
 	PrevGroup: key.NewBinding(
 		key.WithKeys("["),
 		key.WithHelp("[", "previous group"),
@@ -85,14 +78,6 @@ var keys = keyMap{
 	NextGroup: key.NewBinding(
 		key.WithKeys("]"),
 		key.WithHelp("]", "next group"),
-	),
-	Sort: key.NewBinding(
-		key.WithKeys("s"),
-		key.WithHelp("s", "group sort"),
-	),
-	Verbose: key.NewBinding(
-		key.WithKeys("v"),
-		key.WithHelp("v", "detail mode"),
 	),
 	Copy: key.NewBinding(
 		key.WithKeys("c"),
@@ -114,7 +99,6 @@ func (k keyMap) ShortHelp() []key.Binding {
 		k.Left,
 		k.PrevGroup,
 		k.Search,
-		k.Options,
 		k.Help,
 		k.Quit,
 	}
@@ -124,6 +108,6 @@ func (k keyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
 		{k.Up, k.Down, k.PageUp, k.PageDown, k.Home, k.End},
 		{k.Left, k.Right, k.PrevGroup, k.NextGroup, k.Enter, k.Back},
-		{k.Search, k.Options, k.Sort, k.Verbose, k.Tab, k.Copy, k.Help, k.Quit},
+		{k.Search, k.Tab, k.Copy, k.Help, k.Quit},
 	}
 }

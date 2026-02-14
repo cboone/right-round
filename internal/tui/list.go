@@ -22,13 +22,6 @@ type visibleGroup struct {
 	entries []data.EntryEnvelope
 }
 
-type groupSortMode int
-
-const (
-	groupSortAlphabetical groupSortMode = iota
-	groupSortBySize
-)
-
 // listModel manages the grouped list panel.
 type listModel struct {
 	groups        []data.Group
@@ -41,7 +34,6 @@ type listModel struct {
 	width         int
 	filter        string
 	focusPane     listPaneFocus
-	groupSort     groupSortMode
 	groupPager    paginator.Model
 	entryPager    paginator.Model
 
@@ -54,7 +46,6 @@ func newListModel(groups []data.Group, anim *animEngine) listModel {
 		entryCursor: make(map[string]int),
 		entryOffset: make(map[string]int),
 		focusPane:   listPaneEntries,
-		groupSort:   groupSortAlphabetical,
 		anim:        anim,
 	}
 	m.groupPager = paginator.New()
@@ -85,18 +76,9 @@ func (m *listModel) buildVisibleGroups(groups []data.Group, filter string) []vis
 		visible = append(visible, visibleGroup{name: g.Name, entries: matching})
 	}
 
-	if m.groupSort == groupSortBySize {
-		sort.SliceStable(visible, func(i, j int) bool {
-			if len(visible[i].entries) != len(visible[j].entries) {
-				return len(visible[i].entries) > len(visible[j].entries)
-			}
-			return strings.ToLower(visible[i].name) < strings.ToLower(visible[j].name)
-		})
-	} else {
-		sort.SliceStable(visible, func(i, j int) bool {
-			return strings.ToLower(visible[i].name) < strings.ToLower(visible[j].name)
-		})
-	}
+	sort.SliceStable(visible, func(i, j int) bool {
+		return strings.ToLower(visible[i].name) < strings.ToLower(visible[j].name)
+	})
 
 	return visible
 }
@@ -148,30 +130,6 @@ func (m *listModel) setFilter(filter string) {
 func (m *listModel) setGroups(groups []data.Group) {
 	m.groups = groups
 	m.rebuildVisibleGroups(m.filter)
-}
-
-func (m *listModel) toggleGroupSort() {
-	if m.groupSort == groupSortAlphabetical {
-		m.groupSort = groupSortBySize
-	} else {
-		m.groupSort = groupSortAlphabetical
-	}
-	m.rebuildVisibleGroups(m.filter)
-}
-
-func (m *listModel) setGroupSort(mode groupSortMode) {
-	if m.groupSort == mode {
-		return
-	}
-	m.groupSort = mode
-	m.rebuildVisibleGroups(m.filter)
-}
-
-func (m *listModel) groupSortLabel() string {
-	if m.groupSort == groupSortBySize {
-		return "size"
-	}
-	return "alpha"
 }
 
 func (m *listModel) selectGroupByName(name string) bool {

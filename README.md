@@ -54,9 +54,6 @@ right-round --group braille
 | `left`         | Focus groups pane                       |
 | `right`        | Focus entries (or detail) pane          |
 | `[` / `]`      | Select previous/next group              |
-| `s`            | Toggle group sort (`alpha` / `size`)    |
-| `v`            | Toggle detail mode (`concise` / `verbose`) |
-| `o`            | Open options panel                       |
 | `enter` / `l`  | Open detail (narrow mode)               |
 | `esc` / `h`    | Back                                    |
 | `tab`          | Switch Spinners / Progress Bars         |
@@ -76,12 +73,6 @@ right-round --group braille
 - Click tabs to switch indicator type
 - Click group or entry rows to select
 - Use wheel scrolling inside groups, entries, or detail panel
-
-## Options Panel
-
-- Press `o` to open an interactive options panel built with Charmbracelet `huh`
-- Update filter text, group ordering, detail mode, help density, and indicator type in one place
-- Press `enter` to apply changes or `esc` to cancel
 
 ## Data
 

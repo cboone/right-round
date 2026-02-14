@@ -68,11 +68,6 @@ var (
 				Bold(true).
 				Foreground(accentColor)
 
-	optionsModalStyle = lipgloss.NewStyle().
-				BorderStyle(lipgloss.RoundedBorder()).
-				BorderForeground(accentColor).
-				Padding(1, 2)
-
 	// Status message
 	statusStyle = lipgloss.NewStyle().
 			Foreground(warnColor)

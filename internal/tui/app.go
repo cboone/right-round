@@ -10,7 +10,6 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/huh"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -55,14 +54,6 @@ type Model struct {
 	filterBox   textinput.Model
 
 	help help.Model
-
-	optionsOpen   bool
-	optionsForm   *huh.Form
-	optionsFilter string
-	optionsSort   string
-	optionsDetail string
-	optionsHelp   bool
-	optionsType   string
 
 	showFullHelp bool
 	statusMsg    string
@@ -142,9 +133,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.width = msg.Width
 		m.height = msg.Height
 		m.updateLayout()
-		if m.optionsOpen && m.optionsForm != nil {
-			m.optionsForm.WithWidth(m.optionsFormWidth()).WithHeight(m.optionsFormHeight())
-		}
 		if m.width >= wideThreshold {
 			m.detail.setEntry(m.list.selectedEntry())
 		}
@@ -190,15 +178,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, nil
 
 	case tea.KeyMsg:
-		if m.optionsOpen {
-			return m.updateOptions(msg)
-		}
 		return m.handleKey(msg)
 
 	case tea.MouseMsg:
-		if m.optionsOpen {
-			return m.updateOptions(msg)
-		}
 		return m.handleMouse(msg)
 	}
 
@@ -340,16 +322,6 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.list.moveGroupDown()
 		m.focus = focusGroups
 
-	case matchKey(msg, keys.Sort):
-		m.list.toggleGroupSort()
-
-	case matchKey(msg, keys.Verbose):
-		m.detail.toggleVerbose()
-
-	case matchKey(msg, keys.Options):
-		cmd := m.openOptions()
-		return m, cmd
-
 	case matchKey(msg, keys.Tab):
 		if m.typeLock == "" {
 			if m.tab == tabSpinners {
@@ -419,7 +391,7 @@ func (m Model) bottomBarHeight() int {
 	if m.width <= 0 {
 		return 1
 	}
-	if m.filtering || m.statusMsg != "" || m.optionsOpen {
+	if m.filtering || m.statusMsg != "" {
 		return 1
 	}
 	helpModel := m.help
@@ -438,165 +410,6 @@ func (m *Model) syncListFocus() {
 	} else {
 		m.list.setFocusPane(listPaneEntries)
 	}
-}
-
-func (m *Model) openOptions() tea.Cmd {
-	m.optionsFilter = m.filterInput
-	m.optionsSort = m.list.groupSortLabel()
-	if m.detail.verbose {
-		m.optionsDetail = "verbose"
-	} else {
-		m.optionsDetail = "concise"
-	}
-	m.optionsHelp = m.showFullHelp
-	if m.tab == tabProgressBars {
-		m.optionsType = "progress bars"
-	} else {
-		m.optionsType = "spinners"
-	}
-
-	fields := []huh.Field{
-		huh.NewInput().
-			Title("Filter").
-			Description("Search by name or id").
-			Placeholder("braille, ascii, dots, loader").
-			Value(&m.optionsFilter),
-		huh.NewSelect[string]().
-			Title("Group order").
-			Options(
-				huh.NewOption("Alphabetical", "alpha"),
-				huh.NewOption("By group size", "size"),
-			).
-			Value(&m.optionsSort),
-		huh.NewSelect[string]().
-			Title("Detail panel").
-			Options(
-				huh.NewOption("Concise", "concise"),
-				huh.NewOption("Verbose", "verbose"),
-			).
-			Value(&m.optionsDetail),
-		huh.NewConfirm().
-			Title("Show expanded key help").
-			Affirmative("yes").
-			Negative("no").
-			Value(&m.optionsHelp),
-	}
-
-	if m.typeLock == "" {
-		fields = append(fields,
-			huh.NewSelect[string]().
-				Title("Indicator type").
-				Options(
-					huh.NewOption("Spinners", "spinners"),
-					huh.NewOption("Progress Bars", "progress bars"),
-				).
-				Value(&m.optionsType),
-		)
-	}
-
-	m.optionsForm = huh.NewForm(
-		huh.NewGroup(fields...).
-			Title("Display and Navigation"),
-	).WithTheme(huh.ThemeCharm()).
-		WithWidth(m.optionsFormWidth()).
-		WithHeight(m.optionsFormHeight())
-
-	m.optionsOpen = true
-	m.updateLayout()
-	return m.optionsForm.Init()
-}
-
-func (m *Model) updateOptions(msg tea.Msg) (tea.Model, tea.Cmd) {
-	if km, ok := msg.(tea.KeyMsg); ok && km.String() == "ctrl+c" {
-		return m, tea.Quit
-	}
-	if m.optionsForm == nil {
-		m.optionsOpen = false
-		return m, nil
-	}
-
-	updated, cmd := m.optionsForm.Update(msg)
-	if f, ok := updated.(*huh.Form); ok {
-		m.optionsForm = f
-	}
-
-	switch m.optionsForm.State {
-	case huh.StateCompleted:
-		m.applyOptionsFromForm()
-		m.optionsOpen = false
-		m.optionsForm = nil
-		m.statusMsg = "Options applied"
-		m.statusExpiry = time.Now().Add(2 * time.Second)
-		m.updateLayout()
-		return m, nil
-	case huh.StateAborted:
-		m.optionsOpen = false
-		m.optionsForm = nil
-		m.updateLayout()
-		return m, nil
-	default:
-		return m, cmd
-	}
-}
-
-func (m *Model) applyOptionsFromForm() {
-	m.filterInput = strings.TrimSpace(m.optionsFilter)
-	m.filterBox.SetValue(m.filterInput)
-	m.list.setFilter(m.filterInput)
-
-	if m.optionsSort == "size" {
-		m.list.setGroupSort(groupSortBySize)
-	} else {
-		m.list.setGroupSort(groupSortAlphabetical)
-	}
-
-	m.detail.setVerbose(m.optionsDetail == "verbose")
-	m.showFullHelp = m.optionsHelp
-	m.updateLayout()
-
-	if m.typeLock == "" {
-		if m.optionsType == "progress bars" {
-			m.tab = tabProgressBars
-			m.list.setGroups(m.grouped.ProgressBarGroups)
-		} else {
-			m.tab = tabSpinners
-			m.list.setGroups(m.grouped.SpinnerGroups)
-		}
-		m.refreshFilterSuggestions()
-	}
-
-	if m.width >= wideThreshold {
-		m.detail.setEntry(m.list.selectedEntry())
-	}
-	m.syncListFocus()
-}
-
-func (m Model) optionsFormWidth() int {
-	if m.width <= 0 {
-		return 64
-	}
-	w := m.width - 10
-	if w > 76 {
-		w = 76
-	}
-	if w < 36 {
-		w = 36
-	}
-	return w
-}
-
-func (m Model) optionsFormHeight() int {
-	if m.height <= 0 {
-		return 16
-	}
-	h := m.height - 8
-	if h > 20 {
-		h = 20
-	}
-	if h < 10 {
-		h = 10
-	}
-	return h
 }
 
 func (m Model) handleMouse(msg tea.MouseMsg) (tea.Model, tea.Cmd) {
@@ -721,22 +534,6 @@ func (m Model) View() string {
 	}
 	usedWidth := lipgloss.Width(tabLine)
 
-	groupMeta := helpStyle.Render(" g:" + m.list.groupSortLabel())
-	if usedWidth+lipgloss.Width(groupMeta) <= availableWidth {
-		tabLine += groupMeta
-		usedWidth += lipgloss.Width(groupMeta)
-	}
-
-	detailMode := "conc"
-	if m.detail.verbose {
-		detailMode = "verb"
-	}
-	detailMeta := helpStyle.Render(" d:" + detailMode)
-	if usedWidth+lipgloss.Width(detailMeta) <= availableWidth {
-		tabLine += detailMeta
-		usedWidth += lipgloss.Width(detailMeta)
-	}
-
 	if m.typeLock != "" {
 		lockMeta := helpStyle.Render(" lock")
 		if usedWidth+lipgloss.Width(lockMeta) <= availableWidth {
@@ -746,13 +543,7 @@ func (m Model) View() string {
 	b.WriteString(tabBarStyle.Width(m.width).Render(tabLine))
 
 	// Content area
-	if m.optionsOpen && m.optionsForm != nil {
-		modal := optionsModalStyle.
-			Width(m.optionsFormWidth()).
-			Render(m.optionsForm.View())
-		b.WriteString("\n")
-		b.WriteString(lipgloss.Place(m.width, m.list.height, lipgloss.Center, lipgloss.Center, modal))
-	} else if m.width >= wideThreshold {
+	if m.width >= wideThreshold {
 		listView := m.list.view()
 		detailView := m.detail.view()
 		content := lipgloss.JoinHorizontal(lipgloss.Top, listView, detailView)
@@ -773,8 +564,6 @@ func (m Model) View() string {
 		b.WriteString(filterPromptStyle.Render("Filter ") + m.filterBox.View())
 	} else if m.statusMsg != "" {
 		b.WriteString(statusStyle.Render(m.statusMsg))
-	} else if m.optionsOpen {
-		b.WriteString(helpStyle.Render("Options: enter apply  esc cancel"))
 	} else {
 		helpModel := m.help
 		helpModel.ShowAll = m.showFullHelp
@@ -868,7 +657,7 @@ func (k contextualHelpKeyMap) FullHelp() [][]key.Binding {
 
 func (m Model) currentHelpKeyMap() contextualHelpKeyMap {
 	nav := []key.Binding{keys.Up, keys.Down, keys.PageUp, keys.PageDown, keys.Home, keys.End}
-	manage := []key.Binding{keys.Search, keys.Options, keys.Help, keys.Quit}
+	manage := []key.Binding{keys.Search, keys.Help, keys.Quit}
 
 	if m.typeLock == "" {
 		manage = append(manage, keys.Tab)
@@ -876,31 +665,31 @@ func (m Model) currentHelpKeyMap() contextualHelpKeyMap {
 
 	switch m.focus {
 	case focusGroups:
-		short := []key.Binding{keys.Up, keys.Right, keys.PrevGroup, keys.Sort, keys.Search, keys.Options, keys.Quit}
+		short := []key.Binding{keys.Up, keys.Right, keys.PrevGroup, keys.Search, keys.Quit}
 		full := [][]key.Binding{
 			nav,
-			{keys.Left, keys.Right, keys.PrevGroup, keys.NextGroup, keys.Sort},
+			{keys.Left, keys.Right, keys.PrevGroup, keys.NextGroup},
 			manage,
 		}
 		return contextualHelpKeyMap{short: short, full: full}
 
 	case focusDetail:
-		short := []key.Binding{keys.Up, keys.Back, keys.Verbose, keys.Copy, keys.Options, keys.Quit}
+		short := []key.Binding{keys.Up, keys.Back, keys.Copy, keys.Search, keys.Quit}
 		full := [][]key.Binding{
 			nav,
-			{keys.Back, keys.Left, keys.Verbose, keys.Copy},
+			{keys.Back, keys.Left, keys.Copy},
 			manage,
 		}
 		return contextualHelpKeyMap{short: short, full: full}
 
 	default:
-		entryFocus := []key.Binding{keys.Left, keys.Right, keys.Enter, keys.Copy, keys.Sort, keys.Verbose}
+		entryFocus := []key.Binding{keys.Left, keys.Right, keys.Enter, keys.Copy}
 		if m.width >= wideThreshold {
-			entryFocus = []key.Binding{keys.Left, keys.Right, keys.Copy, keys.Sort, keys.Verbose}
+			entryFocus = []key.Binding{keys.Left, keys.Right, keys.Copy}
 		}
-		short := []key.Binding{keys.Up, keys.Left, keys.Right, keys.Copy, keys.Search, keys.Options, keys.Quit}
+		short := []key.Binding{keys.Up, keys.Left, keys.Right, keys.Copy, keys.Search, keys.Quit}
 		if m.width < wideThreshold {
-			short = []key.Binding{keys.Up, keys.Left, keys.Enter, keys.Copy, keys.Search, keys.Options, keys.Quit}
+			short = []key.Binding{keys.Up, keys.Left, keys.Enter, keys.Copy, keys.Search, keys.Quit}
 		}
 		full := [][]key.Binding{
 			nav,

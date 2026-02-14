@@ -240,70 +240,6 @@ func TestModel_HelpToggle(t *testing.T) {
 	assert.False(t, m.showFullHelp)
 }
 
-func TestModel_SortToggleKey(t *testing.T) {
-	grouped := makeTestGroupedEntries()
-	m := New(grouped, "", "")
-	m.width = 120
-	m.height = 40
-	m.updateLayout()
-
-	assert.Equal(t, "alpha", m.list.groupSortLabel())
-
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'s'}})
-	m = updated.(Model)
-	assert.Equal(t, "size", m.list.groupSortLabel())
-}
-
-func TestModel_VerboseToggleKey(t *testing.T) {
-	grouped := makeTestGroupedEntries()
-	m := New(grouped, "", "")
-	m.width = 120
-	m.height = 40
-	m.updateLayout()
-
-	assert.Equal(t, "concise", m.detail.verboseLabel())
-
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'v'}})
-	m = updated.(Model)
-	assert.Equal(t, "verbose", m.detail.verboseLabel())
-}
-
-func TestModel_OptionsKeyOpensPanel(t *testing.T) {
-	grouped := makeTestGroupedEntries()
-	m := New(grouped, "", "")
-	m.width = 120
-	m.height = 40
-	m.updateLayout()
-
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'o'}})
-	m = updated.(Model)
-
-	assert.True(t, m.optionsOpen)
-	assert.NotNil(t, m.optionsForm)
-}
-
-func TestModel_ApplyOptionsFromForm(t *testing.T) {
-	grouped := makeTestGroupedEntries()
-	m := New(grouped, "", "")
-	m.width = 120
-	m.height = 40
-	m.updateLayout()
-
-	m.optionsFilter = "bar"
-	m.optionsSort = "size"
-	m.optionsDetail = "verbose"
-	m.optionsHelp = true
-	m.optionsType = "progress bars"
-	m.applyOptionsFromForm()
-
-	assert.Equal(t, "bar", m.filterInput)
-	assert.Equal(t, "size", m.list.groupSortLabel())
-	assert.Equal(t, "verbose", m.detail.verboseLabel())
-	assert.True(t, m.showFullHelp)
-	assert.Equal(t, tabProgressBars, m.tab)
-	assert.Equal(t, "b/1", m.list.selectedID())
-}
-
 func TestModel_AnimTickMsg(t *testing.T) {
 	grouped := makeTestGroupedEntries()
 	m := New(grouped, "", "")
@@ -353,8 +289,6 @@ func TestModel_View(t *testing.T) {
 	view := m.View()
 	assert.Contains(t, view, "Spinners")
 	assert.Contains(t, view, "Progress Bars")
-	assert.Contains(t, view, "g:alpha")
-	assert.Contains(t, view, "d:conc")
 }
 
 func TestModel_ViewNarrow(t *testing.T) {
@@ -579,17 +513,17 @@ func TestModel_ContextualHelpByFocus(t *testing.T) {
 	m = updated.(Model)
 
 	km := m.currentHelpKeyMap()
-	assert.True(t, hasBindingKey(km.ShortHelp(), "o"))
+	assert.True(t, hasBindingKey(km.ShortHelp(), "/"))
 	assert.True(t, hasBindingKey(km.ShortHelp(), "c"))
 
 	m.focus = focusGroups
 	km = m.currentHelpKeyMap()
 	assert.True(t, hasBindingKey(km.ShortHelp(), "["))
-	assert.True(t, hasBindingKey(km.ShortHelp(), "s"))
+	assert.True(t, hasBindingKey(km.ShortHelp(), "/"))
 
 	m.focus = focusDetail
 	km = m.currentHelpKeyMap()
-	assert.True(t, hasBindingKey(km.ShortHelp(), "v"))
+	assert.True(t, hasBindingKey(km.ShortHelp(), "c"))
 	assert.True(t, hasBindingKey(km.ShortHelp(), "esc"))
 }
 

@@ -86,19 +86,6 @@ func TestDetailModel_ProgressBarContent(t *testing.T) {
 	assert.NotContains(t, content, "Also Found In")
 }
 
-func TestDetailModel_VerboseShowsExpandedSections(t *testing.T) {
-	anim := newAnimEngine()
-	m := newDetailModel(anim)
-	m.setSize(80, 30)
-	m.setEntry(makeTestBarEnvelope())
-	m.toggleVerbose()
-	m.updateContent()
-
-	content := m.viewport.View()
-	assert.Contains(t, content, "Also Found In")
-	assert.Contains(t, content, "other")
-}
-
 func TestDetailModel_NoEntry(t *testing.T) {
 	anim := newAnimEngine()
 	m := newDetailModel(anim)
