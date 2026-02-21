@@ -5,11 +5,12 @@ import (
 )
 
 var (
-	// Palette inspired by Huh's Base16 theme.
-	primaryColor     = lipgloss.Color("6")
-	interactiveColor = lipgloss.Color("3")
+	// Warmer palette inspired by Huh's Base16 theme.
+	primaryColor     = lipgloss.Color("9")
+	interactiveColor = lipgloss.Color("11")
+	selectedColor    = lipgloss.Color("13")
 	subtleColor      = lipgloss.Color("8")
-	warnColor        = lipgloss.Color("9")
+	warnColor        = lipgloss.Color("1")
 
 	// Tab styles
 	activeTabStyle = lipgloss.NewStyle().
@@ -32,7 +33,7 @@ var (
 
 	selectedItemStyle = lipgloss.NewStyle().
 				Bold(true).
-				Foreground(interactiveColor)
+				Foreground(selectedColor)
 
 	normalItemStyle = lipgloss.NewStyle()
 
