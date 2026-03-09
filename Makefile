@@ -4,7 +4,7 @@ OUTDIR  := bin
 
 LDFLAGS := -ldflags "-X main.version=$(VERSION)"
 
-.PHONY: build install clean lint test run tidy
+.PHONY: build install clean lint vet test run tidy
 
 build:
 	mkdir -p $(OUTDIR)
@@ -18,6 +18,9 @@ clean:
 
 lint:
 	golangci-lint run ./...
+
+vet: ## Run go vet
+	go vet ./...
 
 test:
 	go test ./... -race -coverprofile=coverage.out
