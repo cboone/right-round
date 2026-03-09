@@ -137,7 +137,7 @@ func (m *detailModel) updateContent() {
 		}
 		sort.Strings(csKeys)
 		for _, k := range csKeys {
-			b.WriteString(fmt.Sprintf("  %s: %q\n", k, e.CompletionStates[k]))
+			fmt.Fprintf(&b, "  %s: %q\n", k, e.CompletionStates[k])
 		}
 	}
 
@@ -168,7 +168,7 @@ func (m *detailModel) updateContent() {
 	if len(e.AlsoFoundIn) > 0 {
 		b.WriteString("\n" + detailLabelStyle.Render("Also found in:") + "\n")
 		for _, afi := range e.AlsoFoundIn {
-			b.WriteString(fmt.Sprintf("  %s (%s) — key: %s\n", afi.Collection, afi.License, afi.OriginalKey))
+			fmt.Fprintf(&b, "  %s (%s) — key: %s\n", afi.Collection, afi.License, afi.OriginalKey)
 		}
 	}
 
