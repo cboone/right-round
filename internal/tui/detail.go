@@ -97,7 +97,7 @@ func (m *detailModel) updateContent() {
 		b.WriteString(detailLabelStyle.Render("Preview:") + "\n")
 		for _, pct := range []float64{0.0, 0.25, 0.5, 0.75, 1.0} {
 			bar := renderProgressBar(e.Characters, e.Phases, pct, barWidth)
-			b.WriteString(fmt.Sprintf("  %3.0f%% %s\n", pct*100, bar))
+			fmt.Fprintf(&b, "  %3.0f%% %s\n", pct*100, bar)
 		}
 
 		if e.Indeterminate != nil && *e.Indeterminate != "" {
@@ -107,15 +107,15 @@ func (m *detailModel) updateContent() {
 
 		if e.Characters != nil {
 			b.WriteString("\n" + detailLabelStyle.Render("Characters:") + "\n")
-			b.WriteString(fmt.Sprintf("  fill: %q  empty: %q", e.Characters.Fill, e.Characters.Empty))
+			fmt.Fprintf(&b, "  fill: %q  empty: %q", e.Characters.Fill, e.Characters.Empty)
 			if e.Characters.Head != nil {
-				b.WriteString(fmt.Sprintf("  head: %q", *e.Characters.Head))
+				fmt.Fprintf(&b, "  head: %q", *e.Characters.Head)
 			}
 			if e.Characters.Start != nil {
-				b.WriteString(fmt.Sprintf("  start: %q", *e.Characters.Start))
+				fmt.Fprintf(&b, "  start: %q", *e.Characters.Start)
 			}
 			if e.Characters.End != nil {
-				b.WriteString(fmt.Sprintf("  end: %q", *e.Characters.End))
+				fmt.Fprintf(&b, "  end: %q", *e.Characters.End)
 			}
 			b.WriteString("\n")
 		}
@@ -137,7 +137,7 @@ func (m *detailModel) updateContent() {
 		}
 		sort.Strings(csKeys)
 		for _, k := range csKeys {
-			b.WriteString(fmt.Sprintf("  %s: %q\n", k, e.CompletionStates[k]))
+			fmt.Fprintf(&b, "  %s: %q\n", k, e.CompletionStates[k])
 		}
 	}
 
@@ -168,7 +168,7 @@ func (m *detailModel) updateContent() {
 	if len(e.AlsoFoundIn) > 0 {
 		b.WriteString("\n" + detailLabelStyle.Render("Also found in:") + "\n")
 		for _, afi := range e.AlsoFoundIn {
-			b.WriteString(fmt.Sprintf("  %s (%s) — key: %s\n", afi.Collection, afi.License, afi.OriginalKey))
+			fmt.Fprintf(&b, "  %s (%s) — key: %s\n", afi.Collection, afi.License, afi.OriginalKey)
 		}
 	}
 
